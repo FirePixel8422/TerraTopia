@@ -1,8 +1,10 @@
 using System;
+using UnityEngine;
 
 
 
 
+[Tooltip("Data container for connecting to a server")]
 public struct RelayJoinData
 {
     public string JoinCode;

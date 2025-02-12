@@ -1,9 +1,6 @@
-using JetBrains.Annotations;
 using System;
-using System.Text;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 
 
@@ -55,7 +52,7 @@ public class ClientManager : NetworkBehaviour
 
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-    public PlayerIdDataArray debug;
+    public PlayerIdDataArray debugPlayerDataArray;
 #endif
 
 
@@ -187,7 +184,7 @@ public class ClientManager : NetworkBehaviour
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     private void Update()
     {
-        debug = _playerIdDataArray.Value;
+        debugPlayerDataArray = _playerIdDataArray.Value;
     }
 #endif
 }

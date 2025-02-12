@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
@@ -29,7 +28,7 @@ public class PlayerLobbyMenu : NetworkBehaviour
     private FixedString64Bytes[] _savedFixedPlayerNames;
 
 #if UNITY_EDITOR
-    public string[] names;
+    public string[] debugNames;
 #endif
 
 
@@ -37,7 +36,7 @@ public class PlayerLobbyMenu : NetworkBehaviour
     {
         _savedFixedPlayerNames = new FixedString64Bytes[4];
 
-        Invoke(nameof(RecieveLocalClientGameId), 0.5f);
+        Invoke(nameof(RecieveLocalClientGameId), 0.1f);
     }
 
 
@@ -50,8 +49,6 @@ public class PlayerLobbyMenu : NetworkBehaviour
         {
             string[] funnyNames = new string[]
             {
-                "Retard",
-                "PaarseBlobvis",
                 "JohnDoe",
                 "WillowWilson",
                 "BijnaMichael",
@@ -207,11 +204,11 @@ public class PlayerLobbyMenu : NetworkBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
-        names = new string[_savedFixedPlayerNames.Length];
+        debugNames = new string[_savedFixedPlayerNames.Length];
 
-        for (int i = 0; i < names.Length; i++)
+        for (int i = 0; i < debugNames.Length; i++)
         {
-            names[i] = _savedFixedPlayerNames[i].ToString();
+            debugNames[i] = _savedFixedPlayerNames[i].ToString();
         }
     }
 #endif

@@ -41,8 +41,6 @@ public class MatchMaker : NetworkBehaviour
         }
     }
 
-    public static System.Diagnostics.Stopwatch sw;
-
 
     public async void CreateLobbyAsync()
     {
@@ -51,8 +49,6 @@ public class MatchMaker : NetworkBehaviour
 
         try
         {
-            sw = System.Diagnostics.Stopwatch.StartNew();
-
             Allocation allocation = await Relay.Instance.CreateAllocationAsync(maxPlayers - 1, "europe-west4");
             RelayHostData _hostData = new RelayHostData
             {
@@ -82,18 +78,9 @@ public class MatchMaker : NetworkBehaviour
                 },
             };
 
-            print(sw.ElapsedMilliseconds + "ms");
-            sw = System.Diagnostics.Stopwatch.StartNew();
-
             Lobby lobby = await Task.Run(() => Lobbies.Instance.CreateLobbyAsync("Unnamed Lobby", maxPlayers, options));
 
-            print(sw.ElapsedMilliseconds + "ms");
-            sw = System.Diagnostics.Stopwatch.StartNew();
-
             await LobbyManager.SetLobbyData(lobby, true);
-
-            print(sw.ElapsedMilliseconds + "ms");
-            sw = System.Diagnostics.Stopwatch.StartNew();
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
                 _hostData.IPv4Address,
@@ -103,9 +90,6 @@ public class MatchMaker : NetworkBehaviour
                 _hostData.ConnectionData);
 
             NetworkManager.StartHost();
-
-            print(sw.ElapsedMilliseconds + "ms");
-            sw = System.Diagnostics.Stopwatch.StartNew();
 
             //load next scene
             SceneManager.LoadSceneOnNetwork("Pre-Main Game");
@@ -193,13 +177,13 @@ public class MatchMaker : NetworkBehaviour
             {
                 Filters = new List<QueryFilter>
                 {
-                    // Only include open lobbies in the pages
+                    //Only get open lobbies (non private)
                     new QueryFilter(
                         field: QueryFilter.FieldOptions.AvailableSlots,
                         op: QueryFilter.OpOptions.GT,
                         value: "-1"),
 
-                    // Only show non locked lobbies (lobbies that are not yet in a started match)
+                    //Only show non locked lobbies (lobbies that are not yet in a started match)
                      new QueryFilter(
                          field: QueryFilter.FieldOptions.IsLocked,
                          op: QueryFilter.OpOptions.EQ,
@@ -208,8 +192,10 @@ public class MatchMaker : NetworkBehaviour
 
                 Order = new List<QueryOrder>
                 {
-                    // Show the oldest lobbies first
+                    //Show the oldest lobbies first
                     new QueryOrder(true, QueryOrder.FieldOptions.Created),
+                    //
+                    new QueryOrder(false, QueryOrder.FieldOptions.AvailableSlots),
                 }
             };
 
@@ -226,7 +212,7 @@ public class MatchMaker : NetworkBehaviour
     }
 
 
-    public async void JoinLobbyById(string lobbyId)
+    public async void JoinLobbyByIdAsync(string lobbyId)
     {
         try
         {

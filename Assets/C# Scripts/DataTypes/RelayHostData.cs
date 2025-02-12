@@ -1,8 +1,9 @@
 using System;
+using UnityEngine;
 
 
 
-
+[Tooltip("Data container for hosting a server")]
 public struct RelayHostData
 {
     public string JoinCode;
