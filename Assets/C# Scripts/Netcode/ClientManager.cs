@@ -26,6 +26,9 @@ public class ClientManager : NetworkBehaviour
     [Tooltip("Turn NetworkId into GameId")]
     public static int GetClientGameIdFromNetworkId(ulong networkId) => _playerIdDataArray.Value.GetPlayerGameId(networkId);
 
+    [Tooltip("Turn NetworkId into GameId")]
+    public static int GetClientTeamId(int gameId) => _playerIdDataArray.Value.GetPlayerTeamId(gameId);
+
 
 
     [Tooltip("After NetworkManager.ClientDisconnected, before updating ClientManager gameId logic")]
@@ -35,8 +38,12 @@ public class ClientManager : NetworkBehaviour
     public static Action<ulong, int, int> OnClientDisconnectedCallback;
 
 
+
     [Tooltip("Local Client gameId, the number equal to the playerCount when this client joined the lobby")]
     public static int LocalClientGameId { get; private set; }
+
+    [Tooltip("Turn NetworkId into GameId")]
+    public static int LocalClientTeamId { get; private set; }
 
 
     [Tooltip("Local Client userName, value is set after PlayerDisplayManager's OnNetworkSpawn")]
@@ -61,18 +68,29 @@ public class ClientManager : NetworkBehaviour
     {
         if (IsServer)
         {
+            //setup server only events
             NetworkManager.OnClientConnectedCallback += OnClientConnected_OnServer;
             NetworkManager.OnClientDisconnectCallback += OnClientDisconnected_OnServer;
         }
 
+        //setup server and client event
         NetworkManager.OnClientDisconnectCallback += OnClientDisconnected_OnClient;
 
-        _playerIdDataArray.OnValueChanged += (PlayerIdDataArray before, PlayerIdDataArray after) =>
+        //on value changed event of playerIdDataArray
+        _playerIdDataArray.OnValueChanged += (PlayerIdDataArray oldValue, PlayerIdDataArray newValue) =>
         {
-            LocalClientGameId = after.GetPlayerGameId(NetworkManager.LocalClientId);
+            LocalClientGameId = newValue.GetPlayerGameId(NetworkManager.LocalClientId);
+            LocalClientTeamId = newValue.GetPlayerTeamId(LocalClientGameId);
         };
     }
 
+
+
+    #region Join and Leave Callbacks
+
+    /// <summary>
+    /// when a clients joins the lobby, called on the server only
+    /// </summary>
     private void OnClientConnected_OnServer(ulong clientId)
     {
         OnClientConnectedCallback?.Invoke(clientId, _playerIdDataArray.Value.GetPlayerGameId(clientId), NetworkManager.ConnectedClientsIds.Count);
@@ -84,6 +102,10 @@ public class ClientManager : NetworkBehaviour
         _playerIdDataArray.Value = updatedDataArray;
     }
 
+
+    /// <summary>
+    /// when a client leaves the lobby, called on the server only
+    /// </summary>
     private void OnClientDisconnected_OnServer(ulong clientId)
     {
         //if the diconnecting client is the server dont update data, the server is shut down anyways.
@@ -102,6 +124,10 @@ public class ClientManager : NetworkBehaviour
         _playerIdDataArray.Value = updatedDataArray;
     }
 
+
+    /// <summary>
+    /// when a client leaves the lobby, called only on disconnecting client
+    /// </summary>
     private void OnClientDisconnected_OnClient(ulong clientId)
     {
         //call function only on client who disconnected
@@ -129,6 +155,7 @@ public class ClientManager : NetworkBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
+    #endregion
 
 
 

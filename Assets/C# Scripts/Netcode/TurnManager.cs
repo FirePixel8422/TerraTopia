@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -9,17 +9,33 @@ public class TurnManager : NetworkBehaviour
     [SerializeField] private NetworkVariable<int> teamOnTurnId = new NetworkVariable<int>();
 
 
+    public static Action OnTurnGranted;
+
+
+
+
+    public override void OnNetworkSpawn()
+    {
+        teamOnTurnId.OnValueChanged += (int oldValue, int newValue) =>
+        {
+            if (newValue == ClientManager.LocalClientGameId)
+            {
+                OnTurnGranted?.Invoke();
+            }
+        };
+    }
+
 
     [ServerRpc(RequireOwnership = false)]
     public void NextTeam_ServerRPC()
     {
-        int newClientOnTurnNetworkId = teamOnTurnId.Value + 1;
+        int newTeamOnTurnId = teamOnTurnId.Value + 1;
 
-        if (newClientOnTurnNetworkId == NetworkManager.ConnectedClientsIds.Count)
+        if (newTeamOnTurnId == CoalitionManager.Instance.teamCount)
         {
-            newClientOnTurnNetworkId = 0;
+            newTeamOnTurnId = 0;
         }
 
-        teamOnTurnId.Value = newClientOnTurnNetworkId;
+        teamOnTurnId.Value = newTeamOnTurnId;
     }
 }

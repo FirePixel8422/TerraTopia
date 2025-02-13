@@ -9,52 +9,11 @@ using UnityEngine;
 [BurstCompile]
 public struct PlayerIdDataArray : INetworkSerializable
 {
-    [Header("Total players in server")]
+    [Header("[0] = 2? player with networkId 2 is player 0")]
     [SerializeField] private ulong[] networkIds;
 
     [Header("[0] = 2? player with gameId 0 is in team 3")]
     [SerializeField] private int[] teamIds;
-
-
-
-    /// <summary>
-    /// Are all players in a team and are there at least 2 teams
-    /// </summary>
-    [BurstCompile]
-    public bool AreTeamsValid()
-    {
-        int lastTeamId = -1;
-
-        //loop over all teamIds (for current playerCount, eg: 2 players == loop over teh first 2 teamIds)
-        for (int i = 0; i < playerCount; i++)
-        {
-            //if a player is not part of a team return false
-            if (teamIds[i] == -1)
-            {
-                return false;
-            }
-            else
-            {
-                //check if a team different then the previous one was found (to check if not all players are in 1 team)
-                if (lastTeamId != -1 && teamIds[i] != lastTeamId)
-                {
-                    //set value to -10 to check down below (-10 is used as true here)
-                    lastTeamId = -10;
-                }
-
-                lastTeamId = teamIds[i];
-            }
-        }
-
-        //if all players are on 1 team
-        if (lastTeamId != -10)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
 
 
     [Header("Total players in server")]
@@ -77,6 +36,49 @@ public struct PlayerIdDataArray : INetworkSerializable
 
         playerCount = 0;
         teamCount = 0;
+    }
+
+
+
+
+    /// <summary>
+    /// Are all players in a team and are there at least 2 teams that are fair if the matcsettings enforce it
+    /// </summary>
+    [BurstCompile]
+    public bool AreTeamsValid()
+    {
+        int[] teamMemberCounts = new int[teamIds.Length];
+        int mostMembersPerTeam = 0;
+
+        bool fairTeams = true;
+
+        //calculate how many players are in each team
+        for (int i = 0; i < playerCount; i++)
+        {
+            teamMemberCounts[teamIds[i]] += 1;
+
+            //update mostMembersPerTeam int after increasing teamMemberValue
+            if (teamMemberCounts[teamIds[i]] > mostMembersPerTeam)
+            {
+                mostMembersPerTeam = teamMemberCounts[teamIds[i]];
+            }
+        }
+
+
+        //check if all teams have the same amount of players
+        for (int i = 0; i < playerCount; i++)
+        {
+            //check if not all teams have the same amount of players
+            if (teamMemberCounts[i] != mostMembersPerTeam)
+            {
+                fairTeams = false;
+                break;
+            }
+        }
+
+
+        //if all players are on 1 team and (the teams are fair or unfair teams are allowed): return true, otherwise return false
+        return teamCount > 1 && (fairTeams || MatchManager.matchSettings.allowUnfairTeams);
     }
 
 
@@ -165,6 +167,7 @@ public struct PlayerIdDataArray : INetworkSerializable
     }
 
     #endregion
+
 
 
 
