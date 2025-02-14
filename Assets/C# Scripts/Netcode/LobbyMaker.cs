@@ -10,9 +10,9 @@ using UnityEngine;
 
 
 
-public class MatchMaker : NetworkBehaviour
+public class LobbyMaker : NetworkBehaviour
 {
-    public static MatchMaker Instance { get; private set; }
+    public static LobbyMaker Instance { get; private set; }
 
     private void Awake()
     {

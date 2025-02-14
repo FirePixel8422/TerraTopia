@@ -300,3 +300,13 @@ public struct ValueWrapper<T>
         value = _value;
     }
 }
+
+public struct ArrayWrapper<T>
+{
+    public T[] values;
+
+    public ArrayWrapper(T[] _values)
+    {
+        values = _values;
+    }
+}

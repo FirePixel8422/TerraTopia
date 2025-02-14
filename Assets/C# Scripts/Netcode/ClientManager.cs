@@ -138,7 +138,7 @@ public class ClientManager : NetworkBehaviour
 
 
         Destroy(gameObject);
-        Destroy(MatchMaker.Instance.gameObject);
+        Destroy(LobbyMaker.Instance.gameObject);
 
 
         if (IsServer)
