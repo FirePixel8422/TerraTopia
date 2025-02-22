@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc7f48c89944c448a190ea8bea2115f, type: 3}
+  m_Name: Solid
+  m_EditorClassIdentifier: 
+  _octaves: 3
+  _scale: 0.05
+  _lacunarity: 2
+  _persistence: 0.5
+  _resolution: 1
+  _possibleTiles:
+  - tileGO: {fileID: 6793937524132613133, guid: ead2bf040689323429e98b3ebb5f87db,
+      type: 3}
+    weight: 0.5
+  - tileGO: {fileID: 6793937524132613133, guid: 35217801d885fd0489b979464c293582,
+      type: 3}
+    weight: 0.65
+  - tileGO: {fileID: 1408358322614753839, guid: 675367cbbc472474494f8fff067732f5,
+      type: 3}
+    weight: 10
+  _shouldDebug: 0
+  debugPerlinValues: []
