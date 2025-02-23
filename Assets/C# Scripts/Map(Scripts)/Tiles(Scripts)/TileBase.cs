@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class TileBase : MonoBehaviour, IOnClickable
+public class TileBase : MonoBehaviour, IOnClickable, IHoverable
 {
+    [Tooltip("Whether a castle can be placed on this tile or not")]
+    public bool canHoldCastle;
+     
+
     public float _perlinHeight;
-    //The outline spawned around the 
-    [SerializeField] private GameObject _outLine;
 
     [Header("Enviromental Object Settings / Variables")]
     public List<EnviromentalItemData> _possibleEnviromentalObjects = new List<EnviromentalItemData>();
@@ -17,15 +19,13 @@ public class TileBase : MonoBehaviour, IOnClickable
 
     [SerializeField] bool isHoldingObject;
 
-    protected virtual void Start()
-    {
-        if (!_outLine.activeInHierarchy) { _outLine = Instantiate(_outLine, transform.position, transform.rotation, transform); }
-        _outLine.SetActive(false);
-    }
-    protected virtual void OnMouseOver() { _outLine.SetActive(true); }
-    protected virtual void OnMouseExit() { _outLine.SetActive(false); }
+    public Transform hoverObjectHolder { get => transform; set => gameObject.AddComponent<Transform>(); }
 
     public virtual void OnClick() { }
+    public virtual void OnHover(Transform _hoverObject)
+    {
+        _hoverObject.transform.position = hoverObjectHolder.transform.position;
+    }
 
     public virtual void AssignObject(EnviromentalItemData enviromentalObject)
     {
@@ -62,6 +62,7 @@ public class TileBase : MonoBehaviour, IOnClickable
             print("Object already contains an enviromental object");
         }
     }
+
 }
 
 

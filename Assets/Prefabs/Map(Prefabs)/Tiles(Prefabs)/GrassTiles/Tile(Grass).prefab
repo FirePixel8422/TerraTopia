@@ -15,6 +15,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f59d77972f6cf7449ba5e6e0cf98e881, type: 2}
     - target: {fileID: 697961447548088418, guid: 675367cbbc472474494f8fff067732f5,
         type: 3}
+      propertyPath: canHoldCastle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 697961447548088418, guid: 675367cbbc472474494f8fff067732f5,
+        type: 3}
       propertyPath: _enviromentalObjecPosHolder
       value: 
       objectReference: {fileID: 8811108873229824348, guid: b78133d89bca1d749ab448a2f513386a,

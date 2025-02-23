@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4848633042143626090, guid: 5cdee68322c94f649bbf2f90a4f55c0e,
+        type: 3}
+      propertyPath: canHoldCastle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5919639690028168093, guid: 5cdee68322c94f649bbf2f90a4f55c0e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -61,7 +66,7 @@ PrefabInstance:
     - target: {fileID: 6443833320577886503, guid: 5cdee68322c94f649bbf2f90a4f55c0e,
         type: 3}
       propertyPath: m_Name
-      value: Tile(Base) Variant
+      value: Test_Tile_Stone
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -19,7 +19,9 @@ public class GridManager : MonoBehaviour
 
     //The dimensions of the to-be created grid.
     [Header("Dimensions")]
+    [Tooltip("The X-axis")]
     [SerializeField] private int _width;
+    [Tooltip("The Z-axis")]
     [SerializeField] private int _length;
 
     [Header("Player Values")]
