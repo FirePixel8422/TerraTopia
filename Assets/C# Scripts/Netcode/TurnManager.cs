@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TurnManager : NetworkBehaviour
 {
-    [Header("The id of the team that is on turn, synced between every player on the server")]
+    [Header("The id of the team that is on turn, synced between every client on the server")]
     [SerializeField] private NetworkVariable<int> teamOnTurnId = new NetworkVariable<int>();
 
 
@@ -31,7 +31,7 @@ public class TurnManager : NetworkBehaviour
     {
         int newTeamOnTurnId = teamOnTurnId.Value + 1;
 
-        if (newTeamOnTurnId == CoalitionManager.Instance.teamCount)
+        if (newTeamOnTurnId == CoalitionManager.TeamCount)
         {
             newTeamOnTurnId = 0;
         }

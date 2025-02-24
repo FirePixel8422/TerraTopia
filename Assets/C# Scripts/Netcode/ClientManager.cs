@@ -7,46 +7,65 @@ using UnityEngine;
 public class ClientManager : NetworkBehaviour
 {
     public static ClientManager Instance;
-
-    private static NetworkVariable<PlayerIdDataArray> _playerIdDataArray;
-
     private void Awake()
     {
         Instance = this;
 
-        _playerIdDataArray = new NetworkVariable<PlayerIdDataArray>(new PlayerIdDataArray(4));
+        playerIdDataArray = new NetworkVariable<PlayerIdDataArray>(new PlayerIdDataArray(GameSettings.maxPlayers));
+    }
+
+
+    private static NetworkVariable<PlayerIdDataArray> playerIdDataArray;
+
+    /// <summary>
+    /// Get PlayerIdDataArray Copy (changes on copy wont sync back to clientManager and wont cause a networkSync)
+    /// </summary>
+    /// <returns>Copy Of PlayerIdDataArray</returns>3
+    public static PlayerIdDataArray GetPlayerIdDataArray()
+    {
+        return playerIdDataArray.Value;
+    }
+    /// <summary>
+    /// Set Value Of PlayerIdDataArray (Will trigger networkSync)
+    /// </summary>
+    public static void UpdatePlayerIdDataArray(PlayerIdDataArray newValue)
+    {
+        playerIdDataArray.Value = newValue;
     }
 
 
 
-
     [Tooltip("Turn GameId into NetworkId")]
-    public static ulong GetClientNetworkIdFromGameId(int gameId) => _playerIdDataArray.Value.GetPlayerNetworkId(gameId);
+    public static ulong GetClientNetworkIdFromGameId(int gameId) => playerIdDataArray.Value.GetPlayerNetworkId(gameId);
 
     [Tooltip("Turn NetworkId into GameId")]
-    public static int GetClientGameIdFromNetworkId(ulong networkId) => _playerIdDataArray.Value.GetPlayerGameId(networkId);
+    public static int GetClientGameIdFromNetworkId(ulong networkId) => playerIdDataArray.Value.GetPlayerGameId(networkId);
 
     [Tooltip("Turn NetworkId into GameId")]
-    public static int GetClientTeamId(int gameId) => _playerIdDataArray.Value.GetPlayerTeamId(gameId);
+    public static int GetClientTeamId(int gameId) => playerIdDataArray.Value.GetPlayerTeamId(gameId);
 
 
 
-    [Tooltip("After NetworkManager.ClientDisconnected, before updating ClientManager gameId logic")]
+    [Tooltip("Invoked after NetworkManager.OnClientConnected, before updating ClientManager gameId logic. \nreturns: ulong clientId, int clientGamId, int clientInLobbyCount")]
     public static Action<ulong, int, int> OnClientConnectedCallback;
 
-    [Tooltip("After NetworkManager.OnClientDisconnected, before updating ClientManager gameId logic")]
+    [Tooltip("Invoked after NetworkManager.OnClientDisconnected, before updating ClientManager gameId logic. \nreturns: ulong clientId, int clientGamId, int clientInLobbyCount")]
     public static Action<ulong, int, int> OnClientDisconnectedCallback;
 
 
 
-    [Tooltip("Local Client gameId, the number equal to the playerCount when this client joined the lobby")]
+    [Tooltip("Local Client gameId, the number equal to the clientCount when this client joined the lobby")]
     public static int LocalClientGameId { get; private set; }
 
     [Tooltip("Turn NetworkId into GameId")]
     public static int LocalClientTeamId { get; private set; }
 
 
-    [Tooltip("Local Client userName, value is set after PlayerDisplayManager's OnNetworkSpawn")]
+    [Tooltip("Amount of Players in server that have been setup by ClientManager (game/team ID System")]
+    public static int PlayerCount => playerIdDataArray.Value.PlayerCount;
+
+
+    [Tooltip("Local Client userName, value is set after ClientDisplayManager's OnNetworkSpawn")]
     public static string LocalUserName { get; private set; }
 
 
@@ -54,13 +73,6 @@ public class ClientManager : NetworkBehaviour
     {
         LocalUserName = newname;
     }
-
-
-
-
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-    public PlayerIdDataArray debugPlayerDataArray;
-#endif
 
 
 
@@ -77,7 +89,7 @@ public class ClientManager : NetworkBehaviour
         NetworkManager.OnClientDisconnectCallback += OnClientDisconnected_OnClient;
 
         //on value changed event of playerIdDataArray
-        _playerIdDataArray.OnValueChanged += (PlayerIdDataArray oldValue, PlayerIdDataArray newValue) =>
+        playerIdDataArray.OnValueChanged += (PlayerIdDataArray oldValue, PlayerIdDataArray newValue) =>
         {
             LocalClientGameId = newValue.GetPlayerGameId(NetworkManager.LocalClientId);
             LocalClientTeamId = newValue.GetPlayerTeamId(LocalClientGameId);
@@ -93,13 +105,13 @@ public class ClientManager : NetworkBehaviour
     /// </summary>
     private void OnClientConnected_OnServer(ulong clientId)
     {
-        OnClientConnectedCallback?.Invoke(clientId, _playerIdDataArray.Value.GetPlayerGameId(clientId), NetworkManager.ConnectedClientsIds.Count);
+        OnClientConnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), NetworkManager.ConnectedClientsIds.Count);
 
-        PlayerIdDataArray updatedDataArray = _playerIdDataArray.Value;
+        PlayerIdDataArray updatedDataArray = playerIdDataArray.Value;
 
         updatedDataArray.AddPlayer(clientId);
 
-        _playerIdDataArray.Value = updatedDataArray;
+        playerIdDataArray.Value = updatedDataArray;
     }
 
 
@@ -114,14 +126,14 @@ public class ClientManager : NetworkBehaviour
             return;
         }
 
-        OnClientDisconnectedCallback?.Invoke(clientId, _playerIdDataArray.Value.GetPlayerGameId(clientId), NetworkManager.ConnectedClientsIds.Count);
+        OnClientDisconnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), NetworkManager.ConnectedClientsIds.Count);
 
 
-        PlayerIdDataArray updatedDataArray = _playerIdDataArray.Value;
+        PlayerIdDataArray updatedDataArray = playerIdDataArray.Value;
 
         updatedDataArray.RemovePlayer(clientId);
 
-        _playerIdDataArray.Value = updatedDataArray;
+        playerIdDataArray.Value = updatedDataArray;
     }
 
 
@@ -209,9 +221,11 @@ public class ClientManager : NetworkBehaviour
 
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
+
+    public PlayerIdDataArray debugClientDataArray;
     private void Update()
     {
-        debugPlayerDataArray = _playerIdDataArray.Value;
+        debugClientDataArray = playerIdDataArray.Value;
     }
 #endif
 }

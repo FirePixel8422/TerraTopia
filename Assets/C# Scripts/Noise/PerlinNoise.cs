@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Services.Relay.Models;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Noise/Perlin")]

@@ -78,7 +78,7 @@ public class LobbyMaker : NetworkBehaviour
                 },
             };
 
-            Lobby lobby = await Task.Run(() => Lobbies.Instance.CreateLobbyAsync("Unnamed Lobby", maxPlayers, options));
+            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync("Unnamed Lobby", maxPlayers, options);
 
             await LobbyManager.SetLobbyData(lobby, true);
 
@@ -92,7 +92,7 @@ public class LobbyMaker : NetworkBehaviour
             NetworkManager.StartHost();
 
             //load next scene
-            SceneManager.LoadSceneOnNetwork("Pre-Main Game");
+            SceneManager.LoadSceneOnNetwork("Pre-Main Game 1");
         }
         catch (LobbyServiceException e)
         {

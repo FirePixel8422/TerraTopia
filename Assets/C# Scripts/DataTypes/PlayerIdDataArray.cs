@@ -5,22 +5,24 @@ using UnityEngine;
 
 
 [System.Serializable]
-[Tooltip("Netcode friendly array to store player data (clientId (also called networkId), gameId (the Xth player this is in the lobby -1) and teamId (what team the players are part of))")]
+[Tooltip("Netcode friendly array to store client data (clientId (also called networkId), gameId (the Xth client this is in the lobby -1) and teamId (what team the clients are part of))")]
 [BurstCompile]
 public struct PlayerIdDataArray : INetworkSerializable
 {
-    [Header("[0] = 2? player with networkId 2 is player 0")]
+    [Header("[0] = 2? client with networkId 2 is client 0")]
     [SerializeField] private ulong[] networkIds;
 
-    [Header("[0] = 2? player with gameId 0 is in team 3")]
+    [Header("[0] = 2? client with gameId 0 is in team 3")]
     [SerializeField] private int[] teamIds;
 
 
-    [Header("Total players in server")]
+    [Header("Total clients in server that are setup by game/team id system")]
     [SerializeField] private int playerCount;
 
-    [Header("Total teams in server")]
-    [SerializeField] private int teamCount;
+
+    [Tooltip("Total clients in server that are setup by game/team id system")]
+    public readonly int PlayerCount => playerCount;
+
 
 
     public PlayerIdDataArray(int maxPlayerCount)
@@ -28,57 +30,13 @@ public struct PlayerIdDataArray : INetworkSerializable
         networkIds = new ulong[maxPlayerCount];
         teamIds = new int[maxPlayerCount];
 
-        //fill team ids with -1s because players are not part of any team when they join
+        //fill team ids with -1s because clients are not part of any team when they join
         for (int i = 0; i < maxPlayerCount; i++)
         {
             teamIds[i] = -1;
         }
 
         playerCount = 0;
-        teamCount = 0;
-    }
-
-
-
-
-    /// <summary>
-    /// Are all players in a team and are there at least 2 teams that are fair if the matcsettings enforce it
-    /// </summary>
-    [BurstCompile]
-    public bool AreTeamsValid()
-    {
-        int[] teamMemberCounts = new int[teamIds.Length];
-        int mostMembersPerTeam = 0;
-
-        bool fairTeams = true;
-
-        //calculate how many players are in each team
-        for (int i = 0; i < playerCount; i++)
-        {
-            teamMemberCounts[teamIds[i]] += 1;
-
-            //update mostMembersPerTeam int after increasing teamMemberValue
-            if (teamMemberCounts[teamIds[i]] > mostMembersPerTeam)
-            {
-                mostMembersPerTeam = teamMemberCounts[teamIds[i]];
-            }
-        }
-
-
-        //check if all teams have the same amount of players
-        for (int i = 0; i < playerCount; i++)
-        {
-            //check if not all teams have the same amount of players
-            if (teamMemberCounts[i] != mostMembersPerTeam)
-            {
-                fairTeams = false;
-                break;
-            }
-        }
-
-
-        //if all players are on 1 team and (the teams are fair or unfair teams are allowed): return true, otherwise return false
-        return teamCount > 1 && (fairTeams || MatchManager.matchSettings.allowUnfairTeams);
     }
 
 
@@ -112,12 +70,20 @@ public struct PlayerIdDataArray : INetworkSerializable
 
 
     /// <summary>
-    /// Move player to new team, id -1 means no team
+    /// Move client to new team, id -1 means no team
     /// </summary>
     [BurstCompile]
-    public void MovePlayerToTeam(int playerGameId, int newTeamId)
+    public void MovePlayerToTeam(int clientGameId, int newTeamId)
     {
-        teamIds[playerGameId] = newTeamId;
+        teamIds[clientGameId] = newTeamId;
+    }
+
+    [BurstCompile]
+    public void MovePlayerToTeam(ulong clientNetworkId, int newTeamId)
+    {
+        int clientGameId = GetPlayerGameId(clientNetworkId);
+
+        teamIds[clientGameId] = newTeamId;
     }
 
     #endregion
@@ -128,9 +94,9 @@ public struct PlayerIdDataArray : INetworkSerializable
     #region Retrieve Data
 
     /// <summary>
-    /// Get player gameId by converting that players networkId (localClientId)
+    /// Get client gameId by converting that clients networkId (localPlayerId)
     /// </summary>
-    /// <returns>The players gameId</returns>
+    /// <returns>The clients gameId</returns>
     public int GetPlayerGameId(ulong toConvertNetworkId)
     {
         //since dictionaries are not netcode friendly, there is just an networkId array, and the place in the array of the value "toConvertNetworkId" is the equivelent gameId
@@ -178,6 +144,5 @@ public struct PlayerIdDataArray : INetworkSerializable
         serializer.SerializeValue(ref teamIds);
 
         serializer.SerializeValue(ref playerCount);
-        serializer.SerializeValue(ref teamCount);
     }
 }

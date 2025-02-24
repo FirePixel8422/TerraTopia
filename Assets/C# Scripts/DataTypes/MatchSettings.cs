@@ -4,18 +4,19 @@
 [System.Serializable]
 public struct MatchSettings
 {
-    public int maxPlayers;
+    public int maxClients;
     public int maxTeams;
-    public int maxPlayersPerTeam;
+    public int maxClientsPerTeam;
 
     public bool allowUnfairTeams;
 
 
     public MatchSettings(bool _allowUnfairTeams)
     {
-        maxPlayers = 4;
-        maxTeams = 4;
-        maxPlayersPerTeam = 4;
+        maxClients = GameSettings.maxPlayers;
+        maxTeams = GameSettings.maxTeams;
+        maxClientsPerTeam = GameSettings.maxPlayersPerTeam;
+
         allowUnfairTeams = _allowUnfairTeams;
     }
 }
