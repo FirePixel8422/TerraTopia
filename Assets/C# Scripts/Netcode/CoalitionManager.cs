@@ -2,6 +2,7 @@ using Unity.Burst;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 /// <summary>
@@ -13,8 +14,8 @@ public class CoalitionManager : NetworkBehaviour
     [SerializeField]
     private InputAction UIMoveInput;
 
+    [Space(10)]
 
-    [Header("")]
     [SerializeField] private Animator[] buttonAnims;
 
     [SerializeField] private int[] teamIds = new int[GameSettings.maxTeams];
@@ -72,13 +73,20 @@ public class CoalitionManager : NetworkBehaviour
 
 
     /// <summary>
-    /// fill teamIds with "GameSettings.maxTeams", ("GameSettings.maxTeams" is 1 higher than highest id team > no team)
+    /// fill teamIds with "GameSettings.maxTeams" (GameSettings.maxTeams" is 1 higher than highest id team > no team), setup buttons
     /// </summary>
     private void Start()
     {
         for (int i = 0; i < teamIds.Length; i++)
         {
             teamIds[i] = GameSettings.maxTeams;
+        }
+
+        for (int i = 0; i < buttonAnims.Length; i++)
+        {
+            int iTemp = i;
+
+            buttonAnims[i].GetComponent<Button>().onClick.AddListener(() => SetNewTeam_ViaMouseButton(iTemp));
         }
     }
 
@@ -115,7 +123,7 @@ public class CoalitionManager : NetworkBehaviour
     /// <summary>
     /// When a button is pressed, this function is called with that buttons id (same as teamId)
     /// </summary>
-    public void SetNewTeam_ViaMouseButton(int newTeamId)
+    private void SetNewTeam_ViaMouseButton(int newTeamId)
     {
         int clientGameId = ClientManager.LocalClientGameId;
 

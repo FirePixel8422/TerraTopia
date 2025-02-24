@@ -5,37 +5,43 @@ using UnityEngine;
 
 public class TurnManager : NetworkBehaviour
 {
-    [Header("The id of the team that is on turn, synced between every client on the server")]
+    [Header("Team on turn Id, synced between every client on the server")]
     [SerializeField] private NetworkVariable<int> teamOnTurnId = new NetworkVariable<int>();
 
 
-    public static Action OnTurnGranted;
+    public static Action OnTurnStarted;
+    public static Action OnTurnEnded;
 
 
 
 
     public override void OnNetworkSpawn()
     {
-        teamOnTurnId.OnValueChanged += (int oldValue, int newValue) =>
+        //when the turn changes
+        teamOnTurnId.OnValueChanged += (int oldTeamOnTurnId, int newTeamOnTurnId) =>
         {
-            if (newValue == ClientManager.LocalClientGameId)
+            //if this clients teamId is the same as "newTeamOnTurnId", start its turn.
+            if (newTeamOnTurnId == ClientManager.LocalClientTeamId)
             {
-                OnTurnGranted?.Invoke();
+                OnTurnStarted?.Invoke();
+            }
+            //if this clients teamId is the same as "oldTeamOnTurnId", end its turn.
+            if (oldTeamOnTurnId == ClientManager.LocalClientTeamId)
+            {
+                OnTurnEnded?.Invoke();
             }
         };
     }
 
 
+
+    /// <summary>
+    /// called from a client ending its turn.
+    /// </summary>
     [ServerRpc(RequireOwnership = false)]
     public void NextTeam_ServerRPC()
     {
-        int newTeamOnTurnId = teamOnTurnId.Value + 1;
-
-        if (newTeamOnTurnId == CoalitionManager.TeamCount)
-        {
-            newTeamOnTurnId = 0;
-        }
-
-        teamOnTurnId.Value = newTeamOnTurnId;
+        //increment teamOnTurnId by 1 and subtract by TeamCount if its value becomes equal to TeamCount. (subtracting it will set the value to 0)
+        teamOnTurnId.Value = (teamOnTurnId.Value + 1) % CoalitionManager.TeamCount;
     }
 }
