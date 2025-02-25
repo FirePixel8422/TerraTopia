@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc7f48c89944c448a190ea8bea2115f, type: 3}
-  m_Name: Rivers
+  m_Name: Islands
   m_EditorClassIdentifier: 
   _octaves: 5
   _scale: 0.05
@@ -20,20 +20,20 @@ MonoBehaviour:
   _possibleTiles:
   - tileGO: {fileID: 6628490228414596618, guid: 4460455312f5c9f4e8bcd49d0edb1a06,
       type: 3}
-    weight: 0.1
+    weight: 0.4
   - tileGO: {fileID: 6443833320577886503, guid: 5cdee68322c94f649bbf2f90a4f55c0e,
       type: 3}
-    weight: 0.47
+    weight: 0.55
   - tileGO: {fileID: 4623506284690030072, guid: 83d46b09a7b3db14d90ebfd09d9a6d1d,
       type: 3}
-    weight: 0.5
+    weight: 0.6
   - tileGO: {fileID: 6793937524132613133, guid: ead2bf040689323429e98b3ebb5f87db,
       type: 3}
     weight: 0.7
   - tileGO: {fileID: 6793937524132613133, guid: 35217801d885fd0489b979464c293582,
       type: 3}
-    weight: 0.9
-  - tileGO: {fileID: 1408358322614753839, guid: 675367cbbc472474494f8fff067732f5,
+    weight: 0.8
+  - tileGO: {fileID: 7652075586612758258, guid: 3ae6628f5af07d346a8e350461a9b4de,
       type: 3}
     weight: 10
   _shouldDebug: 0
