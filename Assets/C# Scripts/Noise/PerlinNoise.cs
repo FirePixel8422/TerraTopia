@@ -48,8 +48,8 @@ public class PerlinNoise : NoiseData
         float amplitude = 1.0f;
         float frequency = _scale;
         float noiseValue = 0.0f;
-        float maxValue = 0.0f; 
-       var prng = new System.Random(seed);    
+        float maxValue = 0.0f;
+        var prng = new System.Random(seed);
         float offsetX = (float)prng.NextDouble() * 100000;
         float offsetY = (float)prng.NextDouble() * 100000;
 

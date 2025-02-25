@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.WSA;
 
 public class GridManager : MonoBehaviour
 {
-    [Header("Tile Information")]
-    [Tooltip("This array contains all Tiles active within the grid")]
-    [SerializeField] private List<GameObject> _tiles = new List<GameObject>();
+    private static Dictionary<Vector2,GameObject> _tiles = new Dictionary<Vector2, GameObject>();
 
-
-
+     
     [Header("Preset MapGeneration Values")]
     [Tooltip("If left at 0 it will generate a random seed")]
     [SerializeField] private int _seed;
@@ -26,6 +25,9 @@ public class GridManager : MonoBehaviour
 
     [Header("Player Values")]
     [SerializeField] private int playerCount;
+
+
+
     private void Start()
     {
         GenerateGrid(playerCount);
@@ -48,4 +50,26 @@ public class GridManager : MonoBehaviour
         new EnviromentGenerator(_tiles, _seed);
     }
 
+
+    public static bool TryGetTileByPos(Vector2 tilePos, out GameObject tile)
+    {
+        if (_tiles.TryGetValue(tilePos, out tile))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+

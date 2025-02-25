@@ -13,6 +13,7 @@ public struct NoiseTileData
     public float weight;
 
 }
+
 public abstract class NoiseData : ScriptableObject
 {
     //The dimensions of the to-be created grid.

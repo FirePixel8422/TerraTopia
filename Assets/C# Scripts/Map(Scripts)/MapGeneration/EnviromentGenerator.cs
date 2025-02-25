@@ -4,12 +4,12 @@ using UnityEngine;
 
 public struct EnviromentGenerator 
 {
-    public EnviromentGenerator(List<GameObject> tiles, int seed)
+    public EnviromentGenerator(Dictionary<Vector2, GameObject> tiles, int seed)
     {
         System.Random prng = new System.Random(seed);
         foreach (var tile in tiles)
         {
-            if (tile.TryGetComponent(out TileBase selectedTile))
+            if (tile.Value.TryGetComponent(out TileBase selectedTile))
             {
                 if (CanChooseEnviromentalObject(selectedTile, out EnviromentalItemData enviromentalObject))
                 {

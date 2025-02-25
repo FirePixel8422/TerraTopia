@@ -4,14 +4,14 @@ using UnityEngine;
 
 public struct CastlePosGenerator
 {
-    public CastlePosGenerator(List<GameObject> tiles, int seed, int playerCount, int width, int length, GameObject castlePrefab)
+    public CastlePosGenerator(Dictionary<Vector2, GameObject> tiles, int seed, int playerCount, int width, int length, GameObject castlePrefab)
     {
         System.Random rng = new System.Random(seed);
         Dictionary<int, Vector2Int> playerCastlePositions = new Dictionary<int, Vector2Int>();
         Dictionary<Vector2Int, GameObject> tileMap = new Dictionary<Vector2Int, GameObject>();
 
 
-        foreach (GameObject tile in tiles)
+        foreach (GameObject tile in tiles.Values)
         {
             Vector2Int position = new Vector2Int(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.z));
 
@@ -78,8 +78,8 @@ public struct CastlePosGenerator
 
         foreach (var pos in playerCastlePositions.Values)
         {
-            var castleTile = tiles.FirstOrDefault(a => a.transform.position == new Vector3(pos.x, 0, pos.y));
-            if (castleTile != null && castleTile.TryGetComponent(out TileBase tb))
+            var castleTile = tiles.FirstOrDefault(a => a.Value.transform.position == new Vector3(pos.x, 0, pos.y));
+            if (castleTile.Value != null && castleTile.Value.TryGetComponent(out TileBase tb))
                 tb.AssignObject(castlePrefab);
         }
     }

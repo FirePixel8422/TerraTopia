@@ -470,7 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tiles: []
   _seed: 0
-  _noiseData: {fileID: 11400000, guid: eba47a681a07b05428a30ccf281025dc, type: 2}
+  _noiseData: {fileID: 11400000, guid: 14464b93d748935469a576817737a04f, type: 2}
   _castlePrefab: {fileID: 919132149155446097, guid: fe2c52ea073defc478e9245b106b2987,
     type: 3}
   _width: 40
