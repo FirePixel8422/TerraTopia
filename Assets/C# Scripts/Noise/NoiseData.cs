@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 
 [Serializable]
@@ -14,6 +15,7 @@ public struct NoiseTileData
 
 }
 
+[BurstCompile]
 public abstract class NoiseData : ScriptableObject
 {
     //The dimensions of the to-be created grid.
@@ -40,6 +42,10 @@ public abstract class NoiseData : ScriptableObject
     [SerializeField] protected int _resolution;
 
     [Header("Tile variables")]
+    
+    //The multiplier for the height of the tile upon instantiation
+    [SerializeField] public float tileHeightMultiplier = 1;
+
     //The possible tiles which will be picked within the SelectTile() method
     [Tooltip("MAKE SURE THAT: The array is sorted from low to high, otherwise No/The wrong tile is picked")]
     [SerializeField] protected NoiseTileData[] _possibleTiles;
@@ -50,17 +56,21 @@ public abstract class NoiseData : ScriptableObject
     [SerializeField] protected bool _shouldDebug;
 
 
+
     //Returns a full list of Tiles picked with the SelectTile() method to then be used by a generator class
-    public abstract Tuple<GameObject, Vector2, float>[] GetTiles(int seed, int width, int length);
+
+    [BurstCompile] public abstract Tuple<GameObject, Vector2, float>[] GetTiles(int seed, int width, int length);
 
     //Returns an Gameobject chosen on this class's derivative's choice.
     //such as in perlin in which the selected tile will be returned by the usage of weights and their corresponding perlin values
     //
     //Factor will be the deciding factor with which the tile will be selected with
-    protected abstract GameObject SelectTile(float factor);
+
+    [BurstCompile] protected abstract GameObject SelectTile(float factor);
 
     //Calculates noise (Type of which is determined within derivatives of this class)
-    protected virtual float CalculateNoise(float worldPosX, float worldPosZ, int seed) { return 0f; }
+
+    [BurstCompile] protected virtual float CalculateNoise(float worldPosX, float worldPosZ, int seed) { return 0f; }
 }
 
 

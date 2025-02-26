@@ -17,11 +17,12 @@ MonoBehaviour:
   _lacunarity: 1
   _persistence: 0.5
   _resolution: 1
+  tileHeightMultiplier: 3
   _possibleTiles:
   - tileGO: {fileID: 6628490228414596618, guid: 4460455312f5c9f4e8bcd49d0edb1a06,
       type: 3}
     weight: 0.1
-  - tileGO: {fileID: 6443833320577886503, guid: 5cdee68322c94f649bbf2f90a4f55c0e,
+  - tileGO: {fileID: 6628490228414596618, guid: 2b556abcbb7e9154ea2b89c265ff2041,
       type: 3}
     weight: 0.2
   - tileGO: {fileID: 4623506284690030072, guid: 83d46b09a7b3db14d90ebfd09d9a6d1d,

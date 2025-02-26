@@ -1,12 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Noise/Perlin")]
+
+[BurstCompile]
 public class PerlinNoise : NoiseData
 {
     [SerializeField] private List<float> debugPerlinValues;
+
+    [BurstCompile]
     public override Tuple<GameObject, Vector2, float>[] GetTiles(int seed, int width, int length)
     {
         debugPerlinValues = new List<float>();
@@ -23,6 +28,7 @@ public class PerlinNoise : NoiseData
                 {
                     debugPerlinValues.Add(pv);
                 }
+                //Tile, Position, Perlin
                 tiles[iterator] = new Tuple<GameObject, Vector2, float>(SelectTile(pv), new Vector2(x, y), pv);
                 iterator++;
             }
@@ -31,6 +37,8 @@ public class PerlinNoise : NoiseData
         return tiles;
     }
 
+
+    [BurstCompile]
     protected override GameObject SelectTile(float factor)
     {
         for (int i = 0; i < _possibleTiles.Length; i++)
@@ -43,6 +51,8 @@ public class PerlinNoise : NoiseData
         return new GameObject();
     }
 
+
+    [BurstCompile]
     protected override float CalculateNoise(float posX, float posY, int seed)
     {
         float amplitude = 1.0f;

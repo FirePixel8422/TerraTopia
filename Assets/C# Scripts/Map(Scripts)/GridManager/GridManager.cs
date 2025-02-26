@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using Unity.Burst;
 using UnityEngine;
-
+[BurstCompile]
 public class GridManager : MonoBehaviour
 {
     private static Dictionary<Vector2,GameObject> _tiles = new Dictionary<Vector2, GameObject>();
@@ -13,7 +14,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int _seed;
     [SerializeField] private NoiseData _noiseData;
     [SerializeField] private GameObject _castlePrefab;
-
     //The dimensions of the to-be created grid.
     [Header("Dimensions")]
     [Tooltip("The X-axis")]
@@ -30,7 +30,7 @@ public class GridManager : MonoBehaviour
     {
         GenerateGrid(playerCount);
     }
-
+    [BurstCompile]
     private void GenerateGrid(int playerCount)
     {
         //Checks whether the seed is already pre-determined or not with use of the Ternary Operator
