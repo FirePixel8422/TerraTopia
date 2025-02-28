@@ -6,7 +6,7 @@ public static class CityUpgradeHandler
 {
     //Array of CityUpgradeData containing city upgrades in a list for each player
     //Get CityUpgradeData from playerGameId
-    public static List<CityUpgradeData[]> cityUpgradesList;
+    private static List<CityUpgradeData[]> cityUpgradesList;
     
 
 
@@ -33,7 +33,7 @@ public static class CityUpgradeHandler
     /// Get City Upgrade data form playerGameId and cityLevel
     /// </summary>
     /// <returns>The cities next upgrade data</returns>
-    public static CityUpgradeData GetCityUpgradeMaterial(int playerGameId, int cityLevel)
+    public static CityUpgradeData GetCityUpgradeData(int playerGameId, int cityLevel)
     {
         return cityUpgradesList[playerGameId][cityLevel];
     }
