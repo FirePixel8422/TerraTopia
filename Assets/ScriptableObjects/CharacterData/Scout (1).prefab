@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scout (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3732377664380845446, guid: d033d72587e3c2c48b2691eb302be733,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -94,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3859221968
+  GlobalObjectIdHash: 3641073233
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -116,4 +121,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitId: 0
-  colorRenderer: {fileID: 0}
+  colorRenderer: {fileID: 4152220420052375143}
+--- !u!137 &4152220420052375143 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3732377664380845446, guid: d033d72587e3c2c48b2691eb302be733,
+    type: 3}
+  m_PrefabInstance: {fileID: 744140454733147105}
+  m_PrefabAsset: {fileID: 0}

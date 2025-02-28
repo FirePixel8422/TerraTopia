@@ -1,10 +1,11 @@
 using System;
+using Unity.Netcode;
 
 
 
 public class City : TileBase
 {
-    public CityStats stats;
+    public int level;
 
     public TileBase[] cityTiles;
 }

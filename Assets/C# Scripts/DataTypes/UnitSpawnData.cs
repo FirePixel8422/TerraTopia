@@ -2,7 +2,6 @@ using UnityEngine;
 
 
 
-
 /// <summary>
 /// Container that holds the models for all the unit types for 1 cosmetic type
 /// </summary>

@@ -5,10 +5,11 @@ using UnityEngine;
 /// <summary>
 /// Scriptable object container class to display lists in lists
 /// </summary>
-[CreateAssetMenu(fileName = "New Unit", menuName = "ScriptableObjects/Unit")]
-public class UnitCosmeticsListSO : ScriptableObject
+[CreateAssetMenu(fileName = "New Tribe Data", menuName = "ScriptableObjects/Tribe Data")]
+public class UnitTribeListSO : ScriptableObject
 {
     public UnitSpawnData[] unitSpawnData;
+    public CityUpgradeData[] cityUpgrades;
 
 
 

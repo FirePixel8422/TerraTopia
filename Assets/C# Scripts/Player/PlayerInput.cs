@@ -24,7 +24,6 @@ public class PlayerInput : MonoBehaviour
     private RaycastHit _hit;
     private void Raycast(InputAction.CallbackContext obj)
     {
-        print("Yippers");
         if(Physics.Raycast(_Ray, out _hit))
         {
             //Check if the object has the IOnHover interface on it

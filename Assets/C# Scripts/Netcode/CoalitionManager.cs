@@ -11,8 +11,7 @@ using UnityEngine.UI;
 public class CoalitionManager : NetworkBehaviour
 {
     [Header("UI Movement Keys")]
-    [SerializeField]
-    private InputAction UIMoveInput;
+    [SerializeField] private InputAction UIMoveInput;
 
     [Space(10)]
 
