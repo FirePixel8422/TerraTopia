@@ -78,7 +78,7 @@ public struct CastlePosGenerator
 
         foreach (var pos in playerCastlePositions.Values)
         {
-            var castleTile = tiles.FirstOrDefault(a => a.Value.transform.position == new Vector3(pos.x, 0, pos.y));
+            var castleTile = tiles.FirstOrDefault(a => a.Value.transform.position == new Vector3(pos.x, a.Value.transform.position.y, pos.y));
             if (castleTile.Value != null && castleTile.Value.TryGetComponent(out TileBase tb))
                 tb.AssignObject(castlePrefab);
         }

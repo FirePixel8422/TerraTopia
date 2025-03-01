@@ -19,23 +19,23 @@ MonoBehaviour:
   _resolution: 1
   tileHeightMultiplier: 3
   _possibleTiles:
-  - tileGO: {fileID: 6628490228414596618, guid: 4460455312f5c9f4e8bcd49d0edb1a06,
-      type: 3}
+  - tileGO: {fileID: 894428359449449459, guid: 95861bc25dabbd54a84812738c70f72d, type: 3}
     weight: 0.1
-  - tileGO: {fileID: 6628490228414596618, guid: 2b556abcbb7e9154ea2b89c265ff2041,
-      type: 3}
+    constHeight: 0.6
+  - tileGO: {fileID: 894428359449449459, guid: e6c29e52971f46b4cb60d66de5c671d5, type: 3}
     weight: 0.2
-  - tileGO: {fileID: 4623506284690030072, guid: 83d46b09a7b3db14d90ebfd09d9a6d1d,
-      type: 3}
+    constHeight: 0.6
+  - tileGO: {fileID: 894428359449449459, guid: df262f33acf69c34aa4d9bf6c6adbfe3, type: 3}
     weight: 0.27
-  - tileGO: {fileID: 6793937524132613133, guid: ead2bf040689323429e98b3ebb5f87db,
-      type: 3}
+    constHeight: 0
+  - tileGO: {fileID: 894428359449449459, guid: accd6caa79f5cc243a6e448443fab984, type: 3}
     weight: 0.7
-  - tileGO: {fileID: 6793937524132613133, guid: 35217801d885fd0489b979464c293582,
-      type: 3}
+    constHeight: 0
+  - tileGO: {fileID: 894428359449449459, guid: e4a7c87dd1cdb924cb7d816da4c05b89, type: 3}
     weight: 0.9
-  - tileGO: {fileID: 1408358322614753839, guid: 675367cbbc472474494f8fff067732f5,
-      type: 3}
+    constHeight: 0
+  - tileGO: {fileID: 894428359449449459, guid: 46ed1b539ac7ff548bb02ddd679ac7e9, type: 3}
     weight: 10
+    constHeight: 0
   _shouldDebug: 0
   debugPerlinValues: []

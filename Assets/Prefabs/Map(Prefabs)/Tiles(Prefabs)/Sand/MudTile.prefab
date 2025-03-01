@@ -71,5 +71,57 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 57e9af481ffa4034b90b90ac5eb31c06,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7785651670786440711}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 57e9af481ffa4034b90b90ac5eb31c06,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2247587956606480743}
   m_SourcePrefab: {fileID: 100100000, guid: 57e9af481ffa4034b90b90ac5eb31c06, type: 3}
+--- !u!1 &894428359449449459 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 57e9af481ffa4034b90b90ac5eb31c06,
+    type: 3}
+  m_PrefabInstance: {fileID: 47512144879038114}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7785651670786440711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894428359449449459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b734e7e25728dce40a57cd3c56b12868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canHoldCastle: 1
+  _perlinHeight: 0
+  _possibleEnviromentalObjects: []
+  _enviromentalObjectPosHolder: {fileID: 0}
+  isHoldingObject: 0
+--- !u!65 &-2247587956606480743
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894428359449449459}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.25, z: 1}
+  m_Center: {x: 0, y: -0.125, z: 0}

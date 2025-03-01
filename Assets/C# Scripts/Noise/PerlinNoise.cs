@@ -12,12 +12,12 @@ public class PerlinNoise : NoiseData
     [SerializeField] private List<float> debugPerlinValues;
 
     [BurstCompile]
-    public override Tuple<GameObject, Vector2, float>[] GetTiles(int seed, int width, int length)
+    public override Tuple<NoiseTileData, Vector2, float>[] GetTiles(int seed, int width, int length)
     {
         debugPerlinValues = new List<float>();
         _width = width;
         _length = length;
-        var tiles = new Tuple<GameObject, Vector2, float>[_width * _length];
+        var tiles = new Tuple<NoiseTileData, Vector2, float>[_width * _length];
         var iterator = 0;
         for (int x = 0; x < _width; x++)
         {
@@ -28,8 +28,9 @@ public class PerlinNoise : NoiseData
                 {
                     debugPerlinValues.Add(pv);
                 }
+
                 //Tile, Position, Perlin
-                tiles[iterator] = new Tuple<GameObject, Vector2, float>(SelectTile(pv), new Vector2(x, y), pv);
+                tiles[iterator] = new Tuple<NoiseTileData, Vector2, float>(SelectTile(pv), new Vector2(x, y), pv);
                 iterator++;
             }
         }
@@ -39,16 +40,16 @@ public class PerlinNoise : NoiseData
 
 
     [BurstCompile]
-    protected override GameObject SelectTile(float factor)
+    protected override NoiseTileData SelectTile(float factor)
     {
         for (int i = 0; i < _possibleTiles.Length; i++)
         {
             if (factor < _possibleTiles[i].weight)
             {
-                return _possibleTiles[i].tileGO;
+                return _possibleTiles[i];
             }
         }
-        return new GameObject();
+        return new NoiseTileData();
     }
 
 

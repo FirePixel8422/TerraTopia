@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-
-public class TileBase : MonoBehaviour, IOnClickable, IHoverable
+public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 {
     [Tooltip("Whether a castle can be placed on this tile or not")]
     public bool canHoldCastle;
@@ -13,15 +12,21 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable
 
     [Header("Enviromental Object Settings / Variables")]
     public List<EnviromentalItemData> _possibleEnviromentalObjects = new List<EnviromentalItemData>();
-    [SerializeField] private GameObject _currentHeldEnviromentalObject;
+    private GameObject _currentHeldEnviromentalObject;
 
-    [SerializeField] private Transform enviromentalObjectPosHolder;
+    [SerializeField] private Transform _enviromentalObjectPosHolder;
 
     [SerializeField] bool isHoldingObject;
 
     public Transform hoverObjectHolder { get => transform; set => gameObject.AddComponent<Transform>(); }
+    Building[] IBuildable.buildings { get => _possibleBuildings; }
 
-    public virtual void OnClick() { }
+    [SerializeField] private Building[] _possibleBuildings;
+
+    public virtual void OnClick() 
+    {
+        StartCoroutine(transform.ShakeObject(0.25f, 0.1f));
+    }
     public virtual void OnHover(Transform _hoverObject)
     {
         _hoverObject.transform.position = hoverObjectHolder.transform.position;
@@ -36,7 +41,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable
           _currentHeldEnviromentalObject = 
                 Instantiate(enviromentalObject._possibleEnviromentalObject, 
                 enviromentalObject._possibleEnviromentalPosHolder.position,
-                enviromentalObject._possibleEnviromentalPosHolder.rotation);
+                enviromentalObject._possibleEnviromentalPosHolder.rotation, transform);
 
             isHoldingObject = true;
         }
@@ -47,14 +52,16 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable
     }
     public virtual void AssignObject(GameObject enviromentalObject)
     {
-        if (!enviromentalObjectPosHolder) { print("No position to spawn enviromental Object. process ended"); return; }
+        _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
+
+        if (!_enviromentalObjectPosHolder) { print("No position to spawn enviromental Object. process ended"); return; }
         if (!isHoldingObject)
         {
             //Cut into chunks to avoid getting out of the screen
             _currentHeldEnviromentalObject =
                   Instantiate(enviromentalObject,
-                  enviromentalObjectPosHolder.position,
-                  enviromentalObjectPosHolder.rotation);
+                  _enviromentalObjectPosHolder.position,
+                  _enviromentalObjectPosHolder.rotation, transform);
             isHoldingObject = true;
         }
         else

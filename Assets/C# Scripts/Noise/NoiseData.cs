@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [Serializable]
 public struct NoiseTileData
@@ -12,6 +13,8 @@ public struct NoiseTileData
 
     //Weight will decide when this tile is chosen, if the weight is > the randomly picked weight it will be skipped over.
     public float weight;
+
+    public float constHeight;
 
 }
 
@@ -59,14 +62,14 @@ public abstract class NoiseData : ScriptableObject
 
     //Returns a full list of Tiles picked with the SelectTile() method to then be used by a generator class
 
-    [BurstCompile] public abstract Tuple<GameObject, Vector2, float>[] GetTiles(int seed, int width, int length);
+    [BurstCompile] public abstract Tuple<NoiseTileData, Vector2, float>[] GetTiles(int seed, int width, int length);
 
     //Returns an Gameobject chosen on this class's derivative's choice.
     //such as in perlin in which the selected tile will be returned by the usage of weights and their corresponding perlin values
     //
     //Factor will be the deciding factor with which the tile will be selected with
 
-    [BurstCompile] protected abstract GameObject SelectTile(float factor);
+    [BurstCompile] protected abstract NoiseTileData SelectTile(float factor);
 
     //Calculates noise (Type of which is determined within derivatives of this class)
 

@@ -6,7 +6,7 @@ using UnityEngine;
 [BurstCompile]
 public class GridManager : MonoBehaviour
 {
-    private static Dictionary<Vector2,GameObject> _tiles = new Dictionary<Vector2, GameObject>();
+    private static Dictionary<Vector2,GameObject> _tiles;
 
      
     [Header("Preset MapGeneration Values")]
@@ -36,10 +36,14 @@ public class GridManager : MonoBehaviour
         //Checks whether the seed is already pre-determined or not with use of the Ternary Operator
         _seed = _seed == 0 ? _seed = Random.Range(int.MinValue, int.MaxValue) : _seed;
 
-        //Generates the grid in order, tiles first. then the castles then the leftover enviromental assets
+        //Generates the grid in order:
+
+        //1 The tiles
+        //2 The castles (before the enviromentalobjects to avoid not being able to place any due to enviromental objects occupying tiles
+        //3 Finally the enviromental objects which CAN be placed specifically around the castles
 
         //Generates the tiles, without any non-grid logic
-        new TileGenerator(_noiseData, _width, _length, _seed, out _tiles);
+        new TileGenerator(_noiseData, _width, _length, _seed, transform, out _tiles);
 
         //Generates a castle based on the grid
         new CastlePosGenerator(_tiles, _seed, playerCount, _width, _length, _castlePrefab);

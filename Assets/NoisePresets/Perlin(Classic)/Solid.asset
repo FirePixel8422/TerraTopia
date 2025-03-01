@@ -19,17 +19,17 @@ MonoBehaviour:
   _resolution: 1
   tileHeightMultiplier: 5
   _possibleTiles:
-  - tileGO: {fileID: 4623506284690030072, guid: b586e99b6f55ab14991b9d6c0fc87f38,
-      type: 3}
-    weight: 0.3
-  - tileGO: {fileID: 6793937524132613133, guid: ead2bf040689323429e98b3ebb5f87db,
-      type: 3}
-    weight: 0.6
-  - tileGO: {fileID: 6793937524132613133, guid: 35217801d885fd0489b979464c293582,
-      type: 3}
+  - tileGO: {fileID: 894428359449449459, guid: ddd76b79ee5a42b4295800186a830422, type: 3}
+    weight: 0.2
+    constHeight: 0
+  - tileGO: {fileID: 894428359449449459, guid: accd6caa79f5cc243a6e448443fab984, type: 3}
+    weight: 0.5
+    constHeight: 0
+  - tileGO: {fileID: 894428359449449459, guid: 5a84f309dddee324484abe746e503b1a, type: 3}
     weight: 0.7
-  - tileGO: {fileID: 4623506284690030072, guid: cc220951c72f0854c8af247560d56180,
-      type: 3}
+    constHeight: 0
+  - tileGO: {fileID: 894428359449449459, guid: 46ed1b539ac7ff548bb02ddd679ac7e9, type: 3}
     weight: 10
+    constHeight: 0
   _shouldDebug: 0
   debugPerlinValues: []
