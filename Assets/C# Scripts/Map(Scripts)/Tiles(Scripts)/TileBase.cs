@@ -6,44 +6,74 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 {
     [Tooltip("Whether a castle can be placed on this tile or not")]
     public bool canHoldCastle;
-     
+
 
     public float _perlinHeight;
 
     [Header("Enviromental Object Settings / Variables")]
     public List<EnviromentalItemData> _possibleEnviromentalObjects = new List<EnviromentalItemData>();
-    private GameObject _currentHeldEnviromentalObject;
+    [SerializeField] private TileObject _currentHeldEnviromentalObject;
 
     [SerializeField] private Transform _enviromentalObjectPosHolder;
 
     [SerializeField] bool isHoldingObject;
 
     public Transform hoverObjectHolder { get => transform; set => gameObject.AddComponent<Transform>(); }
-    Building[] IBuildable.buildings { get => _possibleBuildings; }
+    [SerializeField] private List<Building> buildings;
 
-    [SerializeField] private Building[] _possibleBuildings;
 
-    public virtual void OnClick() 
+    public virtual void OnClick()
     {
         StartCoroutine(transform.ShakeObject(0.25f, 0.1f));
     }
+
     public virtual void OnHover(Transform _hoverObject)
     {
         _hoverObject.transform.position = hoverObjectHolder.transform.position;
     }
+    public List<Building> AvailableBuildings()
+    {
+        if (_currentHeldEnviromentalObject == null) { return buildings; }
+        else
+        {
+            return IBuildable.CombineLists(buildings, _currentHeldEnviromentalObject.AvailableBuildings());
+        }
+    }
+    private void SpawnObject(Transform spawnPos, GameObject objToSpawn)
+    {
+        Instantiate(objToSpawn, spawnPos.position, spawnPos.transform.rotation, transform);
+        if (Instantiate(objToSpawn, spawnPos.position, spawnPos.transform.rotation, transform).TryGetComponent(out TileObject tile))
+        {
+            _currentHeldEnviromentalObject = tile;
+        }
+        isHoldingObject = true;
+    }
+    private void SpawnObject(Transform spawnPos, GameObject objToSpawn, bool randomRot)
+    {
+        var spawnRot = new Vector3(0, UnityEngine.Random.Range(0, 360), 0);
+        if (Instantiate(objToSpawn, spawnPos.position, quaternion.Euler(spawnRot), transform).TryGetComponent(out TileObject tile))
+        {
+            _currentHeldEnviromentalObject = tile;
+        }
+        isHoldingObject = true;
+    }
 
+     //Ugly code, will be improved (most likely)
     public virtual void AssignObject(EnviromentalItemData enviromentalObject)
     {
         if (!enviromentalObject._possibleEnviromentalPosHolder) { print("No position to spawn enviromental Object. process ended"); return; }
         if (!isHoldingObject)
         {
-            //Cut into chunks to avoid getting out of the screen
-          _currentHeldEnviromentalObject = 
-                Instantiate(enviromentalObject._possibleEnviromentalObject, 
-                enviromentalObject._possibleEnviromentalPosHolder.position,
-                enviromentalObject._possibleEnviromentalPosHolder.rotation, transform);
-
-            isHoldingObject = true;
+            if (enviromentalObject.randomRotation)
+            {
+                SpawnObject(enviromentalObject._possibleEnviromentalPosHolder, enviromentalObject._possibleEnviromentalObject, true);
+                isHoldingObject = true;
+            }
+            else
+            {
+                SpawnObject(enviromentalObject._possibleEnviromentalPosHolder, enviromentalObject._possibleEnviromentalObject);
+                isHoldingObject = true;
+            }
         }
         else
         {
@@ -57,12 +87,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         if (!_enviromentalObjectPosHolder) { print("No position to spawn enviromental Object. process ended"); return; }
         if (!isHoldingObject)
         {
-            //Cut into chunks to avoid getting out of the screen
-            _currentHeldEnviromentalObject =
-                  Instantiate(enviromentalObject,
-                  _enviromentalObjectPosHolder.position,
-                  _enviromentalObjectPosHolder.rotation, transform);
-            isHoldingObject = true;
+            SpawnObject(_enviromentalObjectPosHolder, enviromentalObject);
         }
         else
         {
@@ -70,21 +95,5 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         }
     }
 
-}
-
-
-
-[System.Serializable]
-public struct EnviromentalItemData
-{
-    //The enviromental prefab which will be spawned on the _possibleEnviromentalPosHolder
-    public GameObject _possibleEnviromentalObject;
-
-    //The position wher the _possibleEnviromentalObjects will be spawned.
-    public Transform _possibleEnviromentalPosHolder;
-
-    //This means how likely it is to be selected
-    [Range(0, 100)]
-    public int weight;
 }
 

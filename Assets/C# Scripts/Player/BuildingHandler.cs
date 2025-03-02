@@ -12,10 +12,11 @@ public class BuildingHandler : MonoBehaviour
 
     public void ShowBuildingPanel(IBuildable IB)
     {
-        if(IB.buildings.Length == 0) return;
+        List<Building> buildings = IB.AvailableBuildings();
+        if (buildings.Count == 0) return;
         _buildingPanel.gameObject.SetActive(true);
-        Building[] buildings = IB.buildings;
-        for (int i = 0; i < buildings.Length; i++)
+
+        for (int i = 0; i < buildings.Count; i++)
         { 
             //Checks whether an object already exists. if so it will turn it on
             if(_pooledObjects.Count > i)

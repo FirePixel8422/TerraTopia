@@ -79,8 +79,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95817f3b01e003245aa5c6bcc2737583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shouldSyncHoverObject: 0
   _hoverObject: {fileID: 8579309374006704232, guid: 55d2216c3ae173b47bff26b000df3709,
     type: 3}
+  _buildingHandler: {fileID: 0}
 --- !u!114 &8029794177218744082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +135,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8029794177218744082}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -149,7 +151,7 @@ MonoBehaviour:
     m_ActionName: Gameplay/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8029794177218744082}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnSprintToggle
         m_Mode: 0
@@ -169,7 +171,7 @@ MonoBehaviour:
     m_ActionName: Gameplay/LeftClick[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8029794177218744082}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnRightClick
         m_Mode: 0
@@ -185,7 +187,7 @@ MonoBehaviour:
     m_ActionName: Gameplay/RightClick[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8029794177218744082}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnZoom
         m_Mode: 0
@@ -201,7 +203,7 @@ MonoBehaviour:
     m_ActionName: Gameplay/MouseScroll[/Mouse/scroll/down,/Mouse/scroll/up]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8029794177218744082}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnMouseMove
         m_Mode: 0

@@ -112,39 +112,11 @@ MonoBehaviour:
   canHoldCastle: 1
   _perlinHeight: 0
   _possibleEnviromentalObjects: []
+  _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}
   isHoldingObject: 0
-  _possibleBuildings:
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - buildingGO: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
-    buildingSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  buildings: []
+  _possibleBuildings: []
 --- !u!65 &3375950581939778181
 BoxCollider:
   m_ObjectHideFlags: 0

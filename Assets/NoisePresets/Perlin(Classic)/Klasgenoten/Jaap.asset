@@ -10,32 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc7f48c89944c448a190ea8bea2115f, type: 3}
-  m_Name: Islands
+  m_Name: Jaap
   m_EditorClassIdentifier: 
-  _octaves: 5
-  _scale: 0.05
-  _lacunarity: 1.25
-  _persistence: 0.5
+  _octaves: 13
+  _scale: 0.06
+  _lacunarity: 3
+  _persistence: 0.7
   _resolution: 1
-  tileHeightMultiplier: 5
+  tileHeightMultiplier: 3
   _possibleTiles:
-  - tileGO: {fileID: 894428359449449459, guid: 95861bc25dabbd54a84812738c70f72d, type: 3}
-    weight: 0.4
-    constHeight: 2.75
   - tileGO: {fileID: 894428359449449459, guid: e6c29e52971f46b4cb60d66de5c671d5, type: 3}
-    weight: 0.55
-    constHeight: 2.75
-  - tileGO: {fileID: 894428359449449459, guid: df262f33acf69c34aa4d9bf6c6adbfe3, type: 3}
-    weight: 0.6
+    weight: 0.3
     constHeight: 0
   - tileGO: {fileID: 894428359449449459, guid: accd6caa79f5cc243a6e448443fab984, type: 3}
     weight: 0.7
     constHeight: 0
   - tileGO: {fileID: 894428359449449459, guid: e4a7c87dd1cdb924cb7d816da4c05b89, type: 3}
-    weight: 0.8
-    constHeight: 0
-  - tileGO: {fileID: 894428359449449459, guid: 46ed1b539ac7ff548bb02ddd679ac7e9, type: 3}
-    weight: 10
+    weight: 100
     constHeight: 0
   _shouldDebug: 0
   debugPerlinValues: []

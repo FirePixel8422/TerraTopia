@@ -81,6 +81,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8873099124168966554}
   m_SourcePrefab: {fileID: 100100000, guid: 57e9af481ffa4034b90b90ac5eb31c06, type: 3}
+--- !u!4 &514102458091653449 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 57e9af481ffa4034b90b90ac5eb31c06,
+    type: 3}
+  m_PrefabInstance: {fileID: 47512144879038114}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &894428359449449459 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 57e9af481ffa4034b90b90ac5eb31c06,
@@ -101,9 +107,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canHoldCastle: 0
   _perlinHeight: 0
-  _possibleEnviromentalObjects: []
+  _possibleEnviromentalObjects:
+  - _possibleEnviromentalObject: {fileID: 8444563810510441905, guid: 28880008088f09343aeca587cd6e4a85,
+      type: 3}
+    _possibleEnviromentalPosHolder: {fileID: 514102458091653449}
+    weight: 20
+    randomRotation: 0
+  - _possibleEnviromentalObject: {fileID: 5184699275576898796, guid: 7cfed7147e888ad478619ddafd3a6669,
+      type: 3}
+    _possibleEnviromentalPosHolder: {fileID: 514102458091653449}
+    weight: 30
+    randomRotation: 1
+  _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}
   isHoldingObject: 0
+  buildings: []
 --- !u!65 &8873099124168966554
 BoxCollider:
   m_ObjectHideFlags: 0

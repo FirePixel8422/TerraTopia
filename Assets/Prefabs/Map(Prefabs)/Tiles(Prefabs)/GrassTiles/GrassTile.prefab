@@ -112,12 +112,11 @@ MonoBehaviour:
       type: 3}
     _possibleEnviromentalPosHolder: {fileID: 514102458091653449}
     weight: 50
+  _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}
   isHoldingObject: 0
-  _possibleBuildings:
-  - buildingGO: {fileID: 6454596518570392124, guid: 5514739dad7ec264582a112c7e7ffeff,
-      type: 3}
-    buildingSprite: {fileID: 21300000, guid: ecf2e8a7fdf38dc47bf033cbd0745523, type: 3}
+  buildings:
+  - {fileID: 11400000, guid: 98809c190f3257e47a3d2e9c3e4e8b9d, type: 2}
 --- !u!65 &3586925054900546492
 BoxCollider:
   m_ObjectHideFlags: 0
