@@ -183,6 +183,11 @@ public class PlayerController : MonoBehaviour, ICustomUpdater
     [BurstCompile]
     public void OnUpdate()
     {
+        //UpdateCamera();
+    }
+
+    private void Update()
+    {
         UpdateCamera();
     }
 
