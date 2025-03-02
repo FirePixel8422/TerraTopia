@@ -222,6 +222,45 @@ public static class VectorLogic
         // Scale the vector uniformly
         return value * scale;
     }
+
+
+    /// <summary>
+    /// Turn 3d vector into 2d vector
+    /// </summary>
+    /// <returns>The Vector as 2d Vector2</returns>
+    public static Vector2 ToVector2(this Vector3 value)
+    {
+        return new Vector2(value.x, value.z);
+    }
+
+
+    /// <summary>
+    /// Turn 2d vector into 3d vector
+    /// </summary>
+    /// <returns>The Vector as 3d Vector3 (sets y to 0)</returns>
+    public static Vector2 ToVector3(this Vector2 value)
+    {
+        return new Vector3(value.x, 0, value.y);
+    }
+
+    /// <summary>
+    /// Turn 2d vector into 3d vector and set vector3.y equal to yValue
+    /// </summary>
+    /// <returns>The Vector as 3d Vector3</returns>
+    public static Vector2 ToVector3(this Vector2 value, float yValue)
+    {
+        return new Vector3(value.x, yValue, value.y);
+    }
+}
+
+
+public static class MathematicsLogic
+{
+    public static float DistanceFrom(this float3 value, float3 toSubtract)
+    {
+        float3 difference = value = toSubtract;
+        return math.abs(difference.x) + math.abs(difference.y) + math.abs(difference.z);
+    }
 }
 
 
@@ -232,7 +271,8 @@ public static class EzRandom
 
 
     // Initialize the random instance
-    static EzRandom()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Initialize()
     {
         // Generate a seed for the random using the current time
         random = new Unity.Mathematics.Random((uint)System.DateTime.Now.Ticks);
