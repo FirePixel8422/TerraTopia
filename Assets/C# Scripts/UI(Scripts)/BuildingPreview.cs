@@ -13,6 +13,6 @@ public class BuildingPreview : MonoBehaviour
 
     public void OnBuyButtonClicked()
     {
-
+        print("fuck my life man");
     }
 }

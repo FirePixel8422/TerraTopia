@@ -41,7 +41,6 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     }
     private void SpawnObject(Transform spawnPos, GameObject objToSpawn)
     {
-        Instantiate(objToSpawn, spawnPos.position, spawnPos.transform.rotation, transform);
         if (Instantiate(objToSpawn, spawnPos.position, spawnPos.transform.rotation, transform).TryGetComponent(out TileObject tile))
         {
             _currentHeldEnviromentalObject = tile;

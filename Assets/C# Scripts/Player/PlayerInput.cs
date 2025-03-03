@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -70,10 +72,11 @@ public class PlayerInput : MonoBehaviour
             IOC.OnClick();
         }
 
+       // if (EventSystem.current.IsPointerOverGameObject()) { return; }
 
         if (_lastHitObject.TryGetComponent(out IBuildable IB))
         {
-            if(_currentBuildingTile == null) { _currentBuildingTile = gameObject; }
+            if (_currentBuildingTile == null) { _currentBuildingTile = gameObject; }
             if (_lastHitObject.GetInstanceID() == _currentBuildingTile.GetInstanceID())
             {
                 _buildingHandler.HideBuildingPanel();

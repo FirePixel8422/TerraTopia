@@ -374,8 +374,8 @@ MonoBehaviour:
   _noiseData: {fileID: 11400000, guid: eba47a681a07b05428a30ccf281025dc, type: 2}
   _castlePrefab: {fileID: 919132149155446097, guid: fe2c52ea073defc478e9245b106b2987,
     type: 3}
-  _width: 80
-  _length: 80
+  _width: 40
+  _length: 40
   playerCount: 4
 --- !u!1001 &905845435445612283
 PrefabInstance:
@@ -671,6 +671,11 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4350320940623511301, guid: 21da8939707beda40b84d11e86a56b83,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4373285188684387342, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -719,6 +724,11 @@ PrefabInstance:
     - target: {fileID: 4373285188684387342, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4717314780856934204, guid: 21da8939707beda40b84d11e86a56b83,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5137690611392870935, guid: 21da8939707beda40b84d11e86a56b83,
