@@ -31,6 +31,6 @@ public class UnitBase : NetworkBehaviour
     [ClientRpc(RequireOwnership = false)]
     private void OnSpawn_ClientRPC(int ownerPlayerGameId)
     {
-        colorRenderer.material = UnitSpawnHandler.GetTeamColorMaterial(ownerPlayerGameId, unitId);
+        colorRenderer.material = UnitSpawnHandler.GetTeamColorMaterial_OnServer(ownerPlayerGameId, unitId);
     }
 }
