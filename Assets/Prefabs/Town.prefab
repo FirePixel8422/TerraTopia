@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &3856239820371534402
+--- !u!1001 &514192689909655216
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e2792260a2e4f9b408301f089a7a00f6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.902716
+      value: 8.807
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2792260a2e4f9b408301f089a7a00f6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.133675
+      value: 0.0002411116
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2792260a2e4f9b408301f089a7a00f6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21.284061
+      value: -7.106
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2792260a2e4f9b408301f089a7a00f6,
         type: 3}
@@ -62,37 +62,14 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: cd88648a3a9c0b64fb409a50db0259ea, type: 2}
+      objectReference: {fileID: 2100000, guid: a58fdd941ca31b140a1f821a42b3ec64, type: 2}
     - target: {fileID: 919132149155446097, guid: e2792260a2e4f9b408301f089a7a00f6,
         type: 3}
       propertyPath: m_Name
-      value: Town
+      value: Town 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e2792260a2e4f9b408301f089a7a00f6,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3021291903559975082}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2792260a2e4f9b408301f089a7a00f6, type: 3}
---- !u!1 &4126832720518782739 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e2792260a2e4f9b408301f089a7a00f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 3856239820371534402}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3021291903559975082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4126832720518782739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcd7187721dd30740a266e47eea353ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buildings: []
