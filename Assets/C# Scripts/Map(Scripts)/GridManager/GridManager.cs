@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 
@@ -100,7 +102,21 @@ public class GridManager : NetworkBehaviour
             foreach (KeyValuePair<Vector2, GameObject> cloud in _tiles)
             {
                 cloud.Value.SetActive(true);
+
             }
+            //StartCoroutine(FancyClouds());
+        }
+    }
+
+    public float cloudSpeed = 0.05f;
+
+    private IEnumerator FancyClouds()
+    {
+        foreach (KeyValuePair<Vector2, GameObject> cloud in _tiles)
+        {
+            cloud.Value.SetActive(true);
+
+            yield return new WaitForSeconds(cloudSpeed);
         }
     }
 #endif

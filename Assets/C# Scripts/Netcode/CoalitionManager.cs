@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.Burst;
 using Unity.Netcode;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class CoalitionManager : NetworkBehaviour
     [Space(10)]
 
     [SerializeField] private Animator[] buttonAnims;
+    [SerializeField] private Button startGameButton;
 
     [SerializeField] private int[] teamIds = new int[GameSettings.maxTeams];
     [SerializeField] private int[] topRowLastSelectedTeamIds = new int[GameSettings.maxTeams];
@@ -70,6 +72,27 @@ public class CoalitionManager : NetworkBehaviour
 
 
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer)
+        {
+            startGameButton.gameObject.SetActive(true);
+            startGameButton.onClick.AddListener(async () => await OnStartGame());
+        }
+    }
+
+    private async Task OnStartGame()
+    {
+        int playerCount = ClientManager.GetPlayerIdDataArray().PlayerCount;
+
+        await LobbyManager.SetLobbyLockStateAsync(true);
+
+        SceneManager.LoadSceneOnNetwork("Nobe");
+    }
+
+
+
+    #region Input Management + Button And Data Setup
 
     /// <summary>
     /// fill teamIds with "GameSettings.maxTeams" (GameSettings.maxTeams" is 1 higher than highest id team > no team), setup buttons
@@ -90,7 +113,6 @@ public class CoalitionManager : NetworkBehaviour
     }
 
 
-    #region Input Management + Button Setup
 
     /// <summary>
     /// setup input events
