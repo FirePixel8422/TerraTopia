@@ -7,12 +7,20 @@ using UnityEngine.InputSystem.EnhancedTouch;
 
 public class PlayerInput : MonoBehaviour
 {
+    public static PlayerInput Instance;
     [SerializeField] private bool _shouldSyncHoverObject;
     [SerializeField] private GameObject _hoverObject;
 
     [SerializeField] private BuildingHandler _buildingHandler;
-    private GameObject _lastHitObject;
-    private GameObject _currentBuildingTile;
+
+    public GameObject lastHitObject { get; private set; }
+    public GameObject currentBuildingTile { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null) { Destroy(gameObject); return; }
+        Instance = this;
+    }
     private void Start()
     {
         //Initialize the _hoverObject
@@ -33,20 +41,20 @@ public class PlayerInput : MonoBehaviour
     {
         if (Physics.Raycast(_Ray, out _hit))
         {
-            _lastHitObject = _hit.transform.gameObject;
+            lastHitObject = _hit.transform.gameObject;
         }
         else
         {
-            _lastHitObject = null;
+            lastHitObject = null;
         }
     }
 
     private void CheckForHoverable()
     {
-        if (_lastHitObject == null) { _hoverObject.SetActive(false); return; }
+        if (lastHitObject == null) { _hoverObject.SetActive(false); return; }
 
         //Check if the object has the IOnHover interface on it
-        if (_lastHitObject.transform.TryGetComponent(out IHoverable IH))
+        if (lastHitObject.transform.TryGetComponent(out IHoverable IH))
         {
             OnHoveringOverObject(IH);
         }
@@ -64,28 +72,30 @@ public class PlayerInput : MonoBehaviour
 
     public void OnClick(InputAction.CallbackContext ctx)
     {
-        if (_lastHitObject == null || ctx.performed == false) return;
+        if (lastHitObject == null || ctx.performed == false) return;
+
+        if (lastHitObject == null) return;
 
 
-        if (_lastHitObject.TryGetComponent(out IOnClickable IOC))
+        if (lastHitObject.TryGetComponent(out IOnClickable IOC))
         {
             IOC.OnClick();
         }
 
-       // if (EventSystem.current.IsPointerOverGameObject()) { return; }
+        if (EventSystem.current.IsPointerOverGameObject()) { return; }
 
-        if (_lastHitObject.TryGetComponent(out IBuildable IB))
+        if (lastHitObject.TryGetComponent(out IBuildable IB))
         {
-            if (_currentBuildingTile == null) { _currentBuildingTile = gameObject; }
-            if (_lastHitObject.GetInstanceID() == _currentBuildingTile.GetInstanceID())
+            if (currentBuildingTile == null) { currentBuildingTile = gameObject; }
+            if (lastHitObject.GetInstanceID() == currentBuildingTile.GetInstanceID())
             {
                 _buildingHandler.HideBuildingPanel();
-                _currentBuildingTile = null;
+                currentBuildingTile = null;
             }
             else
             {
                 _buildingHandler.ShowBuildingPanel(IB);
-                _currentBuildingTile = _lastHitObject;
+                currentBuildingTile = lastHitObject;
             }
         }
     }

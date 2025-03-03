@@ -130,16 +130,22 @@ public class CoalitionManager : NetworkBehaviour
 
         buttonAnims[^1].SetTrigger("MoveError");
         buttonAnims[^1].SetBool("Selected", true);
+
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += Disable;
     }
 
     /// <summary>
     /// disable input events
     /// </summary>
-    private void OnDisable()
+    private void Disable(UnityEngine.SceneManagement.Scene arg0, UnityEngine.SceneManagement.LoadSceneMode arg1)
     {
         UIMoveInput.Disable();
         UIMoveInput.performed -= (InputAction.CallbackContext ctx) => OnWASDInputForSwapTeams_ServerRPC(ClientManager.LocalClientGameId, ctx.ReadValue<Vector2>());
+       
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= Disable;
     }
+
+
 
     /// <summary>
     /// When a button is pressed, this function is called with that buttons id (same as teamId)

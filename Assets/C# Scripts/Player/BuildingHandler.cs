@@ -24,6 +24,8 @@ public class BuildingHandler : MonoBehaviour
                 if (_pooledObjects[i].TryGetComponent(out BuildingPreview bp))
                 {
                     bp.previewImage.sprite = buildings[i].buildingSprite;
+                    bp.tileObject = buildings[i].buildingGO;
+                    bp.buildingCosts = buildings[i].costs;
                     _pooledObjects[i].SetActive(true);
                 }
             }

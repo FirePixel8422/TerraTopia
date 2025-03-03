@@ -326,6 +326,7 @@ MonoBehaviour:
   _width: 50
   _length: 50
   playerCount: 4
+  cloudSpeed: 0.05
 --- !u!114 &1849222576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,26 +356,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1623302116602183648, guid: 21da8939707beda40b84d11e86a56b83,
-        type: 3}
-      propertyPath: m_UiScaleMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1623302116602183648, guid: 21da8939707beda40b84d11e86a56b83,
-        type: 3}
-      propertyPath: m_ReferenceResolution.x
-      value: 1920
-      objectReference: {fileID: 0}
-    - target: {fileID: 1623302116602183648, guid: 21da8939707beda40b84d11e86a56b83,
-        type: 3}
-      propertyPath: m_ReferenceResolution.y
-      value: 1080
-      objectReference: {fileID: 0}
-    - target: {fileID: 4350320940623511301, guid: 21da8939707beda40b84d11e86a56b83,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 4373285188684387342, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}
       propertyPath: m_LocalPosition.x

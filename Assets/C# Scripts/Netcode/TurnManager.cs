@@ -26,7 +26,6 @@ public class TurnManager : NetworkBehaviour
 
 
 
-
     public override void OnNetworkSpawn()
     {
         //when the turn changes
@@ -49,6 +48,8 @@ public class TurnManager : NetworkBehaviour
                 OnTurnEnded?.Invoke();
             }
         };
+
+        DontDestroyOnLoad(gameObject);
     }
 
 

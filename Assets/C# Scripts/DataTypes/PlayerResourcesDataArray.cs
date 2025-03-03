@@ -14,7 +14,13 @@ public struct PlayerResourcesDataArray : INetworkSerializable
     public int[] gems;
     public int[] food;
 
-
+    public PlayerResourcesDataArray(int size)
+    {
+        wood = new int[size];
+        stone = new int[size];
+        gems = new int[size];
+        food = new int[size];
+    }
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref wood);

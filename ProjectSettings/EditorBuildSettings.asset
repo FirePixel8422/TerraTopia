@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Pre-Main Game.unity
     guid: fbeddbf809ea8c84d861819882923fff
+  - enabled: 1
+    path: Assets/Scenes/Workers/Nobe.unity
+    guid: 7dfb27903c95acf4b904178159b3a82e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 8496e65885e430d44ac6f29539a29c56,
       type: 3}

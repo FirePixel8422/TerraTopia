@@ -1,10 +1,11 @@
 using Unity.Netcode;
+using UnityEngine;
 
 
 
 public class ResourceManager : NetworkBehaviour
 {
-    private static NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>();
+    private static NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>(new PlayerResourcesDataArray(GameSettings.maxPlayers));
 
     /// <summary>
     /// Get PlayerResourcesData Copy (changes on copy wont sync back to ResourceManager and wont cause a networkSync)
@@ -108,7 +109,7 @@ public class ResourceManager : NetworkBehaviour
     /// <summary>
     /// Subtract the materialcost values from current materials
     /// </summary>
-    public static void BuildAndPayForBuilding(BuildingCosts buildingCosts)
+    public static void BuildAndPayForBuilding(BuildingCosts buildingCosts, GameObject buildingToPlace, TileBase tileToPlaceOn)
     {
         int localGameId = ClientManager.LocalClientGameId;
 
@@ -122,5 +123,19 @@ public class ResourceManager : NetworkBehaviour
 
         //update copy back to original resourceArray
         playerResourcesDataArray.Value = resourceArrayCopy;
+
+
+
+        tileToPlaceOn.AssignObject(buildingToPlace);
     }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+
+    public PlayerResourcesDataArray debugClientDataArray;
+    private void Update()
+    {
+        debugClientDataArray = playerResourcesDataArray.Value;
+    }
+#endif
+
 }
