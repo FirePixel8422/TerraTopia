@@ -398,7 +398,6 @@ MonoBehaviour:
   maxScrolls: 0
   scrollHeightMultiplier: 1.5
   scrollTime: 0.175
-  rightClickHeld: 0
   mouseRotSpeed: 0.1
   mouseMovement: {x: 0, y: 0}
   rotUpdated: 0
@@ -424,6 +423,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: -1249.1082
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055612311712996079, guid: d0c092e50c6604f4385c6d94430a5d5d,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055612311712996079, guid: d0c092e50c6604f4385c6d94430a5d5d,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055612311712996079, guid: d0c092e50c6604f4385c6d94430a5d5d,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 7246859072333068742, guid: d0c092e50c6604f4385c6d94430a5d5d,
         type: 3}
