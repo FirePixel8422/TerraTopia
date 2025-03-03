@@ -10,12 +10,12 @@ public class ClientManager : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
-
-        playerIdDataArray = new NetworkVariable<PlayerIdDataArray>(new PlayerIdDataArray(GameSettings.maxPlayers));
     }
 
 
-    private static NetworkVariable<PlayerIdDataArray> playerIdDataArray;
+
+
+    private static NetworkVariable<PlayerIdDataArray> playerIdDataArray = new NetworkVariable<PlayerIdDataArray>(new PlayerIdDataArray(GameSettings.maxPlayers));
 
     /// <summary>
     /// Get PlayerIdDataArray Copy (changes on copy wont sync back to clientManager and wont cause a networkSync)
@@ -41,7 +41,7 @@ public class ClientManager : NetworkBehaviour
     [Tooltip("Turn NetworkId into GameId")]
     public static int GetClientGameIdFromNetworkId(ulong networkId) => playerIdDataArray.Value.GetPlayerGameId(networkId);
 
-    [Tooltip("Turn NetworkId into GameId")]
+    [Tooltip("Turn GameId into TeamId")]
     public static int GetClientTeamId(int gameId) => playerIdDataArray.Value.GetPlayerTeamId(gameId);
 
 
