@@ -64,7 +64,7 @@ public class PlayerInput : MonoBehaviour
 
     public void OnClick(InputAction.CallbackContext ctx)
     {
-        if (_lastHitObject == null) return;
+        if (_lastHitObject == null || ctx.performed == false) return;
 
 
         if (_lastHitObject.TryGetComponent(out IOnClickable IOC))

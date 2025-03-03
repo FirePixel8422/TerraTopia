@@ -68,6 +68,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MudTile
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 57e9af481ffa4034b90b90ac5eb31c06,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -102,8 +107,10 @@ MonoBehaviour:
   canHoldCastle: 1
   _perlinHeight: 0
   _possibleEnviromentalObjects: []
+  _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}
   isHoldingObject: 0
+  buildings: []
 --- !u!65 &-2247587956606480743
 BoxCollider:
   m_ObjectHideFlags: 0

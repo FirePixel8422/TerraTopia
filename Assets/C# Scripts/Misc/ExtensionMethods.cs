@@ -291,29 +291,21 @@ public static class EzRandom
 
     public static int Range(int min, int max)
     {
-        EnsureInitialized();
-
         return random.NextInt(min, max);
     }
 
     public static uint Range(uint min, uint max)
     {
-        EnsureInitialized();
-
         return random.NextUInt(min, max);
     }
 
     public static float Range(float min, float max)
     {
-        EnsureInitialized();
-
         return random.NextFloat(min, max);
     }
 
     public static Vector3 Range(Vector3 min, Vector3 max)
     {
-        EnsureInitialized();
-
         Vector3 vec;
         vec.x = Range(min.x, max.x);
         vec.y = Range(min.y, max.y);
@@ -325,8 +317,6 @@ public static class EzRandom
 
     public static float3 Range(float3 min, float3 max)
     {
-        EnsureInitialized();
-
         float3 vec;
         vec.x = Range(min.x, max.x);
         vec.y = Range(min.y, max.y);
@@ -339,8 +329,6 @@ public static class EzRandom
 
     public static int3 Range(int3 min, int3 max)
     {
-        EnsureInitialized();
-
         int3 vec;
         vec.x = Range(min.x, max.x);
         vec.y = Range(min.y, max.y);
@@ -352,8 +340,6 @@ public static class EzRandom
 
     public static Color RandomColor(bool randomizeAlpha = false)
     {
-        EnsureInitialized();
-
         Color color;
         color.r = random.NextFloat();
         color.g = random.NextFloat();
@@ -362,13 +348,5 @@ public static class EzRandom
 
 
         return color;
-    }
-
-    private static void EnsureInitialized()
-    {
-        if (random.Equals(default(Unity.Mathematics.Random)))
-        {
-            ReSeed();
-        }
     }
 }

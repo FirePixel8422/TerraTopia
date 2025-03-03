@@ -12,4 +12,9 @@ public static class GameSettings
     public const int maxPlayersPerTeam = 1;
 
     public const int updateManagerListPreSizeCapacity = 4;
+
+
+    //foods
+    public const int wheatFoodSize = 4;
+    public const int fishFoodSize = 3;
 }

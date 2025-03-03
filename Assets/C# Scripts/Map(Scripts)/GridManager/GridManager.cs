@@ -1,19 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using Unity.Burst;
+using Unity.Netcode;
 using UnityEngine;
-[BurstCompile]
-public class GridManager : MonoBehaviour
-{
-    private static Dictionary<Vector2,GameObject> _tiles;
 
-     
+
+
+[BurstCompile]
+public class GridManager : NetworkBehaviour
+{
+    private static Dictionary<Vector2, GameObject> _tiles;
+    private static Dictionary<Vector2, GameObject> _clouds;
+
+
     [Header("Preset MapGeneration Values")]
     [Tooltip("If left at 0 it will generate a random seed")]
     [SerializeField] private int _seed;
     [SerializeField] private NoiseData _noiseData;
     [SerializeField] private GameObject _castlePrefab;
+    [SerializeField] private GameObject cloudPrefab;
+
+
     //The dimensions of the to-be created grid.
     [Header("Dimensions")]
     [Tooltip("The X-axis")]
@@ -26,10 +32,16 @@ public class GridManager : MonoBehaviour
 
 
 
+    //public override void OnNetworkSpawn()
+    //{
+    //    GenerateGrid(playerCount);
+    //}
+
     private void Start()
     {
         GenerateGrid(playerCount);
     }
+
     [BurstCompile]
     private void GenerateGrid(int playerCount)
     {
@@ -43,7 +55,7 @@ public class GridManager : MonoBehaviour
         //3 Finally the enviromental objects which CAN be placed specifically around the castles
 
         //Generates the tiles, without any non-grid logic
-        new TileGenerator(_noiseData, _width, _length, _seed, transform, out _tiles);
+        new TileGenerator(_noiseData, _width, _length, _seed, transform, cloudPrefab, out _tiles, out _clouds);
 
         //Generates a castle based on the grid
         new CastlePosGenerator(_tiles, _seed, playerCount, _width, _length, _castlePrefab);
@@ -65,13 +77,31 @@ public class GridManager : MonoBehaviour
         }
     }
 
+
+    public static void DestroyCloud(Vector2 tilePos)
+    {
+        Destroy(_clouds[tilePos]);
+
+        _clouds.Remove(tilePos);
+    }
+
+
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+
+    private bool cloudsToggled;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && cloudsToggled == false)
+        {
+            cloudsToggled = true;
+
+            foreach (KeyValuePair<Vector2, GameObject> cloud in _tiles)
+            {
+                cloud.Value.SetActive(true);
+            }
+        }
+    }
+#endif
 }
-
-
-
-
-
-
-
-
-

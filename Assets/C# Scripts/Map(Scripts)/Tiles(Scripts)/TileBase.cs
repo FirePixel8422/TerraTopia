@@ -22,6 +22,14 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     [SerializeField] private List<Building> buildings;
 
 
+
+
+    private void OnEnable()
+    {
+        GridManager.DestroyCloud(transform.position.ToVector2());
+    }
+
+
     public virtual void OnClick()
     {
         StartCoroutine(transform.ShakeObject(0.25f, 0.1f));
@@ -93,6 +101,5 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
             print("Object already contains an enviromental object");
         }
     }
-
 }
 

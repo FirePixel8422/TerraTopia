@@ -25,10 +25,11 @@ public class ClientManager : NetworkBehaviour
     {
         return playerIdDataArray.Value;
     }
+
     /// <summary>
-    /// Set Value Of PlayerIdDataArray (Will trigger networkSync)
+    /// Set Value Of PlayerIdDataArray, Must be called from server (Will trigger networkSync)
     /// </summary>
-    public static void UpdatePlayerIdDataArray(PlayerIdDataArray newValue)
+    public static void UpdatePlayerIdDataArray_OnServer(PlayerIdDataArray newValue)
     {
         playerIdDataArray.Value = newValue;
     }

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 
 [BurstCompile]
-public class PlayerController : MonoBehaviour, ICustomUpdater
+public class CameraController : MonoBehaviour, ICustomUpdater
 {
     [Header("Input Actions")]
     [SerializeField] private PlayerControlsMap inputActionMap;
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour, ICustomUpdater
     {
         rightClickHeld = ctx.ReadValueAsButton();
 
-        Cursor.lockState = rightClickHeld ? CursorLockMode.Locked : CursorLockMode.None;
+        //Cursor.lockState = rightClickHeld ? CursorLockMode.Locked : CursorLockMode.None;
     }
 
     [Header("Rotate")]

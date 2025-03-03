@@ -68,6 +68,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StoneTile
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 57e9af481ffa4034b90b90ac5eb31c06,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -112,12 +117,16 @@ MonoBehaviour:
       type: 3}
     _possibleEnviromentalPosHolder: {fileID: 514102458091653449}
     weight: 25
+    randomRotation: 0
   - _possibleEnviromentalObject: {fileID: 2780841821492536028, guid: 3913d5c39ee3c1140a49b9681922f6c9,
       type: 3}
     _possibleEnviromentalPosHolder: {fileID: 0}
     weight: 35
+    randomRotation: 0
+  _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}
   isHoldingObject: 0
+  buildings: []
 --- !u!65 &1112144434560882798
 BoxCollider:
   m_ObjectHideFlags: 0

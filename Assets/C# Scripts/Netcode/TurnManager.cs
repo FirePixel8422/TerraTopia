@@ -6,10 +6,22 @@ using UnityEngine;
 public class TurnManager : NetworkBehaviour
 {
     [Header("Team on turn Id, synced between every client on the server")]
-    [SerializeField] private NetworkVariable<int> teamOnTurnId = new NetworkVariable<int>();
+    [SerializeField] private NetworkVariable<int> teamOnTurnId = new NetworkVariable<int>(-1);
 
 
+    /// <summary>
+    /// OnCycleStarted is called when all players did one turn (Before OnTurnEnded and OnTurnStarted are called)
+    /// </summary>
+    public static Action OnCycleStarted;
+
+    /// <summary>
+    /// OnTurnStarted is called on every client who his turn just started
+    /// </summary>
     public static Action OnTurnStarted;
+
+    /// <summary>
+    /// OnTurnEnded is called on every client who his turn just ended
+    /// </summary>
     public static Action OnTurnEnded;
 
 
@@ -20,6 +32,12 @@ public class TurnManager : NetworkBehaviour
         //when the turn changes
         teamOnTurnId.OnValueChanged += (int oldTeamOnTurnId, int newTeamOnTurnId) =>
         {
+            //if the last teams turn has just ended, a new cycle begins
+            if (newTeamOnTurnId == 0 && oldTeamOnTurnId == (CoalitionManager.TeamCount - 1))
+            {
+                OnCycleStarted?.Invoke();
+            }
+
             //if this clients teamId is the same as "newTeamOnTurnId", start its turn.
             if (newTeamOnTurnId == ClientManager.LocalClientTeamId)
             {

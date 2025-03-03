@@ -280,7 +280,7 @@ public class CoalitionManager : NetworkBehaviour
 
         clientIdDataArrayCopy.MovePlayerToTeam(clientGameId, newTeamId);
 
-        ClientManager.UpdatePlayerIdDataArray(clientIdDataArrayCopy);
+        ClientManager.UpdatePlayerIdDataArray_OnServer(clientIdDataArrayCopy);
     }
 
 

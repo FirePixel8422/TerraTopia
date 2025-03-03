@@ -14,8 +14,9 @@ public class ResourceManager : NetworkBehaviour
     {
         return playerResourcesDataArray.Value;
     }
+
     /// <summary>
-    /// Set Value Of PlayerResourcesData (Will trigger networkSync)
+    /// Set Value Of PlayerResourcesData, Must be called from server (Will trigger networkSync)
     /// </summary>
     public static void UpdateResourceData(PlayerResourcesDataArray newValue)
     {
@@ -23,10 +24,73 @@ public class ResourceManager : NetworkBehaviour
     }
 
 
+    #region Modify Resources on Server
+
+    /// <summary>
+    /// Update Value of food on server (Will trigger networkSync)
+    /// </summary>
+    public static void ModifyFood_OnServer(int clientGameId, int addedFood)
+    {
+        //copy resourceArray
+        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+
+        resourceArrayCopy.food[clientGameId] += addedFood;
+
+        //update copy back to original resourceArray
+        playerResourcesDataArray.Value = resourceArrayCopy;
+    }
+
+    /// <summary>
+    /// Update Value of food on server (Will trigger networkSync)
+    /// </summary>
+    public static void ModifyWood_OnServer(int clientGameId, int addedWood)
+    {
+        //copy resourceArray
+        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+
+        resourceArrayCopy.wood[clientGameId] += addedWood;
+
+        //update copy back to original resourceArray
+        playerResourcesDataArray.Value = resourceArrayCopy;
+    }
+
+    /// <summary>
+    /// Update Value of food on server (Will trigger networkSync)
+    /// </summary>
+    public static void ModifyStone_OnServer(int clientGameId, int addedStone)
+    {
+        //copy resourceArray
+        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+
+        resourceArrayCopy.stone[clientGameId] += addedStone;
+
+        //update copy back to original resourceArray
+        playerResourcesDataArray.Value = resourceArrayCopy;
+    }
+
+    /// <summary>
+    /// Update Value of food on server (Will trigger networkSync)
+    /// </summary>
+    public static void ModifyGems_OnServer(int clientGameId, int addedGems)
+    {
+        //copy resourceArray
+        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+
+        resourceArrayCopy.gems[clientGameId] += addedGems;
+
+        //update copy back to original resourceArray
+        playerResourcesDataArray.Value = resourceArrayCopy;
+    }
+
+    #endregion
+
+
+
+
     /// <summary>
     /// CHeck if you can afford this building by comparing buildingCosts with current materials
     /// </summary>
-    /// <returns>wheather you can afford to build this building</returns>
+    /// <returns>wheater you can afford to build this building</returns>
     public static bool CanBuild(BuildingCosts buildingCosts)
     {
         int localGameId = ClientManager.LocalClientGameId;
