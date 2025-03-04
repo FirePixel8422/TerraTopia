@@ -129,7 +129,8 @@ MonoBehaviour:
     randomRotation: 1
   _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}
-  buildings: []
+  buildings:
+  - {fileID: 11400000, guid: b78e65fb5e5c8e04b9c8f113051d1156, type: 2}
   shakeStrength: 0.1
 --- !u!65 &3375950581939778181
 BoxCollider:

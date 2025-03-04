@@ -16,6 +16,10 @@ public class BuildingHandler : MonoBehaviour
         if (buildings.Count == 0) return;
         _buildingPanel.gameObject.SetActive(true);
 
+        foreach (GameObject building in _pooledObjects)
+        {
+            building.SetActive(false);
+        }
         for (int i = 0; i < buildings.Count; i++)
         { 
             //Checks whether an object already exists. if so it will turn it on

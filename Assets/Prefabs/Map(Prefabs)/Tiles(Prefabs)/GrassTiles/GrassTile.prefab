@@ -121,6 +121,7 @@ MonoBehaviour:
   _enviromentalObjectPosHolder: {fileID: 0}
   buildings:
   - {fileID: 11400000, guid: 98809c190f3257e47a3d2e9c3e4e8b9d, type: 2}
+  - {fileID: 11400000, guid: caf21368d75cfca48ac570f4e81ae4aa, type: 2}
   shakeStrength: 0
 --- !u!65 &3586925054900546492
 BoxCollider:

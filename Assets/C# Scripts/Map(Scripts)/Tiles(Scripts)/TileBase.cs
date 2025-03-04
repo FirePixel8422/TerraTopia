@@ -28,7 +28,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
     private void OnEnable()
     {
-        if(_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.gameObject.SetActive(true); }
+        if (_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.gameObject.SetActive(true); }
 
         GridManager.DestroyCloud(transform.position.ToVector2());
 
@@ -111,5 +111,5 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         }
     }
     #endregion
-} 
+}
 

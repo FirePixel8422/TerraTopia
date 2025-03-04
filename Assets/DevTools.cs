@@ -17,4 +17,12 @@ public class DevTools : MonoBehaviour
 
         ResourceManager.UpdateResourceData(resourcesCopy);
     }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            AddMaterials();
+        }
+    }
 }
