@@ -2,6 +2,7 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.iOS;
 
 
 public class NavButton : MonoBehaviour, IPointerClickHandler
@@ -101,18 +102,14 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
 
             Gizmos.color = Color.red;
 
-            for (int i2 = 0; i2 < connections[i].connections.Length; i2++)
+
+            //if the connection of this button also has a connection back to this button, make gizmos Green
+            if (connections[i].connections[Invert(i)] != null && connections[i].connections[Invert(i)].buttonId == connections[i].buttonId)
             {
-                //if the connection of this button also has a connection back to this button, make gizmos Green
-                if (connections[i].connections[i2] != null && connections[i].connections[i2].buttonId == connections[i].buttonId)
-                {
-                    Gizmos.color = Color.green;
-                }
+                Gizmos.color = Color.green;
             }
 
 
-
-            float dist = Vector3.Distance(transform.position, connections[i].transform.position);
             Vector3 dir = Vector3.zero;
 
             switch (i)
@@ -134,9 +131,31 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
                     break;
             }
 
-            Gizmos.DrawLine(transform.position + dir * dist * 0.1f, transform.position + dir * dist * 0.3f);
+            Gizmos.DrawLine(transform.position + 0.15f * 150 * dir, transform.position + 0.3f * 180 * dir);
         }
     }
+
+    private int Invert(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                return 1;
+
+            case 1:
+                return 0;
+
+            case 2:
+                return 3;
+
+            case 3:
+                return 2;
+
+            default:
+                return -1;
+        }
+    }
+
 
     private void DEBUG_Force4Connections()
     {
