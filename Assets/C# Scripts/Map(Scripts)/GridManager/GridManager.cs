@@ -33,9 +33,9 @@ public class GridManager : NetworkBehaviour
     //The dimensions of the to-be created grid.
     [Header("Dimensions")]
     [Tooltip("The X-axis")]
-    [SerializeField] private int _width;
+    public int _width;
     [Tooltip("The Z-axis")]
-    [SerializeField] private int _length;
+    public int _length;
 
     [Header("Player Values")]
     [SerializeField] private int playerCount;
@@ -103,7 +103,6 @@ public class GridManager : NetworkBehaviour
 
         spawnedObj.Spawn(true);
 
-
         SetupTileObject_ClientRPC(spawnPos.ToVector2(), spawnedObj.NetworkObjectId, activateImmediately);
     }
 
@@ -159,7 +158,7 @@ public class GridManager : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && cloudsToggled == false)
         {
             cloudsToggled = true;
-            print(_tiles.Count);
+
             foreach (KeyValuePair<Vector2, GameObject> tile in _tiles)
             {
                 tile.Value.SetActive(true);

@@ -1,18 +1,21 @@
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.iOS;
 
 
 public class NavButton : MonoBehaviour, IPointerClickHandler
 {
-    public Action<int> OnClick;
+    [Space(15)]
+
+    public UnityEvent OnClick;
+    public UnityEvent OnConfirm;
+
+    private Action<int> OnClickNavManagerCallback;
 
     [Header("Left, Right, Up, Down")]
     [SerializeField] private NavButton[] connections = new NavButton[4];
-
-    [SerializeField] private int buttonId = 0;
 
 
     /// <summary>
@@ -36,7 +39,9 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public Animator anim;
+
+    [HideInInspector] public Animator anim;
+    private int buttonId = 0;
 
 
 
@@ -45,7 +50,7 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
     {
         buttonId = _buttonId;
 
-        OnClick += onclickCallbackMethod;
+        OnClickNavManagerCallback = onclickCallbackMethod;
 
         anim = GetComponent<Animator>();
 
@@ -58,7 +63,7 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
     //destroy action callback reference
     public void CleanUpEventData(Action<int> onclickCallbackMethod)
     {
-        OnClick -= onclickCallbackMethod;
+        OnClickNavManagerCallback -= onclickCallbackMethod;
     }
 
 
@@ -68,7 +73,8 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnClick.Invoke(buttonId);
+        OnClick?.Invoke();
+        OnClickNavManagerCallback?.Invoke(buttonId);
     }
 
 
@@ -110,28 +116,37 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
             }
 
 
-            Vector3 dir = Vector3.zero;
+
+            Vector3 worldDir = (transform.position - connections[i].transform.position).normalized;
+            Vector3 connectionDir = Vector3.zero;
 
             switch (i)
             {
                 case 0:
-                    dir = Vector3.left;
+                    connectionDir = Vector3.left;
                     break;
 
                 case 1:
-                    dir = Vector3.right;
+                    connectionDir = Vector3.right;
                     break;
 
                 case 2:
-                    dir = Vector3.up;
+                    connectionDir = Vector3.up;
                     break;
 
                 case 3:
-                    dir = Vector3.down;
+                    connectionDir = Vector3.down;
                     break;
             }
 
-            Gizmos.DrawLine(transform.position + 0.15f * 150 * dir, transform.position + 0.3f * 180 * dir);
+            if (Vector3.Dot(worldDir, connectionDir) / 360 < 1)
+            {
+                Gizmos.DrawLine(transform.position, connections[i].transform.position - worldDir);   
+            }
+            else
+            {
+                Gizmos.DrawLine(transform.position + connectionDir * 150 * 0.1f, transform.position + connectionDir * 150 * 0.3f);
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -23,6 +24,8 @@ public class TribeSelecter : NetworkBehaviour
         {
             UnitSpawnHandler.Initialize();
             CityUpgradeHandler.Initialize();
+
+            FindObjectOfType<NavButtonManager>(true).OnConfirm.AddListener((int selectedButtonId) => SelectTribe_ServerRPC(selectedButtonId));
         }
     }
 

@@ -1,10 +1,13 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 
 public class NavButtonManager : MonoBehaviour
 {
+    public UnityEvent<int> OnConfirm;
+
     [Header("UI Movement Keys")]
     [SerializeField] private InputAction UIMoveInput;
 
@@ -160,7 +163,9 @@ public class NavButtonManager : MonoBehaviour
 
     private void OnConfirmInput()
     {
-        TribeSelecter.Instance.SelectTribe_ServerRPC(selectedButtonId);
+        OnConfirm?.Invoke(selectedButtonId);
+
+        buttonAnims[selectedButtonId].OnConfirm?.Invoke();
     }
 
 

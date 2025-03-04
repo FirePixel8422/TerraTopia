@@ -27,10 +27,12 @@ public class CameraController : MonoBehaviour, ICustomUpdater
         moveTransform = transform.GetChild(0);
 
         rotationTransform = transform;
-        //rotationTransform.position = GridManager.
+        rotationTransform.position = new Vector3(GridManager.Instance._length * 0.5f, 5, GridManager.Instance._width * 0.5f);
 
         zoomTransform = mainCam.transform;
         newZoomTransformPos = zoomTransform.localPosition;
+
+        Zoom(-100);
 
         Cursor.lockState = CursorLockMode.None;
 
@@ -119,7 +121,11 @@ public class CameraController : MonoBehaviour, ICustomUpdater
 
         float mouseScrolls = ctx.ReadValue<float>() * baseScrollMultiplier;
 
+        Zoom(mouseScrolls);
+    }
 
+    private void Zoom(float mouseScrolls)
+    {
         int prevScrolls = cScrolls;
         cScrolls = math.clamp(cScrolls + (int)mouseScrolls, minScrolls, maxScrolls);
 
