@@ -2,11 +2,11 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+
 
 public class NavButton : MonoBehaviour, IPointerClickHandler
 {
-    private Action<int> OnClick;
+    public Action<int> OnClick;
 
     [Header("Left, Right, Up, Down")]
     [SerializeField] private NavButton[] connections = new NavButton[4];
@@ -87,6 +87,54 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
         if (connections.Length != 4)
         {
             DEBUG_Force4Connections();
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < connections.Length; i++)
+        {
+            if (connections[i] == null)
+            {
+                continue;
+            }
+
+            Gizmos.color = Color.red;
+
+            for (int i2 = 0; i2 < connections[i].connections.Length; i2++)
+            {
+                //if the connection of this button also has a connection back to this button, make gizmos Green
+                if (connections[i].connections[i2] != null && connections[i].connections[i2].buttonId == connections[i].buttonId)
+                {
+                    Gizmos.color = Color.green;
+                }
+            }
+
+
+
+            float dist = Vector3.Distance(transform.position, connections[i].transform.position);
+            Vector3 dir = Vector3.zero;
+
+            switch (i)
+            {
+                case 0:
+                    dir = Vector3.left;
+                    break;
+
+                case 1:
+                    dir = Vector3.right;
+                    break;
+
+                case 2:
+                    dir = Vector3.up;
+                    break;
+
+                case 3:
+                    dir = Vector3.down;
+                    break;
+            }
+
+            Gizmos.DrawLine(transform.position + dir * dist * 0.1f, transform.position + dir * dist * 0.3f);
         }
     }
 

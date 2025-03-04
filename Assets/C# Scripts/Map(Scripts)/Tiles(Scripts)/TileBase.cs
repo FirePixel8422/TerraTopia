@@ -51,58 +51,54 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         }
     }
     #region Assigning/Spawning new objects
-    private void SpawnObject(Transform spawnPos, GameObject objToSpawn)
+    public void SetObject(GameObject objToSet)
     {
-        if (Instantiate(objToSpawn, spawnPos.position, spawnPos.transform.rotation, transform).TryGetComponent(out TileObject tile))
+        if (objToSet.TryGetComponent(out TileObject tile))
         {
             _currentHeldEnviromentalObject = tile;
         }
-        isHoldingObject = true;
-    }
-    private void SpawnObject(Transform spawnPos, GameObject objToSpawn, bool randomRot)
-    {
-        var spawnRot = new Vector3(0, UnityEngine.Random.Range(0, 360), 0);
-        if (Instantiate(objToSpawn, spawnPos.position, quaternion.Euler(spawnRot), transform).TryGetComponent(out TileObject tile))
-        {
-            _currentHeldEnviromentalObject = tile;
-        }
+
         isHoldingObject = true;
     }
 
-     //Ugly code, will be improved (most likely)
+
+
     public virtual void AssignObject(EnviromentalItemData enviromentalObject)
     {
-        if (!enviromentalObject._possibleEnviromentalPosHolder) { print("No position to spawn enviromental Object. process ended"); return; }
-        if (!isHoldingObject)
+        if (!enviromentalObject._possibleEnviromentalPosHolder)
         {
-            if (enviromentalObject.randomRotation)
-            {
-                SpawnObject(enviromentalObject._possibleEnviromentalPosHolder, enviromentalObject._possibleEnviromentalObject, true);
-                isHoldingObject = true;
-            }
-            else
-            {
-                SpawnObject(enviromentalObject._possibleEnviromentalPosHolder, enviromentalObject._possibleEnviromentalObject);
-                isHoldingObject = true;
-            }
+            print("No position to spawn enviromental Object. process ended");
+            return;
         }
-        else
+
+        if (isHoldingObject)
         {
             print("Object already contains an enviromental object");
         }
+        else
+        {
+            GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, enviromentalObject.randomRotation);
+            isHoldingObject = true;
+        }
     }
-    public virtual void AssignObject(GameObject enviromentalObject)
+
+    public virtual void AssignObject(int enviromentalObjectId)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
 
-        if (!_enviromentalObjectPosHolder) { print("No position to spawn enviromental Object. process ended"); return; }
-        if (!isHoldingObject)
+        if (!_enviromentalObjectPosHolder)
         {
-            SpawnObject(_enviromentalObjectPosHolder, enviromentalObject);
+            print("No position to spawn enviromental Object. process ended");
+            return;
+        }
+
+        if (isHoldingObject)
+        {
+            print("Object already contains an enviromental object");
         }
         else
         {
-            print("Object already contains an enviromental object");
+            GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId);
         }
     }
     #endregion

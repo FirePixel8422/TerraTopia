@@ -4,7 +4,7 @@ using UnityEngine;
 public struct EnviromentalItemData
 {
     //The enviromental prefab which will be spawned on the _possibleEnviromentalPosHolder
-    public GameObject _possibleEnviromentalObject;
+    public int _possibleEnviromentalObjectId;
 
     //The position wher the _possibleEnviromentalObjects will be spawned.
     public Transform _possibleEnviromentalPosHolder;

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Unity.Netcode;
 using UnityEngine;
+
 
 public class TribeSelecter : NetworkBehaviour
 {

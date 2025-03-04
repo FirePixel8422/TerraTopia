@@ -4,7 +4,7 @@ using UnityEngine;
 
 public struct CastlePosGenerator
 {
-    public CastlePosGenerator(Dictionary<Vector2, GameObject> tiles, int seed, int playerCount, int width, int length, GameObject castlePrefab)
+    public CastlePosGenerator(Dictionary<Vector2, GameObject> tiles, int seed, int playerCount, int width, int length, int castlePrefabId)
     {
         System.Random rng = new System.Random(seed);
         Dictionary<int, Vector2Int> playerCastlePositions = new Dictionary<int, Vector2Int>();
@@ -80,7 +80,7 @@ public struct CastlePosGenerator
         {
             var castleTile = tiles.FirstOrDefault(a => a.Value.transform.position == new Vector3(pos.x, a.Value.transform.position.y, pos.y));
             if (castleTile.Value != null && castleTile.Value.TryGetComponent(out TileBase tb))
-                tb.AssignObject(castlePrefab);
+                tb.AssignObject(castlePrefabId);
         }
     }
 }

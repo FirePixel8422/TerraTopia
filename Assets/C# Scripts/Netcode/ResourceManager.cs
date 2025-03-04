@@ -109,7 +109,7 @@ public class ResourceManager : NetworkBehaviour
     /// <summary>
     /// Subtract the materialcost values from current materials
     /// </summary>
-    public static void BuildAndPayForBuilding(BuildingCosts buildingCosts, GameObject buildingToPlace, TileBase tileToPlaceOn)
+    public static void BuildAndPayForBuilding(BuildingCosts buildingCosts, int buildingToPlaceId, TileBase tileToPlaceOn)
     {
         int localGameId = ClientManager.LocalClientGameId;
 
@@ -126,7 +126,7 @@ public class ResourceManager : NetworkBehaviour
 
 
 
-        tileToPlaceOn.AssignObject(buildingToPlace);
+        tileToPlaceOn.AssignObject(buildingToPlaceId);
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

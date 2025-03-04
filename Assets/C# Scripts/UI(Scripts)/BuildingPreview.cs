@@ -7,7 +7,7 @@ public class BuildingPreview : MonoBehaviour
 {
     public BuildingHandler buildingHandler;
     public Image previewImage;
-    public GameObject tileObject;
+    public int tileObjectId;
 
     //The materials needed to buy the building
     public BuildingCosts buildingCosts;
@@ -21,7 +21,7 @@ public class BuildingPreview : MonoBehaviour
             {
                 if (!tile.isHoldingObject)
                 {
-                    ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObject, tile);
+                    ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObjectId, tile);
                 }
                 else
                 {

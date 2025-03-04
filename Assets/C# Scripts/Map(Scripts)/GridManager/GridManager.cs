@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 
 
 [BurstCompile]
 public class GridManager : NetworkBehaviour
 {
+    public static GridManager Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
+
     private static Dictionary<Vector2, GameObject> _tiles;
     private static Dictionary<Vector2, GameObject> _clouds;
 
@@ -18,7 +25,7 @@ public class GridManager : NetworkBehaviour
     [Tooltip("If left at 0 it will generate a random seed")]
     [SerializeField] private int _seed;
     [SerializeField] private NoiseData _noiseData;
-    [SerializeField] private GameObject _castlePrefab;
+    [SerializeField] private int _castlePrefabId;
     [SerializeField] private GameObject cloudPrefab;
 
 
@@ -32,17 +39,29 @@ public class GridManager : NetworkBehaviour
     [Header("Player Values")]
     [SerializeField] private int playerCount;
 
+    public TileObjectLibrarySO tileObjectsData;
 
 
-    //public override void OnNetworkSpawn()
+
+    public override void OnNetworkSpawn()
+    {
+        GenerateGrid(playerCount);
+
+        if (IsServer)
+        {
+            for (int i = 0; i < tileObjectsData.tileObjects.Length; i++)
+            {
+                TileObjectPrefabManager.Add(tileObjectsData.tileObjects[i]);
+            }
+
+            SpawnMapAssets_OnServer();
+        }
+    }
+
+    //private void Start()
     //{
     //    GenerateGrid(playerCount);
     //}
-
-    private void Start()
-    {
-        GenerateGrid(playerCount);
-    }
 
     [BurstCompile]
     private void GenerateGrid(int playerCount)
@@ -59,11 +78,29 @@ public class GridManager : NetworkBehaviour
         //Generates the tiles, without any non-grid logic
         new TileGenerator(_noiseData, _width, _length, _seed, transform, cloudPrefab, out _tiles, out _clouds);
 
+    }
+
+    private void SpawnMapAssets_OnServer()
+    {
         //Generates a castle based on the grid
-        new CastlePosGenerator(_tiles, _seed, playerCount, _width, _length, _castlePrefab);
+        new CastlePosGenerator(_tiles, _seed, playerCount, _width, _length, _castlePrefabId);
 
         //Adds supported enviromentel assets assigned within the unity inspector onto the previously created grid of tiles
         new EnviromentGenerator(_tiles, _seed);
+    }
+
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SpawnObject_ServerRPC(Vector3 spawnPos, Quaternion spawnRot, int objToSetId, bool randomRot = false)
+    {
+        if (randomRot)
+        {
+            spawnRot = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));
+        }
+
+        GameObject spawnedObj = Instantiate(TileObjectPrefabManager.GetValue(objToSetId), spawnPos, spawnRot, transform);
+
+        spawnedObj.GetComponent<NetworkObject>().Spawn(true);
     }
 
 

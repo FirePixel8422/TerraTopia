@@ -3,7 +3,6 @@ using Unity.Netcode;
 using UnityEngine;
 
 
-
 public class ClientManager : NetworkBehaviour
 {
     public static ClientManager Instance;

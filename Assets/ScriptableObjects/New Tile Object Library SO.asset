@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0abe358d003c8d94db35abcf75e41a26, type: 3}
+  m_Name: New Tile Object Library SO
+  m_EditorClassIdentifier: 
+  tileObjects:
+  - {fileID: 6454596518570392124, guid: 5514739dad7ec264582a112c7e7ffeff, type: 3}
+  - {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140, type: 3}
+  - {fileID: 1214595190187480106, guid: 2cf1d3e5830b01848960caf23c718e09, type: 3}
+  - {fileID: 2780841821492536028, guid: 3913d5c39ee3c1140a49b9681922f6c9, type: 3}
+  - {fileID: 5184699275576898796, guid: c3618583806cccd498a1b6f31b03dc0d, type: 3}
+  - {fileID: 8444563810510441905, guid: 28880008088f09343aeca587cd6e4a85, type: 3}
+  - {fileID: 5184699275576898796, guid: 7cfed7147e888ad478619ddafd3a6669, type: 3}

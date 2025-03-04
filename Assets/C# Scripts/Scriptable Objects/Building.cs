@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/Building")]
 public class Building : ScriptableObject
 {
-    public GameObject buildingGO;
+    public int buildingGOId;
 
     public Sprite buildingSprite;
 

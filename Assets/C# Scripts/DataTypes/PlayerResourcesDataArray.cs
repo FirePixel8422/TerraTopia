@@ -3,7 +3,6 @@ using Unity.Netcode;
 using UnityEngine;
 
 
-
 [System.Serializable]
 [Tooltip("Netcode friendly array to store resources")]
 [BurstCompile]
