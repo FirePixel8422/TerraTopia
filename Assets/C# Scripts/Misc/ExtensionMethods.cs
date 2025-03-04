@@ -2,7 +2,7 @@
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-
+using DG.Tweening;
 
 public static class ExtensionMethods
 {
@@ -140,32 +140,6 @@ public static class ExtensionMethods
 
     #endregion
 
-    public static IEnumerator ShakeObject(this Transform trans, float duration, float magnitude)
-    {
-        Vector3 originalPosition = trans.position;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            float xOffset = UnityEngine.Random.Range(-magnitude, magnitude);
-            float yOffset = UnityEngine.Random.Range(-magnitude, magnitude);
-            Vector3 targetPosition = originalPosition + new Vector3(xOffset, yOffset, 0f);
-
-            float lerpSpeed = Mathf.Clamp01(elapsedTime / duration); 
-            trans.position = Vector3.Lerp(trans.position, targetPosition, lerpSpeed);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        while (Vector3.Distance(trans.position, originalPosition) > 0.01f)
-        {
-            trans.position = Vector3.Lerp(trans.position, originalPosition, Time.deltaTime * 10f);
-            yield return null;
-        }
-
-        trans.position = originalPosition;
-    }
 
 }
 

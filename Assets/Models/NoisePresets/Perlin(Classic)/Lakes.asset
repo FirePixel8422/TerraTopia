@@ -18,6 +18,7 @@ MonoBehaviour:
   _persistence: 0.5
   _resolution: 1
   tileHeightMultiplier: 3
+  cloudHeight: 0
   _possibleTiles:
   - tileGO: {fileID: 894428359449449459, guid: 95861bc25dabbd54a84812738c70f72d, type: 3}
     weight: 0.1

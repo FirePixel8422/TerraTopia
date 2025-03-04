@@ -92,7 +92,7 @@ public class ResourceManager : NetworkBehaviour
     /// CHeck if you can afford this building by comparing buildingCosts with current materials
     /// </summary>
     /// <returns>wheater you can afford to build this building</returns>
-    public static bool CanBuild(BuildingCosts buildingCosts)
+    public static bool CanAfford(BuildingCosts buildingCosts)
     {
         int localGameId = ClientManager.LocalClientGameId;
 

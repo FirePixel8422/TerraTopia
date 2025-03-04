@@ -152,8 +152,53 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1849222574}
+  - {fileID: 1331445229}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1331445228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1331445229}
+  - component: {fileID: 1331445230}
+  m_Layer: 0
+  m_Name: Devtools
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1331445229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331445228}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1207274556}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1331445230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331445228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a9fbae50e107104fbbb6a700c281041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1341997048
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,13 +363,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seed: 0
-  _noiseData: {fileID: 11400000, guid: 14464b93d748935469a576817737a04f, type: 2}
+  _noiseData: {fileID: 11400000, guid: 4c18875da0305624daad3b023bd09157, type: 2}
   _castlePrefab: {fileID: 919132149155446097, guid: fe2c52ea073defc478e9245b106b2987,
     type: 3}
   cloudPrefab: {fileID: 919132149155446097, guid: f74318a1553978e45a5f242ec71fda96,
     type: 3}
-  _width: 50
-  _length: 50
+  _width: 40
+  _length: 40
   playerCount: 4
   cloudSpeed: 0.05
 --- !u!114 &1849222576
@@ -405,6 +450,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5137690611392870935, guid: 21da8939707beda40b84d11e86a56b83,
+        type: 3}
+      propertyPath: _shouldSyncHoverObject
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8321866203795742933, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}

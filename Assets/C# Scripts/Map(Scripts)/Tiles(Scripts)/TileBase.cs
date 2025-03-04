@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using DG.Tweening;
 public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 {
     [Tooltip("Whether a castle can be placed on this tile or not")]
@@ -16,23 +17,25 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
     [SerializeField] private Transform _enviromentalObjectPosHolder;
 
-    [SerializeField] bool isHoldingObject;
+    public bool isHoldingObject { private set; get; }
 
     public Transform hoverObjectHolder { get => transform; set => gameObject.AddComponent<Transform>(); }
     [SerializeField] private List<Building> buildings;
 
-
+    [SerializeField] private float shakeStrength = 0.1f;
 
 
     private void OnEnable()
     {
         GridManager.DestroyCloud(transform.position.ToVector2());
+
+        if(shakeStrength == 0) { shakeStrength = 0.1f; }
     }
 
 
     public virtual void OnClick()
     {
-        StartCoroutine(transform.ShakeObject(0.25f, 0.1f));
+        transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1);
     }
 
     public virtual void OnHover(Transform _hoverObject)
@@ -47,6 +50,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
             return IBuildable.CombineLists(buildings, _currentHeldEnviromentalObject.AvailableBuildings());
         }
     }
+    #region Assigning/Spawning new objects
     private void SpawnObject(Transform spawnPos, GameObject objToSpawn)
     {
         if (Instantiate(objToSpawn, spawnPos.position, spawnPos.transform.rotation, transform).TryGetComponent(out TileObject tile))
@@ -101,5 +105,6 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
             print("Object already contains an enviromental object");
         }
     }
+    #endregion
 }
 

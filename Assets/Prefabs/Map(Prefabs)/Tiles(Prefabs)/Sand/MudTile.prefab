@@ -109,8 +109,8 @@ MonoBehaviour:
   _possibleEnviromentalObjects: []
   _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}
-  isHoldingObject: 0
   buildings: []
+  shakeStrength: 0
 --- !u!65 &-2247587956606480743
 BoxCollider:
   m_ObjectHideFlags: 0

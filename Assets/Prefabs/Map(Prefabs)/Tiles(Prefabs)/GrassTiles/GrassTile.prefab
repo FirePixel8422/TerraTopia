@@ -113,16 +113,16 @@ MonoBehaviour:
   canHoldCastle: 1
   _perlinHeight: 0
   _possibleEnviromentalObjects:
-  - _possibleEnviromentalObject: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
+  - _possibleEnviromentalObject: {fileID: 6935653751486517633, guid: 4fb0771b3852550498b345af6b9aa211,
       type: 3}
     _possibleEnviromentalPosHolder: {fileID: 514102458091653449}
     weight: 50
-    randomRotation: 0
+    randomRotation: 1
   _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}
-  isHoldingObject: 0
   buildings:
   - {fileID: 11400000, guid: 98809c190f3257e47a3d2e9c3e4e8b9d, type: 2}
+  shakeStrength: 0
 --- !u!65 &3586925054900546492
 BoxCollider:
   m_ObjectHideFlags: 0

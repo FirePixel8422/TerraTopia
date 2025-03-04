@@ -14,16 +14,28 @@ public class BuildingPreview : MonoBehaviour
 
     public void OnBuyButtonClicked()
     {
-        if (ResourceManager.CanBuild(buildingCosts))
+        print("ButtonHasBeenClicked");
+        if (ResourceManager.CanAfford(buildingCosts))
         {
             if (PlayerInput.Instance.currentBuildingTile.TryGetComponent(out TileBase tile))
             {
-                ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObject, tile);
+                if (!tile.isHoldingObject)
+                {
+                    ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObject, tile);
+                }
+                else
+                {
+                    print("Tile already holds an object");
+                }
             }
             else
             {
                 print("CurrentBuildingTile does  not contain a TileBase script");
             }
+        }
+        else
+        {
+            print("Player cannot afford this building");
         }
     }
 }

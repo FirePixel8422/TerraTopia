@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.UI;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -14,12 +15,17 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private BuildingHandler _buildingHandler;
 
     public GameObject lastHitObject { get; private set; }
+
+    public GameObject selectedObject { get; private set; }
     public GameObject currentBuildingTile { get; private set; }
+
+    private GraphicRaycaster gfxRayCaster;
 
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
+        gfxRayCaster = FindObjectOfType<GraphicRaycaster>(true);
     }
     private void Start()
     {
@@ -29,6 +35,9 @@ public class PlayerInput : MonoBehaviour
     }
     public void OnMouseMove(InputAction.CallbackContext ctx)
     {
+        //Check whether or not the cursor is hovering over any source of UI to prevent sending raycasts
+        if (IsHoveringOverUI()) { return; }
+
         //Raycast before any checks to make sure they use the updated gameobject and not the previous one
         Raycast();
 
@@ -49,6 +58,20 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    private bool IsHoveringOverUI()
+    {
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+        pointerEventData.position = Input.mousePosition;
+
+        var results = new List<RaycastResult>();
+        gfxRayCaster.Raycast(pointerEventData, results);
+
+        if (results.Count > 0)
+        {
+            return true;
+        }
+        return false;
+    }
     private void CheckForHoverable()
     {
         if (lastHitObject == null) { _hoverObject.SetActive(false); return; }
@@ -75,19 +98,29 @@ public class PlayerInput : MonoBehaviour
         if (lastHitObject == null || ctx.performed == false) return;
 
         if (lastHitObject == null) return;
+        selectedObject = lastHitObject;
 
-
-        if (lastHitObject.TryGetComponent(out IOnClickable IOC))
+        if (selectedObject.TryGetComponent(out IOnClickable IOC))
         {
             IOC.OnClick();
         }
 
-        if (EventSystem.current.IsPointerOverGameObject()) { return; }
-
-        if (lastHitObject.TryGetComponent(out IBuildable IB))
+        if (selectedObject.TryGetComponent(out IBuildable IB))
         {
+            // First, check if the object has any available buildings
+            List<Building> buildings = IB.AvailableBuildings();
+            if (EventSystem.current.IsPointerOverGameObject()) { return; }
+
+            // Hide the building panel if no buildings are available
+            if (buildings.Count == 0)
+            {
+                _buildingHandler.HideBuildingPanel();
+                return;
+            }
+
             if (currentBuildingTile == null) { currentBuildingTile = gameObject; }
-            if (lastHitObject.GetInstanceID() == currentBuildingTile.GetInstanceID())
+
+            if (selectedObject.GetInstanceID() == currentBuildingTile.GetInstanceID())
             {
                 _buildingHandler.HideBuildingPanel();
                 currentBuildingTile = null;
@@ -95,8 +128,14 @@ public class PlayerInput : MonoBehaviour
             else
             {
                 _buildingHandler.ShowBuildingPanel(IB);
-                currentBuildingTile = lastHitObject;
+                currentBuildingTile = selectedObject;
             }
         }
+        else
+        {
+            // If it's not a buildable object, hide the building panel
+            _buildingHandler.HideBuildingPanel();
+        }
     }
+
 }

@@ -17,7 +17,8 @@ MonoBehaviour:
   _lacunarity: 2
   _persistence: 0.5
   _resolution: 1
-  tileHeightMultiplier: 5
+  tileHeightMultiplier: 4
+  cloudHeight: 0
   _possibleTiles:
   - tileGO: {fileID: 894428359449449459, guid: ddd76b79ee5a42b4295800186a830422, type: 3}
     weight: 0.2
@@ -25,7 +26,7 @@ MonoBehaviour:
   - tileGO: {fileID: 894428359449449459, guid: accd6caa79f5cc243a6e448443fab984, type: 3}
     weight: 0.5
     constHeight: 0
-  - tileGO: {fileID: 894428359449449459, guid: 5a84f309dddee324484abe746e503b1a, type: 3}
+  - tileGO: {fileID: 894428359449449459, guid: e4a7c87dd1cdb924cb7d816da4c05b89, type: 3}
     weight: 0.7
     constHeight: 0
   - tileGO: {fileID: 894428359449449459, guid: 46ed1b539ac7ff548bb02ddd679ac7e9, type: 3}
