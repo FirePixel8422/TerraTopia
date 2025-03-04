@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Netcode;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 
@@ -91,22 +92,45 @@ public class GridManager : NetworkBehaviour
 
 
     [ServerRpc(RequireOwnership = false)]
-    public void SpawnObject_ServerRPC(Vector3 spawnPos, Quaternion spawnRot, int objToSetId, bool randomRot = false)
+    public void SpawnObject_ServerRPC(Vector3 spawnPos, Quaternion spawnRot, int objToSetId, bool activateImmediately, bool randomRot = false)
     {
         if (randomRot)
         {
             spawnRot = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));
         }
 
-        GameObject spawnedObj = Instantiate(TileObjectPrefabManager.GetValue(objToSetId), spawnPos, spawnRot, transform);
+        NetworkObject spawnedObj = Instantiate(TileObjectPrefabManager.GetValue(objToSetId), spawnPos, spawnRot).GetComponent<NetworkObject>();
 
-        spawnedObj.GetComponent<NetworkObject>().Spawn(true);
+        spawnedObj.Spawn(true);
+
+
+        SetupTileObject_ClientRPC(spawnPos.ToVector2(), spawnedObj.NetworkObjectId, activateImmediately);
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    private void SetupTileObject_ClientRPC(Vector2 tilePos, ulong networkObjectId, bool activateImmediately)
+    {
+        if (TryGetTileByPos(tilePos, out GameObject tile))
+        {
+            tile.GetComponent<TileBase>().SetObject(networkObjectId, activateImmediately);
+        }
     }
 
 
     public static bool TryGetTileByPos(Vector2 tilePos, out GameObject tile)
     {
         if (_tiles.TryGetValue(tilePos, out tile))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public static bool DoesCloudExist(Vector2 tilePos)
+    {
+        if (_clouds.TryGetValue(tilePos, out _))
         {
             return true;
         }
@@ -135,11 +159,10 @@ public class GridManager : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && cloudsToggled == false)
         {
             cloudsToggled = true;
-
-            foreach (KeyValuePair<Vector2, GameObject> cloud in _tiles)
+            print(_tiles.Count);
+            foreach (KeyValuePair<Vector2, GameObject> tile in _tiles)
             {
-                cloud.Value.SetActive(true);
-
+                tile.Value.SetActive(true);
             }
             //StartCoroutine(FancyClouds());
         }

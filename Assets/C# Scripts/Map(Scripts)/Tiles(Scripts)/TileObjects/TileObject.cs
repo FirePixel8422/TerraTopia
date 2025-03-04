@@ -10,4 +10,13 @@ public class TileObject : NetworkBehaviour, IBuildable
     {
         return buildings;
     }
+
+
+    public void Initialize(bool activateImmediately)
+    {
+        if (!GridManager.DoesCloudExist(transform.position.ToVector2()))
+        {
+            gameObject.SetActive(activateImmediately);
+        }
+    }
 }

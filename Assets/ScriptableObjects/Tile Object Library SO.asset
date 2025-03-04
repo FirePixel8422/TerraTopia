@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0abe358d003c8d94db35abcf75e41a26, type: 3}
-  m_Name: New Tile Object Library SO
+  m_Name: Tile Object Library SO
   m_EditorClassIdentifier: 
   tileObjects:
   - {fileID: 6454596518570392124, guid: 5514739dad7ec264582a112c7e7ffeff, type: 3}
@@ -20,3 +20,4 @@ MonoBehaviour:
   - {fileID: 5184699275576898796, guid: c3618583806cccd498a1b6f31b03dc0d, type: 3}
   - {fileID: 8444563810510441905, guid: 28880008088f09343aeca587cd6e4a85, type: 3}
   - {fileID: 5184699275576898796, guid: 7cfed7147e888ad478619ddafd3a6669, type: 3}
+  - {fileID: 856720043086961633, guid: cc9623af8f87404438ce183f9bb6a0b6, type: 3}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using DG.Tweening;
+using Unity.Netcode;
 public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 {
     [Tooltip("Whether a castle can be placed on this tile or not")]
@@ -27,15 +28,18 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
     private void OnEnable()
     {
+        if(_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.gameObject.SetActive(true); }
+
         GridManager.DestroyCloud(transform.position.ToVector2());
 
-        if(shakeStrength == 0) { shakeStrength = 0.1f; }
+        if (shakeStrength == 0) { shakeStrength = 0.1f; }
     }
 
 
     public virtual void OnClick()
     {
         transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1);
+        if (_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
     }
 
     public virtual void OnHover(Transform _hoverObject)
@@ -50,12 +54,16 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
             return IBuildable.CombineLists(buildings, _currentHeldEnviromentalObject.AvailableBuildings());
         }
     }
+
+
     #region Assigning/Spawning new objects
-    public void SetObject(GameObject objToSet)
+
+    public void SetObject(ulong networkObjectId, bool activateImmediately)
     {
-        if (objToSet.TryGetComponent(out TileObject tile))
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId].TryGetComponent(out TileObject tile))
         {
             _currentHeldEnviromentalObject = tile;
+            tile.Initialize(activateImmediately);
         }
 
         isHoldingObject = true;
@@ -63,8 +71,9 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
 
 
-    public virtual void AssignObject(EnviromentalItemData enviromentalObject)
+    public virtual void AssignObject(EnviromentalItemData enviromentalObject, bool activateImmediately)
     {
+        _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
         if (!enviromentalObject._possibleEnviromentalPosHolder)
         {
             print("No position to spawn enviromental Object. process ended");
@@ -77,12 +86,12 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         }
         else
         {
-            GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, enviromentalObject.randomRotation);
+            GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, activateImmediately, enviromentalObject.randomRotation);
             isHoldingObject = true;
         }
     }
 
-    public virtual void AssignObject(int enviromentalObjectId)
+    public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
 
@@ -98,9 +107,9 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         }
         else
         {
-            GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId);
+            GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately);
         }
     }
     #endregion
-}
+} 
 

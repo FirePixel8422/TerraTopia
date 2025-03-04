@@ -126,7 +126,7 @@ public class ResourceManager : NetworkBehaviour
 
 
 
-        tileToPlaceOn.AssignObject(buildingToPlaceId);
+        tileToPlaceOn.AssignObject(buildingToPlaceId, true);
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

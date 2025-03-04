@@ -13,7 +13,7 @@ public struct EnviromentGenerator
             {
                 if (CanChooseEnviromentalObject(selectedTile, out EnviromentalItemData enviromentalObject))
                 {
-                    selectedTile.AssignObject(enviromentalObject);
+                    selectedTile.AssignObject(enviromentalObject, false);
                 }
             }
         }

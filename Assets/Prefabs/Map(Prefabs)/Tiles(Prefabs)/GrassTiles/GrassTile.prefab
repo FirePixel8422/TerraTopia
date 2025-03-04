@@ -113,10 +113,9 @@ MonoBehaviour:
   canHoldCastle: 1
   _perlinHeight: 0
   _possibleEnviromentalObjects:
-  - _possibleEnviromentalObject: {fileID: 6935653751486517633, guid: 4fb0771b3852550498b345af6b9aa211,
-      type: 3}
+  - _possibleEnviromentalObjectId: 1
     _possibleEnviromentalPosHolder: {fileID: 514102458091653449}
-    weight: 50
+    weight: 15
     randomRotation: 1
   _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 0}

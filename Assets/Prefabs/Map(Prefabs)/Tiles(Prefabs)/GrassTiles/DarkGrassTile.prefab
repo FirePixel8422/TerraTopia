@@ -121,10 +121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canHoldCastle: 1
-  _perlinHeight: 0
+  _perlinHeight: 1
   _possibleEnviromentalObjects:
-  - _possibleEnviromentalObject: {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140,
-      type: 3}
+  - _possibleEnviromentalObjectId: 1
     _possibleEnviromentalPosHolder: {fileID: 514102458091653449}
     weight: 50
     randomRotation: 1

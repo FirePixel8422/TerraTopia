@@ -10,6 +10,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c18a7a9212bc5054297f1e29843199ab,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c18a7a9212bc5054297f1e29843199ab,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c18a7a9212bc5054297f1e29843199ab,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c18a7a9212bc5054297f1e29843199ab,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 50.74223
       objectReference: {fileID: 0}
@@ -66,7 +81,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c18a7a9212bc5054297f1e29843199ab,
         type: 3}
       propertyPath: m_Name
-      value: Fish
+      value: Whale
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c18a7a9212bc5054297f1e29843199ab,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -75,7 +95,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c18a7a9212bc5054297f1e29843199ab,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1950672061563022292}
+      addedObject: {fileID: 837220110097337471}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c18a7a9212bc5054297f1e29843199ab,
         type: 3}
       insertIndex: -1
@@ -87,7 +107,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5418579482605865405}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1950672061563022292
+--- !u!114 &837220110097337471
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1928934300
+  GlobalObjectIdHash: 4126662877
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

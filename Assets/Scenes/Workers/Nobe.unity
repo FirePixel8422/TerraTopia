@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seed: 0
-  _noiseData: {fileID: 11400000, guid: 4c18875da0305624daad3b023bd09157, type: 2}
+  _noiseData: {fileID: 11400000, guid: 14464b93d748935469a576817737a04f, type: 2}
   _castlePrefabId: 0
   cloudPrefab: {fileID: 919132149155446097, guid: f74318a1553978e45a5f242ec71fda96,
     type: 3}
