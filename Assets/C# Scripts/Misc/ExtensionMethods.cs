@@ -212,7 +212,7 @@ public static class VectorLogic
     /// Turn 2d vector into 3d vector
     /// </summary>
     /// <returns>The Vector as 3d Vector3 (sets y to 0)</returns>
-    public static Vector2 ToVector3(this Vector2 value)
+    public static Vector3 ToVector3(this Vector2 value)
     {
         return new Vector3(value.x, 0, value.y);
     }
@@ -225,6 +225,15 @@ public static class VectorLogic
     {
         return new Vector3(value.x, yValue, value.y);
     }
+
+    /// <summary>
+    /// Turn float3 into 3d vector
+    /// </summary>
+    /// <returns>The Vector3</returns>
+    public static Vector3 ToVector3(this float3 value)
+    {
+        return new Vector3(value.x, value.y, value.z);
+    }
 }
 
 
@@ -232,7 +241,22 @@ public static class MathematicsLogic
 {
     public static float DistanceFrom(this float3 value, float3 toSubtract)
     {
-        float3 difference = value = toSubtract;
+        float3 difference = value - toSubtract;
+        return math.abs(difference.x) + math.abs(difference.y) + math.abs(difference.z);
+    }
+
+    /// <summary>
+    /// Turn float3 into 2d vector
+    /// </summary>
+    /// <returns>The Vector as 2d Vector2 (sets y to 0)</returns>
+    public static Vector2 ToVector2(this float3 value)
+    {
+        return new Vector2(value.x, value.z);
+    }
+
+    public static int DistanceFrom(this int3 value, int3 toSubtract)
+    {
+        int3 difference = value - toSubtract;
         return math.abs(difference.x) + math.abs(difference.y) + math.abs(difference.z);
     }
 }

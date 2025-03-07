@@ -9,6 +9,9 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     [Tooltip("Whether a castle can be placed on this tile or not")]
     public bool canHoldCastle;
 
+    [Tooltip("In whos city is this tile")]
+    public int ownedByPlayerGameId = -1;
+
 
     public float _perlinHeight;
 

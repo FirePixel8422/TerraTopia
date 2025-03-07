@@ -4,21 +4,21 @@ using UnityEngine;
 
 public struct CastlePosGenerator
 {
-    public CastlePosGenerator(Dictionary<Vector2, GameObject> tiles, int seed, int playerCount, int width, int length, int castlePrefabId)
+    public CastlePosGenerator(Dictionary<Vector2, TileBase> tiles, int seed, int playerCount, int width, int length, int castlePrefabId)
     {
         System.Random rng = new System.Random(seed);
         Dictionary<int, Vector2Int> playerCastlePositions = new Dictionary<int, Vector2Int>();
         Dictionary<Vector2Int, GameObject> tileMap = new Dictionary<Vector2Int, GameObject>();
 
 
-        foreach (GameObject tile in tiles.Values)
+        foreach (TileBase tile in tiles.Values)
         {
             Vector2Int position = new Vector2Int(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.z));
 
-            TileBase tileBase = tile.GetComponent<TileBase>();
+            TileBase tileBase = tile;
             if (tileBase != null && tileBase.canHoldCastle)
             {
-                tileMap[position] = tile;
+                tileMap[position] = tile.gameObject;
             }
         }
 

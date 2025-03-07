@@ -4,17 +4,16 @@ using UnityEngine;
 
 public struct EnviromentGenerator 
 {
-    public EnviromentGenerator(Dictionary<Vector2, GameObject> tiles, int seed)
+    public EnviromentGenerator(Dictionary<Vector2, TileBase> tiles, int seed)
     {
         System.Random prng = new System.Random(seed);
         foreach (var tile in tiles)
         {
-            if (tile.Value.TryGetComponent(out TileBase selectedTile))
+            TileBase selectedTile = tile.Value;
+
+            if (CanChooseEnviromentalObject(selectedTile, out EnviromentalItemData enviromentalObject))
             {
-                if (CanChooseEnviromentalObject(selectedTile, out EnviromentalItemData enviromentalObject))
-                {
-                    selectedTile.AssignObject(enviromentalObject, false);
-                }
+                selectedTile.AssignObject(enviromentalObject, false);
             }
         }
 

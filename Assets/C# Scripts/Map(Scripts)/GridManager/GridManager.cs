@@ -18,7 +18,7 @@ public class GridManager : NetworkBehaviour
 
 
 
-    private static Dictionary<Vector2, GameObject> _tiles;
+    private static Dictionary<Vector2, TileBase> _tiles;
     private static Dictionary<Vector2, GameObject> _clouds;
 
 
@@ -109,14 +109,14 @@ public class GridManager : NetworkBehaviour
     [ClientRpc(RequireOwnership = false)]
     private void SetupTileObject_ClientRPC(Vector2 tilePos, ulong networkObjectId, bool activateImmediately)
     {
-        if (TryGetTileByPos(tilePos, out GameObject tile))
+        if (TryGetTileByPos(tilePos, out TileBase tile))
         {
             tile.GetComponent<TileBase>().SetObject(networkObjectId, activateImmediately);
         }
     }
 
 
-    public static bool TryGetTileByPos(Vector2 tilePos, out GameObject tile)
+    public static bool TryGetTileByPos(Vector2 tilePos, out TileBase tile)
     {
         if (_tiles.TryGetValue(tilePos, out tile))
         {
@@ -159,9 +159,9 @@ public class GridManager : NetworkBehaviour
         {
             cloudsToggled = true;
 
-            foreach (KeyValuePair<Vector2, GameObject> tile in _tiles)
+            foreach (KeyValuePair<Vector2, TileBase> tile in _tiles)
             {
-                tile.Value.SetActive(true);
+                tile.Value.gameObject.SetActive(true);
             }
             //StartCoroutine(FancyClouds());
         }
@@ -171,9 +171,9 @@ public class GridManager : NetworkBehaviour
 
     private IEnumerator FancyClouds()
     {
-        foreach (KeyValuePair<Vector2, GameObject> cloud in _tiles)
+        foreach (KeyValuePair<Vector2, TileBase> tile in _tiles)
         {
-            cloud.Value.SetActive(true);
+            tile.Value.gameObject.SetActive(true);
 
             yield return new WaitForSeconds(cloudSpeed);
         }
