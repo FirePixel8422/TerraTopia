@@ -8,8 +8,9 @@ using UnityEngine.EventSystems;
 public class NavButton : MonoBehaviour, IPointerClickHandler
 {
     [Space(15)]
-
+    [SerializeField]
     public UnityEvent OnClick;
+    [SerializeField]
     public UnityEvent OnConfirm;
 
     private Action<int> OnClickNavManagerCallback;
