@@ -9,6 +9,7 @@ public class UnitBase : NetworkBehaviour
     public int unitId;
 
     [SerializeField] private Renderer colorRenderer;
+    public Transform headTransform;
 
 
     

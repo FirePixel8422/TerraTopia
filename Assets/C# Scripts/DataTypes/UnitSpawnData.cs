@@ -8,7 +8,8 @@ using UnityEngine;
 [System.Serializable]
 public class UnitSpawnData
 {
-    public UnitBase prefab;
+    public UnitBase body;
+    public GameObject head;
 
     public Material[] colorMaterials;
 }

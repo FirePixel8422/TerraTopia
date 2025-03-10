@@ -29,7 +29,10 @@ public struct TileGenerator
             GameObject tileObj = Object.Instantiate(tiles[i].Item1.tileGO, new Vector3(tiles[i].Item2.x, tileHeight, tiles[i].Item2.y), Quaternion.identity, parent);
             GameObject cloudObj = Object.Instantiate(cloudPrefab, new Vector3(tiles[i].Item2.x, noiseData.cloudHeight, tiles[i].Item2.y), Quaternion.identity, parent);
 
-            tilesToReturn.Add(tiles[i].Item2, tileObj.GetComponent<TileBase>());
+            TileBase tileBase = tileObj.GetComponent<TileBase>();
+            tileBase.ownedByPlayerGameId = -1;
+
+            tilesToReturn.Add(tiles[i].Item2, tileBase);
             cloudsToReturn.Add(tiles[i].Item2, cloudObj);
 
 

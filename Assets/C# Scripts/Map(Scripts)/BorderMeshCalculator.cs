@@ -11,9 +11,9 @@ using UnityEngine.Jobs;
 [BurstCompile]
 public static class BorderMeshCalculator
 {
-    public static void CreateBorderMesh(Mesh mesh, List<float3> tilePositionsInBorder)
+    public static void CreateBorderMesh(Mesh mesh, Vector3[] tilePositionsInBorder)
     {
-        int tilePositionsInBorderCount = tilePositionsInBorder.Count;
+        int tilePositionsInBorderCount = tilePositionsInBorder.Length;
 
         float3 tilePos;
         float3 neighbourPos;

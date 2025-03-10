@@ -24,9 +24,24 @@ public class NavButtonManager : MonoBehaviour
 
 
 
+    #region Setup Input Events And Button Animation Setup
 
-    private void Start()
+    /// <summary>
+    /// setup input events
+    /// </summary>
+    private void OnEnable()
     {
+        UIMoveInput.Enable();
+        UIConfirmInput.Enable();
+
+        UIMoveInput.performed += (InputAction.CallbackContext ctx) => OnMoveInput(ctx.ReadValue<Vector2>());
+        UIMoveInput.canceled += _ => lastInput = Vector2.zero;
+
+        UIConfirmInput.performed += _ => OnConfirmInput();
+
+
+
+
         buttonAnims = GetComponentsInChildren<NavButton>();
 
         for (int i = 0; i < buttonAnims.Length; i++)
@@ -36,37 +51,11 @@ public class NavButtonManager : MonoBehaviour
 
         buttonAnims[0].anim.SetTrigger("MoveError");
         buttonAnims[0].anim.SetBool("Selected", true);
-    }
 
-
-
-    #region Setup Input Events
-
-    private void OnEnable()
-    {
-        StartCoroutine(InputEnablementDelay());
-    }
-
-    private IEnumerator InputEnablementDelay()
-    {
-        yield return new WaitForEndOfFrame();
-        yield return null;
-
-        LateEnable();
-    }
-
-    /// <summary>
-    /// setup input events
-    /// </summary>
-    private void LateEnable()
-    {
-        UIMoveInput.Enable();
-        UIConfirmInput.Enable();
-
-        UIMoveInput.performed += (InputAction.CallbackContext ctx) => OnMoveInput(ctx.ReadValue<Vector2>());
-        UIMoveInput.canceled += _ => lastInput = Vector2.zero;
-
-        UIConfirmInput.performed += _ => OnConfirmInput();
+        for (int i = 1; i < buttonAnims.Length; i++)
+        {
+            buttonAnims[i].anim.SetBool("Selected", false);
+        }
     }
 
     /// <summary>

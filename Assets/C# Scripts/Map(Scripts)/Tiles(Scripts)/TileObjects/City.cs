@@ -13,7 +13,7 @@ public class City : TileObject
 
     [SerializeField] private MeshFilter borderMeshFilter;
 
-    [SerializeField] List<float3> borderTilePositions;
+    [SerializeField] List<Vector3> borderTilePositions;
 
 
     private int ownerClientGameId;
@@ -26,18 +26,6 @@ public class City : TileObject
         {
             ownerClientGameId = ClientManager.LocalClientGameId;
         }
-    }
-
-
-    [ContextMenu("Generate")]
-    public void GenerateBorder()
-    {
-        Stopwatch sw = Stopwatch.StartNew();
-
-        BorderMeshCalculator.CreateBorderMesh(borderMeshFilter.mesh, borderTilePositions);
-
-        sw.Stop();
-        print("Generating Border Took: " + sw.ElapsedMilliseconds + " ms and: " + sw.ElapsedTicks + " ticks");
     }
 
 
@@ -54,51 +42,62 @@ public class City : TileObject
         {
             borderSize += upgradeData.gainedBorderSize;
 
-            int tileCount = CalculateTileCount(borderSize);
-
-
-            // Loop over all tiles within the border range
-            for (int xOffset = -borderSize; xOffset <= borderSize; xOffset++)
-            {
-                for (int zOffset = -borderSize; zOffset <= borderSize; zOffset++)
-                {
-                    Vector2 tileGridPos = (transform.position + new Vector3(xOffset, 0, zOffset)).ToVector2();
-
-
-                    if (GridManager.TryGetTileByPos(tileGridPos, out TileBase tile))
-                    {
-                        float3 tilePos = tile.transform.position;
-
-                        if (borderTilePositions.Contains(tilePos) == false && tile.ownedByPlayerGameId == -1)
-                        {
-                            borderTilePositions.Add(tilePos);
-                        }
-                    }
-                }
-            }
-
-            ExpandCityBorder_ClientRPC();
+            RecalculateBorderMesh_ServerRPC();
         }
 
         level += 1;
     }
 
-    /// <summary>
-    /// Get Tilecount from 
-    /// </summary>
-    private int CalculateTileCount(int range)
+
+    [ServerRpc(RequireOwnership = false)]
+    private void RecalculateBorderMesh_ServerRPC(ulong clientId = ulong.MaxValue)
     {
-        // Formula: (2 * range + 1) ^ 2
-        return (2 * range + 1) * (2 * range + 1);
+        // Loop over all tiles within the border range
+        for (int xOffset = -borderSize; xOffset <= borderSize; xOffset++)
+        {
+            for (int zOffset = -borderSize; zOffset <= borderSize; zOffset++)
+            {
+                Vector2 tileGridPos = (transform.position + new Vector3(xOffset, 0, zOffset)).ToVector2();
+
+                print(tileGridPos);
+
+                if (GridManager.TryGetTileByPos(tileGridPos, out TileBase tile))
+                {
+                    print(tileGridPos);
+
+                    float3 tilePos = tile.transform.position;
+
+                    if (borderTilePositions.Contains(tilePos) == false && tile.ownedByPlayerGameId == -1)
+                    {
+                        tile.ownedByPlayerGameId = ownerClientGameId;
+
+                        borderTilePositions.Add(tilePos);
+                    }
+                }
+            }
+        }
+
+        ExpandCityBorder_ClientRPC(borderTilePositions.ToArray(), clientId);
     }
+
 
 
     [ClientRpc(RequireOwnership = false)]
-    private void ExpandCityBorder_ClientRPC()
+    private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, ulong clientId = ulong.MaxValue)
     {
+        if (clientId != ulong.MaxValue && clientId != NetworkManager.LocalClientId)
+        {
+            return;
+        }
+
         BorderMeshCalculator.CreateBorderMesh(borderMeshFilter.mesh, borderTilePositions);
     }
 
+
+    private void OnEnable()
+    {
+        RecalculateBorderMesh_ServerRPC(NetworkManager.LocalClientId);
+    }
 
 
 

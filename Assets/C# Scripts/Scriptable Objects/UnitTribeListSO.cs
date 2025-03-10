@@ -20,9 +20,9 @@ public class UnitTribeListSO : ScriptableObject
     {
         for (int i = 0; i < unitSpawnData.Length; i++)
         {
-            if (unitSpawnData[i].prefab != null)
+            if (unitSpawnData[i].body != null)
             {
-                unitSpawnData[i].prefab.unitId = i;
+                unitSpawnData[i].body.unitId = i;
             }
         }
     }

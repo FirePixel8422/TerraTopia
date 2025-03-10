@@ -174,7 +174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &48993727
 RectTransform:
   m_ObjectHideFlags: 0
@@ -267,8 +267,8 @@ MonoBehaviour:
     m_Flags: 0
   UIConfirmInput:
     m_Name: UI Confirm Input
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 61a312e1-a16f-49ae-b285-912a7c87b59e
     m_Processors: 
     m_Interactions: 
@@ -923,6 +923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 223460734}
+  - component: {fileID: 223460735}
   m_Layer: 5
   m_Name: Buttons
   m_TagString: Untagged
@@ -953,6 +954,90 @@ RectTransform:
   m_AnchoredPosition: {x: 262.02063, y: -263.18628}
   m_SizeDelta: {x: 500.1198, y: 699.6}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &223460735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223460733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce0e81a61f4c3845b553a3cd3ce024c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnConfirm:
+    m_PersistentCalls:
+      m_Calls: []
+  UIMoveInput:
+    m_Name: UI Move Input
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: 470b3ae3-061a-43cc-a30e-d1532c05cccf
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 0a76e08c-c38c-4aea-b001-066b7f9d90e2
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: UI Move Input
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 6afe41dc-40fa-45a1-b35c-02a8ffa1cdfd
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: UI Move Input
+      m_Flags: 8
+    - m_Name: down
+      m_Id: aad14d28-8a77-4d24-b739-1a7365fcc0c1
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: UI Move Input
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 020156cb-1953-4253-b16c-4b6ad87ef586
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: UI Move Input
+      m_Flags: 8
+    - m_Name: right
+      m_Id: ca7c9ece-2b2e-4722-aebc-cc6b1e9e3255
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: UI Move Input
+      m_Flags: 8
+    m_Flags: 0
+  UIConfirmInput:
+    m_Name: UI Confirm Input
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: fb71b14a-bb67-4dcb-a597-de915f232bcd
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 0611ba71-e476-4e9e-a493-b4829092976d
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: UI Confirm Input
+      m_Flags: 0
+    m_Flags: 0
+  buttonAnims: []
+  selectedButtonId: 0
+  lastInput: {x: 0, y: 0}
 --- !u!1 &271266072
 GameObject:
   m_ObjectHideFlags: 0
@@ -4365,6 +4450,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1781961299}
   m_CullTransparentMesh: 1
+--- !u!1 &1813647011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1813647014}
+  - component: {fileID: 1813647012}
+  - component: {fileID: 1813647013}
+  m_Layer: 0
+  m_Name: poppetje
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1813647012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813647011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3227217255
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &1813647013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813647011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c50ecbaec3bdb14a85c7a9fe2197871, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitId: 0
+  colorRenderer: {fileID: 0}
+--- !u!4 &1813647014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813647011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 937.17725, y: 422.55286, z: -2.1235662}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1991654008
 GameObject:
   m_ObjectHideFlags: 0
@@ -4575,7 +4728,6 @@ GameObject:
   - component: {fileID: 2058301356}
   - component: {fileID: 2058301355}
   - component: {fileID: 2058301354}
-  - component: {fileID: 2058301358}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4669,90 +4821,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &2058301358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2058301353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce0e81a61f4c3845b553a3cd3ce024c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnConfirm:
-    m_PersistentCalls:
-      m_Calls: []
-  UIMoveInput:
-    m_Name: UI Move Input
-    m_Type: 0
-    m_ExpectedControlType: Vector2
-    m_Id: 470b3ae3-061a-43cc-a30e-d1532c05cccf
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 2D Vector
-      m_Id: 0a76e08c-c38c-4aea-b001-066b7f9d90e2
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 4
-    - m_Name: up
-      m_Id: 6afe41dc-40fa-45a1-b35c-02a8ffa1cdfd
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: down
-      m_Id: aad14d28-8a77-4d24-b739-1a7365fcc0c1
-      m_Path: <Keyboard>/s
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: left
-      m_Id: 020156cb-1953-4253-b16c-4b6ad87ef586
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: right
-      m_Id: ca7c9ece-2b2e-4722-aebc-cc6b1e9e3255
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    m_Flags: 0
-  UIConfirmInput:
-    m_Name: UI Confirm Input
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: fb71b14a-bb67-4dcb-a597-de915f232bcd
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 0611ba71-e476-4e9e-a493-b4829092976d
-      m_Path: <Keyboard>/enter
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Confirm Input
-      m_Flags: 0
-    m_Flags: 0
-  buttonAnims: []
-  selectedButtonId: 0
-  lastInput: {x: 0, y: 0}
 --- !u!1 &2092519203
 GameObject:
   m_ObjectHideFlags: 0
@@ -4885,3 +4953,4 @@ SceneRoots:
   - {fileID: 2058301357}
   - {fileID: 179911389}
   - {fileID: 1009490107}
+  - {fileID: 1813647014}
