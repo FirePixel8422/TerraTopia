@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
@@ -38,12 +39,26 @@ public class NavButtonManager : MonoBehaviour
     }
 
 
+
     #region Setup Input Events
+
+    private void OnEnable()
+    {
+        StartCoroutine(InputEnablementDelay());
+    }
+
+    private IEnumerator InputEnablementDelay()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return null;
+
+        LateEnable();
+    }
 
     /// <summary>
     /// setup input events
     /// </summary>
-    private void OnEnable()
+    private void LateEnable()
     {
         UIMoveInput.Enable();
         UIConfirmInput.Enable();
