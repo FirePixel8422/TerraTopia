@@ -81,11 +81,17 @@ public class CoalitionManager : NetworkBehaviour
         }
     }
 
-    private async Task OnStartGame()
+    public async Task OnStartGame()
     {
         int playerCount = ClientManager.GetPlayerIdDataArray().PlayerCount;
 
         await LobbyManager.SetLobbyLockStateAsync(true);
+
+        //player joined last second, cancel match start
+        if (playerCount != NetworkManager.ConnectedClientsIds.Count)
+        {
+            return;
+        }
 
         SceneManager.LoadSceneOnNetwork("Nobe");
     }
@@ -128,8 +134,8 @@ public class CoalitionManager : NetworkBehaviour
             teamIds[i] = buttonAnims.Length - 1;
         }
 
-        buttonAnims[^1].SetTrigger("MoveError");
-        buttonAnims[^1].SetBool("Selected", true);
+        buttonAnims[0].SetTrigger("MoveError");
+        buttonAnims[0].SetBool("Selected", true);
 
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += Disable;
     }
@@ -141,10 +147,12 @@ public class CoalitionManager : NetworkBehaviour
     {
         UIMoveInput.Disable();
         UIMoveInput.performed -= (InputAction.CallbackContext ctx) => OnWASDInputForSwapTeams_ServerRPC(ClientManager.LocalClientGameId, ctx.ReadValue<Vector2>());
-       
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= Disable;
     }
 
+    public override void OnDestroy()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= Disable;
+    }
 
 
     /// <summary>
@@ -170,6 +178,8 @@ public class CoalitionManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void OnWASDInputForSwapTeams_ServerRPC(int clientGameId, Vector2 moveInput)
     {
+        print(moveInput);
+
         //save previous teamId
         int oldTeamId = teamIds[clientGameId];
 

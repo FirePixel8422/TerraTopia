@@ -6,31 +6,31 @@ public static class CityUpgradeHandler
 {
     //Array of CityUpgradeData containing city upgrades in a list for each player
     //Get CityUpgradeData from playerGameId
-    private static List<CityUpgradeData[]> cityUpgradesList;
-    
+    private static CityUpgradeData[][] cityUpgradesList;
+
 
 
 
     /// <summary>
-    /// Initialized through CharacterSelecter.cs
+    /// Only call this from the server!!! _______ Initialized through TribeSelecter.cs
     /// </summary>
     public static void Initialize()
     {
-        cityUpgradesList = new List<CityUpgradeData[]>(GameSettings.maxPlayers);
+        cityUpgradesList = new CityUpgradeData[GameSettings.maxPlayers][];
     }
 
 
     /// <summary>
     /// Add cosmetics of units only if a player has selected them (to spare ref data and to easily acces them by playerGameId)
     /// </summary>
-    public static void AddTribeCityData_OnServer(CityUpgradeData[] cityUpgrades)
+    public static void AddTribeCityData_OnServer(CityUpgradeData[] cityUpgrades, int playerGameId)
     {
-        cityUpgradesList.Add(cityUpgrades);
+        cityUpgradesList[playerGameId] = cityUpgrades;
     }
 
 
     /// <summary>
-    /// Get City Upgrade data form playerGameId and cityLevel
+    /// Get City Upgrade data from playerGameId and cityLevel
     /// </summary>
     /// <returns>The cities next upgrade data</returns>
     public static CityUpgradeData GetCityUpgradeData(int playerGameId, int cityLevel)

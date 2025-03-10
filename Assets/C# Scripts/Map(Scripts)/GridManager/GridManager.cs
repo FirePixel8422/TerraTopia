@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst;
 using Unity.Netcode;
 using UnityEditor.Rendering;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 
 
@@ -78,7 +80,6 @@ public class GridManager : NetworkBehaviour
 
         //Generates the tiles, without any non-grid logic
         new TileGenerator(_noiseData, _width, _length, _seed, transform, cloudPrefab, out _tiles, out _clouds);
-
     }
 
     private void SpawnMapAssets_OnServer()
@@ -163,19 +164,6 @@ public class GridManager : NetworkBehaviour
             {
                 tile.Value.gameObject.SetActive(true);
             }
-            //StartCoroutine(FancyClouds());
-        }
-    }
-
-    public float cloudSpeed = 0.05f;
-
-    private IEnumerator FancyClouds()
-    {
-        foreach (KeyValuePair<Vector2, TileBase> tile in _tiles)
-        {
-            tile.Value.gameObject.SetActive(true);
-
-            yield return new WaitForSeconds(cloudSpeed);
         }
     }
 #endif

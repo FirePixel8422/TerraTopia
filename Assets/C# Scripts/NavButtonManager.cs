@@ -1,4 +1,3 @@
-using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class NavButtonManager : MonoBehaviour
 {
-    public UnityEvent<int> OnConfirm;
+    [SerializeField]
+    public UnityEvent<int> OnConfirm, OnClick;
 
     [Header("UI Movement Keys")]
     [SerializeField] private InputAction UIMoveInput;
@@ -19,8 +19,8 @@ public class NavButtonManager : MonoBehaviour
 
     [Space(10)]
 
-    [SerializeField] private NavButton[] buttonAnims;
-    [SerializeField] private int selectedButtonId;
+    private NavButton[] buttonAnims;
+    private int selectedButtonId;
 
 
 
@@ -78,7 +78,7 @@ public class NavButtonManager : MonoBehaviour
 
 
     /// <summary>
-    /// if a new button is selcted through MouseClick input
+    /// if a new button is selcted through mouseClick input
     /// </summary>
     private void SelectNewButton_FromMouseInput(int newButtonId)
     {
@@ -88,6 +88,9 @@ public class NavButtonManager : MonoBehaviour
 
         //select new button
         selectedButtonId = newButtonId;
+
+        //when a button is selected, invoke OnClick with buttonId
+        OnClick?.Invoke(newButtonId);
 
         buttonAnims[newButtonId].anim.SetTrigger("MoveError");
         buttonAnims[newButtonId].anim.SetBool("Selected", true);

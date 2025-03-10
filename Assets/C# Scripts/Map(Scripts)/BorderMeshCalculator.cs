@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,7 +10,7 @@ using UnityEngine.Jobs;
 [BurstCompile]
 public static class BorderMeshCalculator
 {
-    public static void CreateBorderMesh(Mesh mesh, Vector3[] tilePositionsInBorder)
+    public static void CreateBorderMesh(Mesh mesh, Vector3[] tilePositionsInBorder, float3 worldPos)
     {
         int tilePositionsInBorderCount = tilePositionsInBorder.Length;
 
@@ -56,7 +55,7 @@ public static class BorderMeshCalculator
                     //if tile has no neigbour in direction[i] in entire list, mark that direction for border creation
                     if (i3 == tilePositionsInBorderCount - 1)
                     {
-                        borderTileData.Add(tilePos, neighbourPos);
+                        borderTileData.Add(tilePos - worldPos, neighbourPos - worldPos);
                     }
                 }
             }
@@ -110,7 +109,8 @@ public static class BorderMeshCalculator
         float3 depthDir = direction.x != 0 ? new float3(0, 1, 0) : new float3(0, -1, 0); // Thin in perpendicular axis
 
         // Half sizes
-        float halfWidth = 0.5f;  // Always 1 unit wide
+        float tileDepthMultiplier = 0.999f;
+        float halfWidth = 0.5f * tileDepthMultiplier;  // Always 1 unit wide
         float halfDepth = 0.1f;  // Thickness of the plane
 
         centerPos.y += halfDepth;
@@ -119,16 +119,16 @@ public static class BorderMeshCalculator
 
 
         // Front face
-        vertices.Add(centerPos + (-widthDir * halfWidth) + (-depthDir * halfDepth));
-        vertices.Add(centerPos + (widthDir * halfWidth) + (-depthDir * halfDepth));
-        vertices.Add(centerPos + (widthDir * halfWidth) + (depthDir * halfDepth));
-        vertices.Add(centerPos + (-widthDir * halfWidth) + (depthDir * halfDepth));
+        vertices.Add(centerPos * tileDepthMultiplier + (-widthDir * halfWidth) + (-depthDir * halfDepth));
+        vertices.Add(centerPos * tileDepthMultiplier + (widthDir * halfWidth) + (-depthDir * halfDepth));
+        vertices.Add(centerPos * tileDepthMultiplier + (widthDir * halfWidth) + (depthDir * halfDepth));
+        vertices.Add(centerPos * tileDepthMultiplier + (-widthDir * halfWidth) + (depthDir * halfDepth));
 
         // Back face (offset slightly in depth direction)
-        vertices.Add(centerPos + (-widthDir * halfWidth) + (-depthDir * halfDepth));
-        vertices.Add(centerPos + (widthDir * halfWidth) + (-depthDir * halfDepth));
-        vertices.Add(centerPos + (widthDir * halfWidth) + (depthDir * halfDepth));
-        vertices.Add(centerPos + (-widthDir * halfWidth) + (depthDir * halfDepth));
+        vertices.Add(centerPos * tileDepthMultiplier + (-widthDir * halfWidth) + (-depthDir * halfDepth));
+        vertices.Add(centerPos * tileDepthMultiplier + (widthDir * halfWidth) + (-depthDir * halfDepth));
+        vertices.Add(centerPos * tileDepthMultiplier + (widthDir * halfWidth) + (depthDir * halfDepth));
+        vertices.Add(centerPos * tileDepthMultiplier + (-widthDir * halfWidth) + (depthDir * halfDepth));
 
 
         int startVertexId = edgeId * 8;

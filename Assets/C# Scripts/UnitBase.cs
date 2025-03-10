@@ -21,6 +21,8 @@ public class UnitBase : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        print(gameObject.name);
+
         ownerPlayerGameId = ClientManager.GetClientGameIdFromNetworkId(NetworkObject.OwnerClientId);
         if (IsServer)
         {

@@ -14,7 +14,6 @@ public class BuildingPreview : MonoBehaviour
 
     public void OnBuyButtonClicked()
     {
-        print("ButtonHasBeenClicked");
         if (ResourceManager.CanAfford(buildingCosts))
         {
             if (PlayerInput.Instance.currentBuildingTile.TryGetComponent(out TileBase tile))

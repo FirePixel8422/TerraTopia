@@ -8,10 +8,9 @@ using UnityEngine.EventSystems;
 public class NavButton : MonoBehaviour, IPointerClickHandler
 {
     [Space(15)]
+
     [SerializeField]
-    public UnityEvent OnClick;
-    [SerializeField]
-    public UnityEvent OnConfirm;
+    public UnityEvent OnClick, OnConfirm;
 
     private Action<int> OnClickNavManagerCallback;
 
@@ -46,7 +45,7 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
 
 
 
-    //set buttonId and set action callaback reference
+    //set buttonId and set action callback reference
     public void Initialize(int _buttonId, Action<int> onclickCallbackMethod)
     {
         buttonId = _buttonId;

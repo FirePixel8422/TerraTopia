@@ -12,6 +12,7 @@ public class City : TileObject
     public int borderSize = 1;
 
     [SerializeField] private MeshFilter borderMeshFilter;
+    private Material borderMaterial;
 
     [SerializeField] List<Vector3> borderTilePositions;
 
@@ -22,9 +23,11 @@ public class City : TileObject
 
     public override void OnNetworkSpawn()
     {
+        borderMaterial = borderMeshFilter.GetComponent<Renderer>().material;
+
         if (IsServer)
         {
-            ownerClientGameId = ClientManager.LocalClientGameId;
+            ownerClientGameId = ClientManager.GetClientGameIdFromNetworkId(OwnerClientId);
         }
     }
 
@@ -50,7 +53,7 @@ public class City : TileObject
 
 
     [ServerRpc(RequireOwnership = false)]
-    private void RecalculateBorderMesh_ServerRPC(ulong clientId = ulong.MaxValue)
+    private void RecalculateBorderMesh_ServerRPC(ulong clientId_ForUpdateRequest = ulong.MaxValue)
     {
         // Loop over all tiles within the border range
         for (int xOffset = -borderSize; xOffset <= borderSize; xOffset++)
@@ -59,12 +62,8 @@ public class City : TileObject
             {
                 Vector2 tileGridPos = (transform.position + new Vector3(xOffset, 0, zOffset)).ToVector2();
 
-                print(tileGridPos);
-
                 if (GridManager.TryGetTileByPos(tileGridPos, out TileBase tile))
                 {
-                    print(tileGridPos);
-
                     float3 tilePos = tile.transform.position;
 
                     if (borderTilePositions.Contains(tilePos) == false && tile.ownedByPlayerGameId == -1)
@@ -77,25 +76,30 @@ public class City : TileObject
             }
         }
 
-        ExpandCityBorder_ClientRPC(borderTilePositions.ToArray(), clientId);
+        ExpandCityBorder_ClientRPC(borderTilePositions.ToArray(), ownerClientGameId, clientId_ForUpdateRequest);
     }
 
 
 
     [ClientRpc(RequireOwnership = false)]
-    private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, ulong clientId = ulong.MaxValue)
+    private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, int ownerOfCityClientGameId, ulong clientId_ForUpdateRequest = ulong.MaxValue)
     {
-        if (clientId != ulong.MaxValue && clientId != NetworkManager.LocalClientId)
+        if (clientId_ForUpdateRequest != ulong.MaxValue && clientId_ForUpdateRequest != NetworkManager.LocalClientId)
         {
             return;
         }
 
-        BorderMeshCalculator.CreateBorderMesh(borderMeshFilter.mesh, borderTilePositions);
+        //update border mesh
+        BorderMeshCalculator.CreateBorderMesh(borderMeshFilter.mesh, borderTilePositions, transform.position);
+        //update border color
+        borderMaterial.color = PlayerColorHandler.GetPlayerColor(ownerOfCityClientGameId);
     }
 
 
-    private void OnEnable()
+    public override void DiscoverObject()
     {
+        base.DiscoverObject();
+
         RecalculateBorderMesh_ServerRPC(NetworkManager.LocalClientId);
     }
 

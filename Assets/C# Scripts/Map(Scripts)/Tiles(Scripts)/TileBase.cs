@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using DG.Tweening;
 using Unity.Netcode;
+
+
 public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 {
     [Tooltip("Whether a castle can be placed on this tile or not")]
@@ -31,11 +31,14 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
     private void OnEnable()
     {
-        if (_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.gameObject.SetActive(true); }
+        if (_currentHeldEnviromentalObject)
+        {
+            _currentHeldEnviromentalObject.DiscoverObject();
+        }
 
         GridManager.DestroyCloud(transform.position.ToVector2());
 
-        if (shakeStrength == 0) { shakeStrength = 0.1f; }
+        shakeStrength = 0.1f;
     }
 
 
@@ -83,11 +86,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
             return;
         }
 
-        if (isHoldingObject)
-        {
-            print("Object already contains an enviromental object");
-        }
-        else
+        if (!isHoldingObject)
         {
             GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, activateImmediately, enviromentalObject.randomRotation);
             isHoldingObject = true;

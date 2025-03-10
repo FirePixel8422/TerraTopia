@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class TileObject : NetworkBehaviour, IBuildable
 {
+    private Renderer meshRenderer;
+
+
     [SerializeField] private List<Building> buildings = new List<Building>();
     public List<Building> AvailableBuildings()
     {
@@ -17,6 +20,24 @@ public class TileObject : NetworkBehaviour, IBuildable
         if (!GridManager.DoesCloudExist(transform.position.ToVector2()))
         {
             gameObject.SetActive(activateImmediately);
+
+
+            //TEMP FIX
+
+            meshRenderer = GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+            {
+                meshRenderer = GetComponentInChildren<MeshRenderer>(true);
+            }
+            meshRenderer.enabled = false;
+        }
+    }
+
+    public virtual void DiscoverObject()
+    {
+        if(meshRenderer != null)
+        {
+            meshRenderer.enabled = true;
         }
     }
 }

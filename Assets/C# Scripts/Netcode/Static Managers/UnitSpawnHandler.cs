@@ -12,7 +12,7 @@ public static class UnitSpawnHandler
     //Array of UnitSpawnData containing unit prefab and materials for color, in a list for each player
     //Get unit data from playerGameId and get unitSpawnData by unitId
     //Get unit material color Data by playerGameId
-    private static List<UnitSpawnData[]> unitCosmeticsList;
+    private static UnitSpawnData[][] unitCosmeticsList;
 
 
 
@@ -23,16 +23,16 @@ public static class UnitSpawnHandler
     public static void Initialize()
     {
         //setup list by adding space for maxPlayers
-        unitCosmeticsList = new List<UnitSpawnData[]>(GameSettings.maxPlayers);
+        unitCosmeticsList = new UnitSpawnData[GameSettings.maxPlayers][];
     }
 
 
     /// <summary>
     /// Only call this from the server!!! _______ Add copy of cosmetics from units only if a player has selected them (to spare ref data and to easily acces them by playerGameId)
     /// </summary>
-    public static void AddTribe_OnServer(UnitSpawnData[] unitCosmetics)
+    public static void AddTribe_OnServer(UnitSpawnData[] unitCosmetics, int playerGameId)
     {
-        unitCosmeticsList.Add(unitCosmetics);
+        unitCosmeticsList[playerGameId] = unitCosmetics;
     }
 
 
