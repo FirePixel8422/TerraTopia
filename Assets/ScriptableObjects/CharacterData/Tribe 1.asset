@@ -57,4 +57,15 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 4f13613131aee854086c1eb652bc6f25, type: 2}
     - {fileID: 2100000, guid: bce03ccb4b4e98d42829876e4641b796, type: 2}
     - {fileID: 2100000, guid: ebc7822501b781545adda1d1679c701b, type: 2}
+  - body: {fileID: 7733444632930478723, guid: 3a3751d748bf06c4183cf766e4ccd8c7, type: 3}
+    head: {fileID: 6266760243324488932, guid: 0bd53e41c6936d8478e3d7c277943e65, type: 3}
+    colorMaterials:
+    - {fileID: 2100000, guid: 6f559e6dabdf22141a6df6b343d128cb, type: 2}
+    - {fileID: 2100000, guid: d7a8159198083bc418693d791e956dc8, type: 2}
+    - {fileID: 2100000, guid: cb1a464f7fad90e4785f92838fff6d57, type: 2}
+    - {fileID: 2100000, guid: 0e4367cd034364a41a59b4d69e03eaae, type: 2}
+    - {fileID: 2100000, guid: 5481f4600a2ed2e4587467b56f8305df, type: 2}
+    - {fileID: 2100000, guid: f42635863ccf46a4cbbc083a58564d5d, type: 2}
+    - {fileID: 2100000, guid: 874067ff365e9364ba1c023ca371c8ef, type: 2}
+    - {fileID: 2100000, guid: 6b128f815e22599468bff91b28bfa717, type: 2}
   cityUpgrades: []
