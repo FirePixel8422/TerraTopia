@@ -55,7 +55,7 @@ public class LoginHandler : MonoBehaviour
 
     private async void Start()
     {
-        mainSceneLoadOperation = SceneManager.LoadSceneAsync("Setup Network", LoadSceneMode.Additive, false);
+        mainSceneLoadOperation = SceneManager.LoadSceneAsync("Main Scene", LoadSceneMode.Additive, false);
 
         mainSceneLoadOperation.completed += (_) =>
         {
