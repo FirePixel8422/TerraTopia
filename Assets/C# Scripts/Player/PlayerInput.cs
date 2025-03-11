@@ -1,141 +1,155 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
 
 public class PlayerInput : MonoBehaviour
 {
     public static PlayerInput Instance;
-    [SerializeField] private bool _shouldSyncHoverObject;
-    [SerializeField] private GameObject _hoverObject;
 
+    [SerializeField] private bool _shouldSyncHoverObject;
+    [SerializeField] private GameObject _hoverObjectPrefab;
     [SerializeField] private BuildingHandler _buildingHandler;
 
-    public GameObject lastHitObject { get; private set; }
+    private GameObject _hoverObject;
+    private GraphicRaycaster _gfxRayCaster;
 
-    public GameObject selectedObject { get; private set; }
-    public GameObject currentBuildingTile { get; private set; }
-
-    private GraphicRaycaster gfxRayCaster;
+    public GameObject LastHitObject { get; private set; }
+    public GameObject SelectedObject { get; private set; }
+    public GameObject CurrentBuildingTile { get; private set; }
 
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
-        gfxRayCaster = FindObjectOfType<GraphicRaycaster>(true);
+        _gfxRayCaster = FindObjectOfType<GraphicRaycaster>(true);
     }
+
     private void Start()
     {
-        //Initialize the _hoverObject
-        _hoverObject = Instantiate(_hoverObject);
+        _hoverObject = Instantiate(_hoverObjectPrefab);
         _hoverObject.SetActive(false);
     }
+
     public void OnMouseMove(InputAction.CallbackContext ctx)
     {
-        //Check whether or not the cursor is hovering over any source of UI to prevent sending raycasts
-        if (IsHoveringOverUI()) { return; }
+        if (IsHoveringOverUI()) return;
 
-        //Raycast before any checks to make sure they use the updated gameobject and not the previous one
         Raycast();
 
-        if (_shouldSyncHoverObject) { CheckForHoverable(); }
+        if (_shouldSyncHoverObject) CheckForHoverable();
     }
 
     private Ray _Ray => Camera.main.ScreenPointToRay(Input.mousePosition);
-    private RaycastHit _hit;
+
     private void Raycast()
     {
-        if (Physics.Raycast(_Ray, out _hit))
+        if (Physics.Raycast(_Ray, out RaycastHit hit))
         {
-            lastHitObject = _hit.transform.gameObject;
+            LastHitObject = hit.transform.gameObject;
         }
         else
         {
-            lastHitObject = null;
+            LastHitObject = null;
         }
     }
 
     private bool IsHoveringOverUI()
     {
-        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
-        pointerEventData.position = Input.mousePosition;
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
 
         var results = new List<RaycastResult>();
-        gfxRayCaster.Raycast(pointerEventData, results);
+        _gfxRayCaster.Raycast(pointerEventData, results);
 
-        if (results.Count > 0)
-        {
-            return true;
-        }
-        return false;
+        return results.Count > 0;
     }
+
     private void CheckForHoverable()
     {
-        if (lastHitObject == null) { _hoverObject.SetActive(false); return; }
-
-        //Check if the object has the IOnHover interface on it
-        if (lastHitObject.transform.TryGetComponent(out IHoverable IH))
+        if (LastHitObject == null)
         {
-            OnHoveringOverObject(IH);
+            _hoverObject.SetActive(false);
+            return;
+        }
+
+        if (LastHitObject.TryGetComponent(out IHoverable hoverable))
+        {
+            _hoverObject.SetActive(true);
+            hoverable.OnHover(_hoverObject.transform);
         }
         else
         {
             _hoverObject.SetActive(false);
         }
-
-    }
-    private void OnHoveringOverObject(IHoverable IH)
-    {
-        _hoverObject.SetActive(true);
-        IH.OnHover(_hoverObject.transform);
     }
 
     public void OnClick(InputAction.CallbackContext ctx)
     {
-        if (lastHitObject == null || ctx.performed == false) return;
+        if (IsHoveringOverUI() || LastHitObject == null || !ctx.performed) return; 
 
-        if (lastHitObject == null) return;
-        selectedObject = lastHitObject;
-
-        if (selectedObject.TryGetComponent(out IOnClickable IOC))
+        if (SelectedObject != null && SelectedObject != LastHitObject)
         {
-            IOC.OnClick();
+            if (SelectedObject.TryGetComponent(out IOnClickable previousIOC))
+            {
+                previousIOC.OnDifferentClickableClicked(LastHitObject);
+            }
         }
 
-        if (selectedObject.TryGetComponent(out IBuildable IB))
+        if (SelectedObject != null)
         {
-            // First, check if the object has any available buildings
-            List<Building> buildings = IB.AvailableBuildings();
-            if (EventSystem.current.IsPointerOverGameObject()) { return; }
-
-            // Hide the building panel if no buildings are available
-            if (buildings.Count == 0)
+            if (SelectedObject != LastHitObject)
             {
-                _buildingHandler.HideBuildingPanel();
-                return;
+                if (LastHitObject.TryGetComponent(out IOnClickable IOC))
+                {
+                    IOC.OnClick();
+                }
             }
+        }
 
-            if (currentBuildingTile == null) { currentBuildingTile = gameObject; }
 
-            if (selectedObject.GetInstanceID() == currentBuildingTile.GetInstanceID())
-            {
-                _buildingHandler.HideBuildingPanel();
-                currentBuildingTile = null;
-            }
-            else
-            {
-                _buildingHandler.ShowBuildingPanel(IB);
-                currentBuildingTile = selectedObject;
-            }
+        SelectedObject = LastHitObject;
+
+
+        if (SelectedObject.TryGetComponent(out IBuildable IB))
+        {
+            HandleBuildingPanel(IB);
         }
         else
         {
-            // If it's not a buildable object, hide the building panel
             _buildingHandler.HideBuildingPanel();
         }
     }
 
+    private void HandleBuildingPanel(IBuildable buildable)
+    {
+        List<Building> buildings = buildable.AvailableBuildings();
+
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        if (buildings.Count == 0)
+        {
+            _buildingHandler.HideBuildingPanel();
+            return;
+        }
+
+        if (CurrentBuildingTile == null)
+        {
+            CurrentBuildingTile = gameObject;
+        }
+
+        if (SelectedObject.GetInstanceID() == CurrentBuildingTile.GetInstanceID())
+        {
+            _buildingHandler.HideBuildingPanel();
+            CurrentBuildingTile = null;
+        }
+        else
+        {
+            _buildingHandler.ShowBuildingPanel(buildable);
+            CurrentBuildingTile = SelectedObject;
+        }
+    }
 }

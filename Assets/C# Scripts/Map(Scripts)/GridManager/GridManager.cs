@@ -82,6 +82,19 @@ public class GridManager : NetworkBehaviour
         new TileGenerator(_noiseData, _width, _length, _seed, transform, cloudPrefab, out _tiles, out _clouds);
     }
 
+    [ContextMenu("GenerateGrid_Debug")]
+    public void GenerateGrid_Debug()
+    {
+        GenerateGrid(playerCount);
+
+        for (int i = 0; i < tileObjectsData.tileObjects.Length; i++)
+        {
+            TileObjectPrefabManager.Add(tileObjectsData.tileObjects[i]);
+        }
+
+        SpawnMapAssets_OnServer();
+    }
+
     private void SpawnMapAssets_OnServer()
     {
         //Generates a castle based on the grid

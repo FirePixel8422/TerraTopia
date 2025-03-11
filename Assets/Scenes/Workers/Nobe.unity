@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 1341997049}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seed: 0
-  _noiseData: {fileID: 11400000, guid: eba47a681a07b05428a30ccf281025dc, type: 2}
+  _noiseData: {fileID: 11400000, guid: ebaecaee036b98147ba0e2bba22dad9f, type: 2}
   _castlePrefabId: 0
   cloudPrefab: {fileID: 919132149155446097, guid: f74318a1553978e45a5f242ec71fda96,
     type: 3}
@@ -371,7 +371,6 @@ MonoBehaviour:
   _length: 40
   playerCount: 4
   tileObjectsData: {fileID: 11400000, guid: 1377ffc3051b800439ffe18e75bdd376, type: 2}
-  cloudSpeed: 0.05
 --- !u!114 &1849222576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,7 +453,7 @@ PrefabInstance:
     - target: {fileID: 5137690611392870935, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}
       propertyPath: _shouldSyncHoverObject
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8321866203795742933, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}

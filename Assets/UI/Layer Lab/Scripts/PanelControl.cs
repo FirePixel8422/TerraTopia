@@ -97,7 +97,6 @@ namespace LayerLab.GUIScripts
         }
 
         //Click_Prev
-        //Click_Prev
         public void Click_Prev()
         {
             if (_page <= 0) return;

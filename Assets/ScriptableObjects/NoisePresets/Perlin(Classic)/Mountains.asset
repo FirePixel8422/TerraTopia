@@ -10,26 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc7f48c89944c448a190ea8bea2115f, type: 3}
-  m_Name: Solid
+  m_Name: Mountains
   m_EditorClassIdentifier: 
   _octaves: 3
   _scale: 0.05
   _lacunarity: 2
   _persistence: 0.5
   _resolution: 1
-  tileHeightMultiplier: 4
+  tileHeightMultiplier: 9
   cloudHeight: 0
   _possibleTiles:
-  - tileGO: {fileID: 894428359449449459, guid: ddd76b79ee5a42b4295800186a830422, type: 3}
-    weight: 0.2
+  - tileGO: {fileID: 2439768143273281686, guid: 00f4dae7ec16a014f8d43de48a99fe15,
+      type: 3}
+    weight: 0.3
+    constHeight: 2.59708
+  - tileGO: {fileID: 1463485182777006543, guid: 9adb26a7c445bf14297af2f142570612,
+      type: 3}
+    weight: 0.35
     constHeight: 0
-  - tileGO: {fileID: 894428359449449459, guid: accd6caa79f5cc243a6e448443fab984, type: 3}
+  - tileGO: {fileID: 181569139973656431, guid: 16dd2e5510117c94f86714905b615f66, type: 3}
     weight: 0.5
     constHeight: 0
-  - tileGO: {fileID: 894428359449449459, guid: e4a7c87dd1cdb924cb7d816da4c05b89, type: 3}
-    weight: 0.7
-    constHeight: 0
-  - tileGO: {fileID: 894428359449449459, guid: 46ed1b539ac7ff548bb02ddd679ac7e9, type: 3}
+  - tileGO: {fileID: 7255430232622651856, guid: fbdeb17d72a7efb4298ae2610c2bf080,
+      type: 3}
     weight: 10
     constHeight: 0
   _shouldDebug: 0

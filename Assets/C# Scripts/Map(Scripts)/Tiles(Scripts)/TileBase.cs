@@ -47,6 +47,10 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1);
         if (_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
     }
+    public void OnDifferentClickableClicked(GameObject newlyClickedObject)
+    {
+       
+    }
 
     public virtual void OnHover(Transform _hoverObject)
     {

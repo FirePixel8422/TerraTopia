@@ -16,7 +16,7 @@ public class BuildingPreview : MonoBehaviour
     {
         if (ResourceManager.CanAfford(buildingCosts))
         {
-            if (PlayerInput.Instance.currentBuildingTile.TryGetComponent(out TileBase tile))
+            if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
             {
                 if (!tile.isHoldingObject)
                 {

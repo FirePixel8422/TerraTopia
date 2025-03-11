@@ -5,4 +5,6 @@ using UnityEngine;
 public interface IOnClickable 
 {
     public void OnClick();
+
+    public void OnDifferentClickableClicked(GameObject newlyClickedObject);
 }
