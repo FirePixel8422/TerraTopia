@@ -54,11 +54,11 @@ public static class UnitSpawnHandler
 #endif
 
         //get units list from "clientGameId" and get "unitId" from that list 
-        UnitBase unityBodyPrefab= unitCosmeticsList[playerGameId][unitId].body;
+        UnitBase unitBodyPrefab = unitCosmeticsList[playerGameId][unitId].body;
         UnitBase unitHeadPrefab = unitCosmeticsList[playerGameId][unitId].body;
 
         //spawn unit (locally on server)
-        UnitBase spawnedUnit = Object.Instantiate(unityBodyPrefab);
+        UnitBase spawnedUnit = Object.Instantiate(unitBodyPrefab);
         Object.Instantiate(unitHeadPrefab, spawnedUnit.headTransform);
 
         //call spawn on that unit, spawning it for everyone on the server

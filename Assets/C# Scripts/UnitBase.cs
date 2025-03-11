@@ -8,7 +8,7 @@ public class UnitBase : NetworkBehaviour
     private int ownerPlayerGameId;
     public int unitId;
 
-    [SerializeField] private Renderer colorRenderer;
+    public Renderer colorRenderer;
     public Transform headTransform;
 
 

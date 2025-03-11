@@ -13,7 +13,7 @@ public class TribeSelecter : NetworkBehaviour
 
 
     [Header("ALL Units all of their cosmetics and materialData")]
-    [SerializeField] private UnitTribeListSO[] tribeData;
+    public UnitTribeListSO[] tribeData;
 
     [Header("Colors used for things like city borders")]
     [SerializeField] private Color[] playerColors;
