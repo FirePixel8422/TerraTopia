@@ -11,8 +11,11 @@ public static class GameSettings
     public const int maxTeams = 4;
     public const int maxPlayersPerTeam = 1;
 
-    public const int updateManagerListPreSizeCapacity = 4;
+    public const ulong UnAssignedPlayerId = maxPlayers + 1;
 
+
+
+    public const int updateManagerListPreSizeCapacity = 4;
 
     //foods
     public const int wheatFoodSize = 4;

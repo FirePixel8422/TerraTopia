@@ -93,7 +93,7 @@ public class GridManager : NetworkBehaviour
 
 
     [ServerRpc(RequireOwnership = false)]
-    public void SpawnObject_ServerRPC(Vector3 spawnPos, Quaternion spawnRot, int objToSetId, bool activateImmediately, bool randomRot = false)
+    public void SpawnObject_ServerRPC(Vector3 spawnPos, Quaternion spawnRot, int objToSetId, bool activateImmediately, ulong ownerId, bool randomRot = false)
     {
         if (randomRot)
         {
@@ -102,10 +102,11 @@ public class GridManager : NetworkBehaviour
 
         NetworkObject spawnedObj = Instantiate(TileObjectPrefabManager.GetValue(objToSetId), spawnPos, spawnRot).GetComponent<NetworkObject>();
 
-        spawnedObj.Spawn(true);
+        spawnedObj.SpawnWithOwnership(ownerId, true);
 
         SetupTileObject_ClientRPC(spawnPos.ToVector2(), spawnedObj.NetworkObjectId, activateImmediately);
     }
+
 
     [ClientRpc(RequireOwnership = false)]
     private void SetupTileObject_ClientRPC(Vector2 tilePos, ulong networkObjectId, bool activateImmediately)

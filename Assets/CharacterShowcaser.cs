@@ -95,7 +95,7 @@ public class CharacterShowcaser : MonoBehaviour
 
         if (newUnitId == -1)
         {
-            newUnitId = totalUnits;
+            newUnitId = totalUnits - 1;
         }
         else if (newUnitId == totalUnits)
         {

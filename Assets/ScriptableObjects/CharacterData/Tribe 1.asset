@@ -68,4 +68,32 @@ MonoBehaviour:
     - {fileID: 2100000, guid: f42635863ccf46a4cbbc083a58564d5d, type: 2}
     - {fileID: 2100000, guid: 874067ff365e9364ba1c023ca371c8ef, type: 2}
     - {fileID: 2100000, guid: 6b128f815e22599468bff91b28bfa717, type: 2}
-  cityUpgrades: []
+  cityUpgrades:
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 5
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 5
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 5
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 5
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 5
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 5
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 5
+    gainedLabSpeed: 0

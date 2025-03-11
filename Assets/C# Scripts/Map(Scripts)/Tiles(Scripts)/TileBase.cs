@@ -77,7 +77,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
 
 
-    public virtual void AssignObject(EnviromentalItemData enviromentalObject, bool activateImmediately)
+    public virtual void AssignObject(EnviromentalItemData enviromentalObject, bool activateImmediately, ulong ownerId = GameSettings.UnAssignedPlayerId)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
         if (!enviromentalObject._possibleEnviromentalPosHolder)
@@ -88,12 +88,12 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
         if (!isHoldingObject)
         {
-            GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, activateImmediately, enviromentalObject.randomRotation);
+            GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, activateImmediately, ownerId, enviromentalObject.randomRotation);
             isHoldingObject = true;
         }
     }
 
-    public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately)
+    public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately, ulong ownerId = GameSettings.UnAssignedPlayerId)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
 
@@ -109,7 +109,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         }
         else
         {
-            GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately);
+            GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately, ownerId);
         }
     }
     #endregion

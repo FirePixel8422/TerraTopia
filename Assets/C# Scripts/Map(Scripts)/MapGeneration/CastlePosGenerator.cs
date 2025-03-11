@@ -31,13 +31,13 @@ public struct CastlePosGenerator
 
         foreach (var tile in tileMap.Keys)
         {
-            int surroundingCount = 0;
+            int surroundingTileCount = 0;
             foreach (var dir in directions)
             {
                 if (tileMap.ContainsKey(tile + dir))
-                    surroundingCount++;
+                    surroundingTileCount++;
             }
-            if (surroundingCount >= 8)
+            if (surroundingTileCount >= 8)
                 validTiles.Add(tile);
         }
 
@@ -76,11 +76,18 @@ public struct CastlePosGenerator
         for (int i = 0; i < chosenPositions.Count; i++)
             playerCastlePositions[i] = chosenPositions[i];
 
+
+        ulong castleId = 0;
+
         foreach (var pos in playerCastlePositions.Values)
         {
             var castleTile = tiles.FirstOrDefault(a => a.Value.transform.position == new Vector3(pos.x, a.Value.transform.position.y, pos.y));
             if (castleTile.Value != null && castleTile.Value.TryGetComponent(out TileBase tb))
-                tb.AssignObject(castlePrefabId, true);
+            {
+                tb.AssignObject(castlePrefabId, true, castleId);
+            }
+
+            castleId += 1;
         }
     }
 }

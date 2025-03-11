@@ -36,8 +36,21 @@ public class TribeSelecter : NetworkBehaviour
         }
     }
 
+
+    public void SelectTribe(int tribeId)
+    {
+        if (tribeData.Length <= tribeId)
+        {
+            Debug.LogError("Tribe " + tribeId + " does not exist yet");
+            return;
+        }
+
+        SelectTribe_ServerRPC(tribeId, ClientManager.LocalClientGameId);
+    }
+
+
     [ServerRpc(RequireOwnership = false)]
-    public void SelectTribe_ServerRPC(int tribeId, int clientGameId)
+    private void SelectTribe_ServerRPC(int tribeId, int clientGameId)
     {
         print("Tribe: " + tribeId + " Selected");
 

@@ -10,6 +10,15 @@ using UnityEngine.Jobs;
 [BurstCompile]
 public static class BorderMeshCalculator
 {
+    private static float3[] directions = new float3[4]
+    {
+        new float3(-1, 0, 0), // Left
+        new float3( 1, 0, 0), // Right
+        new float3( 0, 0, 1), // Up
+        new float3( 0, 0, -1) // Down
+    };
+
+
     public static void CreateBorderMesh(Mesh mesh, Vector3[] tilePositionsInBorder, float3 worldPos)
     {
         int tilePositionsInBorderCount = tilePositionsInBorder.Length;
@@ -23,14 +32,6 @@ public static class BorderMeshCalculator
 
         BorderTileData borderTileData;
         int edgeId = 0;
-
-        float3[] directions = new float3[4]
-        {
-            new float3(-1, 0, 0), // Left
-            new float3( 1, 0, 0), // Right
-            new float3( 0, 0, 1), // Up
-            new float3( 0, 0, -1) // Down
-        };
 
         for (int i = 0; i < tilePositionsInBorderCount; i++)
         {
@@ -109,7 +110,7 @@ public static class BorderMeshCalculator
         float3 depthDir = direction.x != 0 ? new float3(0, 1, 0) : new float3(0, -1, 0); // Thin in perpendicular axis
 
         // Half sizes
-        float tileDepthMultiplier = 0.999f;
+        float tileDepthMultiplier = .99999f;
         float halfWidth = 0.5f * tileDepthMultiplier;  // Always 1 unit wide
         float halfDepth = 0.1f;  // Thickness of the plane
 

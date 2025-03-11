@@ -14,7 +14,7 @@ public class City : TileObject
     [SerializeField] private MeshFilter borderMeshFilter;
     private Material borderMaterial;
 
-    [SerializeField] List<Vector3> borderTilePositions;
+    [SerializeField] private List<Vector3> borderTilePositions;
 
 
     private int ownerClientGameId;
@@ -24,6 +24,7 @@ public class City : TileObject
     public override void OnNetworkSpawn()
     {
         borderMaterial = borderMeshFilter.GetComponent<Renderer>().material;
+        borderMeshFilter.mesh = new Mesh();
 
         if (IsServer)
         {
@@ -33,6 +34,7 @@ public class City : TileObject
 
 
 
+    [ContextMenu("upgrade")]
     [ServerRpc(RequireOwnership = false)]
     public void UpgradeCity_ServerRPC()
     {
@@ -108,8 +110,10 @@ public class City : TileObject
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
 
-    [SerializeField] private Vector3[] vertices;
-    [SerializeField] private int[] triangles;
+    //[SerializeField]
+    private Vector3[] vertices;
+    //[SerializeField]
+    private int[] triangles;
 
 
     private void OnDrawGizmos()
