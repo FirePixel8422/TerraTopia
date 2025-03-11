@@ -33,7 +33,7 @@ public class NavButtonManager : MonoBehaviour
         }
     }
 
-    private bool buttonsEnabled;
+    private bool buttonsEnabled = true;
 
 
 
