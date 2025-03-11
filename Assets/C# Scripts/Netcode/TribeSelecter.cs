@@ -20,6 +20,8 @@ public class TribeSelecter : NetworkBehaviour
 
     private int playerCountThatSelectedTribe;
 
+    public static int selectedTribeId;
+
 
 
 
@@ -37,15 +39,20 @@ public class TribeSelecter : NetworkBehaviour
     }
 
 
-    public void SelectTribe(int tribeId)
+    public void SelectTribe()
     {
-        if (tribeData.Length <= tribeId)
+        if (tribeData.Length <= selectedTribeId)
         {
-            Debug.LogError("Tribe " + tribeId + " does not exist yet");
+            Debug.LogError("Tribe " + selectedTribeId + " does not exist yet");
             return;
         }
 
-        SelectTribe_ServerRPC(tribeId, ClientManager.LocalClientGameId);
+        SelectTribe_ServerRPC(selectedTribeId, ClientManager.LocalClientGameId);
+    }
+
+    public UnitSpawnData[] GetSelectedTribeData()
+    {
+        return tribeData[selectedTribeId].unitSpawnData;
     }
 
 

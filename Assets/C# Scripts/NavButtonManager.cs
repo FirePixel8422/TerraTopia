@@ -23,6 +23,19 @@ public class NavButtonManager : MonoBehaviour
     private int selectedButtonId;
 
 
+    public void ToggleEnabledState(bool state)
+    {
+        buttonsEnabled = state;
+
+        for (int i = 0; i < buttonAnims.Length; i++)
+        {
+            buttonAnims[i].enabled = state;
+        }
+    }
+
+    private bool buttonsEnabled;
+
+
 
     #region Setup Input Events And Button Animation Setup
 
@@ -103,6 +116,8 @@ public class NavButtonManager : MonoBehaviour
 
     private void OnMoveInput(Vector2 moveInput)
     {
+        if (buttonsEnabled == false) return;
+
         //math.sign so when pressing A+W the vector2 shich would be .7, .7 is used as 1, 1.
         moveInput = new Vector2(math.sign(moveInput.x), math.sign(moveInput.y));
 
@@ -171,6 +186,8 @@ public class NavButtonManager : MonoBehaviour
 
     private void OnConfirmInput()
     {
+        if (buttonsEnabled == false) return;
+
         OnConfirm?.Invoke(selectedButtonId);
 
         buttonAnims[selectedButtonId].OnConfirm?.Invoke();

@@ -17,6 +17,7 @@ public class CoalitionManager : NetworkBehaviour
     [Space(10)]
 
     [SerializeField] private Animator[] buttonAnims;
+
     [SerializeField] private Button startGameButton;
 
     [SerializeField] private int[] teamIds = new int[GameSettings.maxTeams];
@@ -92,6 +93,8 @@ public class CoalitionManager : NetworkBehaviour
         {
             return;
         }
+
+        TribeSelecter.Instance.SelectTribe();
 
         SceneManager.LoadSceneOnNetwork("Nobe");
     }

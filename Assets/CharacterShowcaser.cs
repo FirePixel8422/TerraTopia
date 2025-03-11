@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class CharacterShowcaser : MonoBehaviour
 {
-    [Header("Mouse Input")]
     [SerializeField] private InputAction mouseMoveInput;
     [Space]
     [SerializeField] private InputAction mouseClickInput;
@@ -16,10 +15,9 @@ public class CharacterShowcaser : MonoBehaviour
 
     private Transform modelTransform;
 
-    [SerializeField] private bool mouseHeld;
+    private bool mouseHeld;
 
-    [SerializeField] private int cUnitId;
-    [SerializeField] private int cTribeId;
+    private int cUnitId;
 
 
 
@@ -91,7 +89,7 @@ public class CharacterShowcaser : MonoBehaviour
     {
         int newUnitId = cUnitId + change;
 
-        int totalUnits = TribeSelecter.Instance.tribeData[cTribeId].unitSpawnData.Length;
+        int totalUnits = TribeSelecter.Instance.GetSelectedTribeData().Length;
 
         if (newUnitId == -1)
         {
@@ -102,7 +100,7 @@ public class CharacterShowcaser : MonoBehaviour
             newUnitId = 0;
         }
 
-        UpdatePreviewModel(cTribeId, newUnitId);
+        UpdatePreviewModel(TribeSelecter.selectedTribeId, newUnitId);
     }
 
     public void SelectNewTribe(int tribeId)
@@ -113,13 +111,13 @@ public class CharacterShowcaser : MonoBehaviour
             return;
         }
 
-        UpdatePreviewModel(tribeId, 0);
+        UpdatePreviewModel(tribeId, cUnitId);
     }
 
 
     private void UpdatePreviewModel(int tribeId, int unitId)
     {
-        cTribeId = tribeId;
+        TribeSelecter.selectedTribeId = tribeId;
         cUnitId = unitId;
 
         if (modelTransform != null)

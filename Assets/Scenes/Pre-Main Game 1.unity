@@ -2523,10 +2523,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1483553882}
-  - component: {fileID: 1483553881}
+  - component: {fileID: 1483553884}
   - component: {fileID: 1483553883}
+  - component: {fileID: 1483553881}
+  - component: {fileID: 1483553885}
   m_Layer: 0
-  m_Name: CharacterShowcaser
+  m_Name: TribeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2579,9 +2581,6 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   turnSpeed: 1.5
-  mouseHeld: 0
-  cUnitId: 0
-  cTribeId: 0
 --- !u!4 &1483553882
 Transform:
   m_ObjectHideFlags: 0
@@ -2618,6 +2617,50 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5632916, y: 0.80542535, z: 0.5467362}
   m_Center: {x: 0.015616715, y: 0.3795922, z: -0.03881917}
+--- !u!114 &1483553884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483553880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3004065550
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &1483553885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483553880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec65556ab30d8e4d8e1c9dd868aa162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tribeData:
+  - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
+  playerColors:
+  - {r: 1, g: 0.10266739, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.14377952, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0.038481236, a: 1}
+  - {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
+  - {r: 1, g: 0.4391233, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0.70731163, a: 1}
+  - {r: 0.55356467, g: 0, b: 0.735849, a: 1}
 --- !u!1 &1500761181
 GameObject:
   m_ObjectHideFlags: 0
@@ -2681,19 +2724,7 @@ MonoBehaviour:
       m_Calls: []
   OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1483553881}
-        m_TargetAssemblyTypeName: CharacterShowcaser, Assembly-CSharp
-        m_MethodName: SelectNewTribe
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   UIMoveInput:
     m_Name: UI Move Input
     m_Type: 0
@@ -3257,7 +3288,6 @@ GameObject:
   - component: {fileID: 1716662623}
   - component: {fileID: 1716662626}
   - component: {fileID: 1716662629}
-  - component: {fileID: 1716662628}
   - component: {fileID: 1716662627}
   m_Layer: 0
   m_Name: Core Managers
@@ -3426,29 +3456,6 @@ MonoBehaviour:
   teamIds: 00000000000000000000000000000000
   topRowLastSelectedTeamIds: 00000000000000000000000000000000
   debugTeamCount: 0
---- !u!114 &1716662628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1716662622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cec65556ab30d8e4d8e1c9dd868aa162, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tribeData:
-  - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
-  playerColors:
-  - {r: 1, g: 0.10266739, b: 0, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0.14377952, b: 1, a: 1}
-  - {r: 0, g: 1, b: 0.038481236, a: 1}
-  - {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
-  - {r: 1, g: 0.4391233, b: 0, a: 1}
-  - {r: 1, g: 0, b: 0.70731163, a: 1}
-  - {r: 0.55356467, g: 0, b: 0.735849, a: 1}
 --- !u!114 &1716662629
 MonoBehaviour:
   m_ObjectHideFlags: 0
