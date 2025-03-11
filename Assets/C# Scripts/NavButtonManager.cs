@@ -56,6 +56,7 @@ public class NavButtonManager : MonoBehaviour
         {
             buttonAnims[i].anim.SetBool("Selected", false);
         }
+        selectedButtonId = 0;
     }
 
     /// <summary>
