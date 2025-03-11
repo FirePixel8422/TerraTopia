@@ -20,7 +20,7 @@ public class NavButtonManager : MonoBehaviour
     [Space(10)]
 
     private NavButton[] buttonAnims;
-    private int selectedButtonId;
+    public int selectedButtonId;
 
 
     public void ToggleEnabledState(bool state)
