@@ -5,34 +5,31 @@ using UnityEngine;
 
 public class TileObject : NetworkBehaviour, IBuildable
 {
-   [SerializeField] private Renderer meshRenderer;
+    private Renderer meshRenderer;
 
 
     [SerializeField] private List<Building> buildings = new List<Building>();
-
-    private void Awake()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-        if (meshRenderer != null)
-        {
-            meshRenderer = GetComponentInChildren<MeshRenderer>(true);
-        }
-    }
     public List<Building> AvailableBuildings()
     {
         return buildings;
     }
-
+     
 
     public void Initialize(bool activateImmediately)
     {
-        if (GridManager.DoesCloudExist(transform.position.ToVector2()))
+        if (!GridManager.DoesCloudExist(transform.position.ToVector2()))
         {
+            gameObject.SetActive(activateImmediately);
+
+
+            //TEMP FIX
+
+            meshRenderer = GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+            {
+                meshRenderer = GetComponentInChildren<MeshRenderer>(true);
+            }
             meshRenderer.enabled = false;
-        }
-        else
-        {
-            meshRenderer.enabled = true;
         }
     }
 

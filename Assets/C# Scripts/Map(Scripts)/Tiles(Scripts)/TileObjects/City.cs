@@ -26,6 +26,8 @@ public class City : TileObject
         borderMaterial = borderMeshFilter.GetComponent<Renderer>().material;
         borderMeshFilter.mesh = new Mesh();
 
+        borderMeshFilter.transform.parent = null;
+
         if (IsServer)
         {
             ownerClientGameId = ClientManager.GetClientGameIdFromNetworkId(OwnerClientId);
@@ -34,7 +36,6 @@ public class City : TileObject
 
 
 
-    [ContextMenu("upgrade")]
     [ServerRpc(RequireOwnership = false)]
     public void UpgradeCity_ServerRPC()
     {
@@ -129,7 +130,7 @@ public class City : TileObject
         }
 
 
-        if (vertices.Length == 0)
+        if (vertices == null || vertices.Length == 0)
         {
             vertices = borderMeshFilter.mesh.vertices;
             triangles = borderMeshFilter.mesh.triangles;

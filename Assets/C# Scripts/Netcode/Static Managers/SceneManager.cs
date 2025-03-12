@@ -4,6 +4,9 @@ using Unity.Netcode;
 
 
 
+/// <summary>
+/// Custom SceneManager
+/// </summary>
 public static class SceneManager
 {
     public static void LoadScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
