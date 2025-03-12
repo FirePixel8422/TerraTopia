@@ -61,7 +61,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: dd4780a32c1eefe43a2c459824471906,
         type: 3}
       propertyPath: m_Name
-      value: GiantBodyRigHead
+      value: GiantBodyRig
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -74,15 +74,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd4780a32c1eefe43a2c459824471906,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8752049736748761581}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd4780a32c1eefe43a2c459824471906,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 8486145303128983080}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd4780a32c1eefe43a2c459824471906,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7733444632930478723}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd4780a32c1eefe43a2c459824471906,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8752049736748761581}
   m_SourcePrefab: {fileID: 100100000, guid: dd4780a32c1eefe43a2c459824471906, type: 3}
 --- !u!137 &6926855430545261188 stripped
 SkinnedMeshRenderer:
@@ -96,27 +96,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7438748091083796523}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &8752049736748761581
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7780764591187234170}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ba1603f686618354aad500a85e43e1f8, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8486145303128983080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,9 +129,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c50ecbaec3bdb14a85c7a9fe2197871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildings: []
   unitId: 0
   colorRenderer: {fileID: 6926855430545261188}
   headTransform: {fileID: 4865950726063946913}
+  _health: 0
+  _maxHealth: 0
+  _movementRange: 0
+  _detectionRange: 0
+  _attackDamage: 0
+  _unitsKilled: 0
+  tilesVisited: 0
+--- !u!95 &8752049736748761581
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780764591187234170}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 63e36423427168949be52ead2042df0c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &8329185994690279448 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7733653137167873997, guid: dd4780a32c1eefe43a2c459824471906,

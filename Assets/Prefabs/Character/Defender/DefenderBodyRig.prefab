@@ -158,6 +158,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1573086538692208591}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d7cdd3cdf994a184987eb9e40f648bdb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9058335934446013038}
   m_SourcePrefab: {fileID: 100100000, guid: d7cdd3cdf994a184987eb9e40f648bdb, type: 3}
 --- !u!4 &713493863159693777 stripped
 Transform:
@@ -204,9 +208,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c50ecbaec3bdb14a85c7a9fe2197871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildings: []
   unitId: 0
   colorRenderer: {fileID: 7416217974154303686}
   headTransform: {fileID: 3615048982794907526}
+  _health: 0
+  _maxHealth: 0
+  _movementRange: 0
+  _detectionRange: 0
+  _attackDamage: 0
+  _unitsKilled: 0
+  tilesVisited: 0
+--- !u!95 &9058335934446013038
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264161573178782899}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 19826f3a0d0708c48870b843fa1957e7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!137 &7416217974154303686 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8908664756166824228, guid: d7cdd3cdf994a184987eb9e40f648bdb,
