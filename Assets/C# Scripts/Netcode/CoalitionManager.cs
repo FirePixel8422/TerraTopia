@@ -100,7 +100,7 @@ public class CoalitionManager : NetworkBehaviour
     }
 
 
-
+     
     #region Input Management + Button And Data Setup
 
     /// <summary>
