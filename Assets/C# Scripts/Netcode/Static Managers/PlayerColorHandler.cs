@@ -6,7 +6,7 @@ public static class PlayerColorHandler
 {
     //Array of Colors aasigned to each player
     //Get Color from playerGameId
-    private static Color[] playerColors;
+    private static Vector4[] playerColors;
 
 
 
@@ -16,24 +16,24 @@ public static class PlayerColorHandler
     /// </summary>
     public static void Initialize()
     {
-        playerColors = new Color[GameSettings.maxPlayers];
+        playerColors = new Vector4[GameSettings.maxPlayers];
     }
 
 
     /// <summary>
-    /// Add Color and bind it to player their gameId
+    /// Only call this from the server!!! _______ Add Color and bind it to player their gameId
     /// </summary>
-    public static void AddPlayerColors(Color playerColor, int playerGameId)
+    public static void AddPlayerColors_OnServer(Color playerColor, int playerGameId)
     {
         playerColors[playerGameId] = playerColor;
     }
 
 
     /// <summary>
-    /// Get Player Color from playerGameId
+    /// Only call this from the server!!! _______ Get Player Color from playerGameId
     /// </summary>
     /// <returns>The Color assigned to this player</returns>
-    public static Color GetPlayerColor(int playerGameId)
+    public static Vector4 GetPlayerColor_OnServer(int playerGameId)
     {
         return playerColors[playerGameId];
     }

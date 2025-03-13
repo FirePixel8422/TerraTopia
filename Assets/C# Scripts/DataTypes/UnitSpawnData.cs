@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 
@@ -9,7 +10,7 @@ using UnityEngine;
 public class UnitSpawnData
 {
     public UnitBase body;
-    public GameObject head;
+    public NetworkObject head;
 
     public Material[] colorMaterials;
 }

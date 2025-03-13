@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,6 +9,8 @@ public class City : TileObject
 {
     public int level;
     public int borderSize = 1;
+
+    public MeshRenderer cityRenderer;
 
     [SerializeField] private MeshFilter borderMeshFilter;
     private Material borderMaterial;
@@ -31,7 +32,21 @@ public class City : TileObject
         if (IsServer)
         {
             ownerClientGameId = ClientManager.GetClientGameIdFromNetworkId(OwnerClientId);
+
+            OnSpawn_ClientRPC(ownerClientGameId);
         }
+    }
+
+
+    public Material mat;
+
+
+    [ClientRpc(RequireOwnership = false)]
+    private void OnSpawn_ClientRPC(int ownerPlayerGameId)
+    {
+        cityRenderer.material = Cityhandler.GetCityColorMaterial_OnServer(ownerPlayerGameId);
+
+        mat = cityRenderer.material;
     }
 
 
@@ -39,7 +54,7 @@ public class City : TileObject
     [ServerRpc(RequireOwnership = false)]
     public void UpgradeCity_ServerRPC()
     {
-        CityUpgradeData upgradeData = CityUpgradeHandler.GetCityUpgradeData(ownerClientGameId, level);
+        CityUpgradeData upgradeData = Cityhandler.GetCityUpgradeData_OnServer(ownerClientGameId, level);
 
         ResourceManager.ModifyGems_OnServer(ownerClientGameId, upgradeData.gainedGems);
         ResourceManager.ModifyFood_OnServer(ownerClientGameId, upgradeData.gainedFood);
@@ -79,13 +94,13 @@ public class City : TileObject
             }
         }
 
-        ExpandCityBorder_ClientRPC(borderTilePositions.ToArray(), ownerClientGameId, clientId_ForUpdateRequest);
+        ExpandCityBorder_ClientRPC(borderTilePositions.ToArray(), PlayerColorHandler.GetPlayerColor_OnServer(ownerClientGameId), clientId_ForUpdateRequest);
     }
 
 
 
     [ClientRpc(RequireOwnership = false)]
-    private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, int ownerOfCityClientGameId, ulong clientId_ForUpdateRequest = ulong.MaxValue)
+    private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, Vector4 borderColor, ulong clientId_ForUpdateRequest = ulong.MaxValue)
     {
         if (clientId_ForUpdateRequest != ulong.MaxValue && clientId_ForUpdateRequest != NetworkManager.LocalClientId)
         {
@@ -94,8 +109,9 @@ public class City : TileObject
 
         //update border mesh
         BorderMeshCalculator.CreateBorderMesh(borderMeshFilter.mesh, borderTilePositions, transform.position);
+
         //update border color
-        borderMaterial.color = PlayerColorHandler.GetPlayerColor(ownerOfCityClientGameId);
+        borderMaterial.color = borderColor;
     }
 
 

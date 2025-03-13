@@ -178,6 +178,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: -5791987061152686476}
   m_SourcePrefab: {fileID: 100100000, guid: fe2c52ea073defc478e9245b106b2987, type: 3}
+--- !u!23 &4797364007804853225 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: fe2c52ea073defc478e9245b106b2987,
+    type: 3}
+  m_PrefabInstance: {fileID: 6148042979313534829}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5969668612375191686 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fe2c52ea073defc478e9245b106b2987,
@@ -226,7 +232,7 @@ MonoBehaviour:
   buildings: []
   level: 0
   borderSize: 1
+  cityRenderer: {fileID: 4797364007804853225}
   borderMeshFilter: {fileID: 1257945936693446541}
   borderTilePositions: []
-  vertices: []
-  triangles: 
+  mat: {fileID: 0}

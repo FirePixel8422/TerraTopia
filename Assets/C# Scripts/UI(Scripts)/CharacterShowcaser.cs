@@ -133,8 +133,10 @@ public class CharacterShowcaser : MonoBehaviour
         UnitSpawnData unitData = TribeSelecter.Instance.tribeData[tribeId].unitSpawnData[unitId];
 
         //spawn unit (locally on server)
-        UnitBase spawnedUnit = Instantiate(unitData.body, transform);
+        UnitBase spawnedUnit = Instantiate(unitData.body, transform).GetComponent<UnitBase>();
         Instantiate(unitData.head, spawnedUnit.headTransform);
+
+        spawnedUnit.enabled = false;
 
         spawnedUnit.colorRenderer.material = unitData.colorMaterials[tribeId];
 

@@ -15,8 +15,12 @@ public class TribeSelecter : NetworkBehaviour
     [Header("ALL Units all of their cosmetics and materialData")]
     public UnitTribeListSO[] tribeData;
 
+    [Header("The colorMaterials of the city, SHOULD be equal to playerColors and unitColors")]
+    public Material[] cityColorMaterials;
+
     [Header("Colors used for things like city borders")]
     [SerializeField] private Color[] playerColors;
+
 
     private int playerCountThatSelectedTribe;
 
@@ -32,7 +36,7 @@ public class TribeSelecter : NetworkBehaviour
             UnitSpawnHandler.Initialize();
             PlayerColorHandler.Initialize();
 
-            CityUpgradeHandler.Initialize();
+            Cityhandler.Initialize();
 
             FindObjectOfType<NavButtonManager>(true).OnConfirm.AddListener((int selectedButtonId) => SelectTribe_ServerRPC(selectedButtonId, ClientManager.LocalClientGameId));
         }
@@ -57,13 +61,13 @@ public class TribeSelecter : NetworkBehaviour
 
 
     [ServerRpc(RequireOwnership = false)]
-    private void SelectTribe_ServerRPC(int tribeId, int clientGameId)
+    private void SelectTribe_ServerRPC(int tribeId, int playerGameId)
     {
         print("Tribe: " + tribeId + " Selected");
 
-        UnitSpawnHandler.AddTribe_OnServer(tribeData[tribeId].unitSpawnData, clientGameId);
-        PlayerColorHandler.AddPlayerColors(playerColors[playerCountThatSelectedTribe], clientGameId);
+        UnitSpawnHandler.AddTribe_OnServer(tribeData[tribeId].unitSpawnData, playerGameId);
+        PlayerColorHandler.AddPlayerColors_OnServer(playerColors[playerCountThatSelectedTribe], playerGameId);
 
-        CityUpgradeHandler.AddTribeCityData_OnServer(tribeData[tribeId].cityUpgrades, clientGameId);
+        Cityhandler.AddCityData_OnServer(tribeData[tribeId].cityUpgrades, cityColorMaterials[playerGameId], playerGameId);
     }
 }

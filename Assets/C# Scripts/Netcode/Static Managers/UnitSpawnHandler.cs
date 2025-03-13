@@ -44,25 +44,16 @@ public static class UnitSpawnHandler
     /// <returns>The Spawned Unit (Not yet spawned on network)</returns>
     public static UnitBase InstantiateUnit_OnServer(ulong clientNetworkId, int playerGameId, int unitId)
     {
-
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-        if (!NetworkManager.Singleton.IsServer)
-        {
-            Debug.LogError("You Cant call InstantiateUnit_OnServer on a client, it MUST be called from server");
-            return null;
-        }
-#endif
-
         //get units list from "clientGameId" and get "unitId" from that list 
         UnitBase unitBodyPrefab = unitCosmeticsList[playerGameId][unitId].body;
-        UnitBase unitHeadPrefab = unitCosmeticsList[playerGameId][unitId].body;
+        NetworkObject unitHeadPrefab = unitCosmeticsList[playerGameId][unitId].head;
 
         //spawn unit (locally on server)
-        UnitBase spawnedUnit = Object.Instantiate(unitBodyPrefab);
-        Object.Instantiate(unitHeadPrefab, spawnedUnit.headTransform);
+        UnitBase spawnedUnit = unitBodyPrefab.NetworkObject.InstantiateAndSpawn(NetworkManager.Singleton, clientNetworkId, true).GetComponent<UnitBase>();
+        unitHeadPrefab.InstantiateAndSpawn(NetworkManager.Singleton, clientNetworkId, true);
 
-        //call spawn on that unit, spawning it for everyone on the server
-        spawnedUnit.OnSpawnUnit_OnServer(clientNetworkId, playerGameId);
+        //attach head to body
+        unitHeadPrefab.TrySetParent(unitHeadPrefab, false);
 
         return spawnedUnit;
     }
