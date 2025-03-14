@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitSpawnData:
   - body: {fileID: -2104584173075352023, guid: 38dc8253122a49540b63e99e44be44d8, type: 3}
-    head: {fileID: -1454260697889337426, guid: 75b9bab9dec86ac4cbf5ade461ffd91d, type: 3}
+    head: {fileID: 8420030423923112943, guid: 75b9bab9dec86ac4cbf5ade461ffd91d, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 326eb92b30c20c24c9aeba66bb0fd5c2, type: 2}
     - {fileID: 2100000, guid: aac020f62244ec2419d6cc4f1b81486c, type: 2}
@@ -25,7 +25,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 5d0427a516c3c7c499907dad68c651b5, type: 2}
     - {fileID: 2100000, guid: 11c38321448561a4597e0620cf102e88, type: 2}
   - body: {fileID: 5880669039318488211, guid: 9cf11cd6d4ba9584289be9da9c4dd671, type: 3}
-    head: {fileID: 0}
+    head: {fileID: 6166751827419068980, guid: f31dfd2c9c3959041a05e21a570c8141, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 7ed3c8460fc07964dbf7196c4150c861, type: 2}
     - {fileID: 2100000, guid: c604beee39d8e954da5a35d9b64092ed, type: 2}
@@ -36,7 +36,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 33f75971533c52947b68a843609dc829, type: 2}
     - {fileID: 2100000, guid: 4dffd964ff5d9594ba19a53b3e402fd4, type: 2}
   - body: {fileID: 1573086538692208591, guid: f1d5416a00f6bf149a4ea9773efeeef2, type: 3}
-    head: {fileID: 0}
+    head: {fileID: 5777321484119304270, guid: 724a820e2da6f6e49af4d2bceef53760, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 3d912f995a404584593de35a417ca965, type: 2}
     - {fileID: 2100000, guid: e5bc4aa107b7326428e8ac92e84d7acc, type: 2}
@@ -47,7 +47,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 4654c93cd47daac4babf39100e096356, type: 2}
     - {fileID: 2100000, guid: 69e87d76f424522499320d12ea90c3c9, type: 2}
   - body: {fileID: -5226293247528300773, guid: c771012fe5e82e041a9d71097455b7e3, type: 3}
-    head: {fileID: 0}
+    head: {fileID: 4744620582134832400, guid: ba0680961d71ec846a73dc0c30131a1c, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 6b68ca7f113f1ae4396f3767fc5ca95d, type: 2}
     - {fileID: 2100000, guid: 6aac22a368eaf444fafa4bfd3e4cffaf, type: 2}
@@ -58,7 +58,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: bce03ccb4b4e98d42829876e4641b796, type: 2}
     - {fileID: 2100000, guid: ebc7822501b781545adda1d1679c701b, type: 2}
   - body: {fileID: 7733444632930478723, guid: 3a3751d748bf06c4183cf766e4ccd8c7, type: 3}
-    head: {fileID: 0}
+    head: {fileID: 6939877306003657688, guid: 0bd53e41c6936d8478e3d7c277943e65, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 6f559e6dabdf22141a6df6b343d128cb, type: 2}
     - {fileID: 2100000, guid: d7a8159198083bc418693d791e956dc8, type: 2}
