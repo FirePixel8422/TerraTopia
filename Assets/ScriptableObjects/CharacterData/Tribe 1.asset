@@ -68,6 +68,17 @@ MonoBehaviour:
     - {fileID: 2100000, guid: f42635863ccf46a4cbbc083a58564d5d, type: 2}
     - {fileID: 2100000, guid: 874067ff365e9364ba1c023ca371c8ef, type: 2}
     - {fileID: 2100000, guid: 6b128f815e22599468bff91b28bfa717, type: 2}
+  - body: {fileID: 4354922201595196241, guid: 4f10d7d47536bf841bbc1ed972bdc9d5, type: 3}
+    head: {fileID: 1181740285225185311, guid: 7395509f9af5d9d429363833c52a8866, type: 3}
+    colorMaterials:
+    - {fileID: 2100000, guid: 88bf779ce629e5d4ead1c3f28e5dfc35, type: 2}
+    - {fileID: 2100000, guid: 7a786becdcc9f4140a48d50bd9402701, type: 2}
+    - {fileID: 2100000, guid: 21f74356de7086c45a48da7fc05913b7, type: 2}
+    - {fileID: 2100000, guid: 32512315ccfa012489ac030b8b071efc, type: 2}
+    - {fileID: 2100000, guid: 223b03d566638ed4e9930ae05ddaec5c, type: 2}
+    - {fileID: 2100000, guid: 8b6dc408ae645b647af3a03e75dd06cb, type: 2}
+    - {fileID: 2100000, guid: 60b2b4cbe7466a9479d4207de9b640ba, type: 2}
+    - {fileID: 2100000, guid: ad0e7d8a8756f324f9d91f68548c4ca0, type: 2}
   cityUpgrades:
   - gainedGems: 0
     gainedFood: 0
