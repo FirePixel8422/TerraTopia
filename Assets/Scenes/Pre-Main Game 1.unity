@@ -2967,6 +2967,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   turnSpeed: 1.5
+  overrideTeamColor: 3
 --- !u!4 &1483553882
 Transform:
   m_ObjectHideFlags: 0
