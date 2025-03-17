@@ -1,14 +1,25 @@
+using System.Collections;
 using System.Threading.Tasks;
+using TMPro;
 using Unity.Burst;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 /// <summary>
-/// Manages team data on the server
+/// Manages team data setup on the server and save it in clientManager
 /// </summary>
 public class CoalitionManager : NetworkBehaviour
 {
+    public static CoalitionManager Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
+
     [Tooltip("What Team does PlayerGameId belong to, where playerGameId is the idnex of this array")]
     private static int[] teamIds = new int[GameSettings.maxTeams];
 
@@ -18,6 +29,17 @@ public class CoalitionManager : NetworkBehaviour
 
     [Tooltip("Amount of teams with atleast 1 player in it")]
     public static int TeamCount { get; private set; }
+
+
+    [SerializeField] private float startGameTime;
+    [SerializeField] private float unfairMatchStartGameTime;
+
+    private static bool gameCanStart;
+    private static bool gameIsStarting;
+
+    [SerializeField]
+    private TextMeshProUGUI countDownTimerText;
+    private Animator countDownTimerAnim;
 
 
 
@@ -32,8 +54,11 @@ public class CoalitionManager : NetworkBehaviour
         {
             teamIds[i] = GameSettings.maxTeams;
         }
+        countDownTimerAnim = countDownTimerText.GetComponent<Animator>();
     }
 
+
+    #region Team Info Related bool checks
 
     /// <summary>
     /// Are all clients in a team and there are at least 2 teams that are fair if the matchsettings enforce it
@@ -69,6 +94,12 @@ public class CoalitionManager : NetworkBehaviour
             }
         }
 
+#if UNITY_EDITOR
+        //if all clients are on 1 team and (the teams are fair or unfair teams are allowed): return true for valid, otherwise return false for valid.
+        //return fairTeams for fairTeams
+        return (fairTeams || MatchManager.matchSettings.allowUnfairTeams, fairTeams);
+#endif
+
 
         //if all clients are on 1 team and (the teams are fair or unfair teams are allowed): return true for valid, otherwise return false for valid.
         //return fairTeams for fairTeams
@@ -84,31 +115,12 @@ public class CoalitionManager : NetworkBehaviour
         return teamCounts[teamId] == GameSettings.maxPlayersPerTeam;
     }
 
-
-
-
-    public async Task TryStartGame()
-    {
-        int playerCount = ClientManager.GetPlayerIdDataArray().PlayerCount;
-
-        await LobbyManager.SetLobbyLockStateAsync(true);
-
-        //if a player joined last second, cancel match start
-        if (playerCount != NetworkManager.ConnectedClientsIds.Count)
-        {
-            return;
-        }
-
-        TribeSelecter.Instance.SelectTribe();
-
-        SceneManager.LoadSceneOnNetwork("Nobe");
-    }
+    #endregion
 
 
 
 
-    #region Process player input on server and update teamId data accordingly
-
+    #region Set TeamData and save it to ClientManager's PlayerIdDataArray.
 
     /// <summary>
     /// Update teamIds from client on the server, possibly update "topRowLastSelectedTeamIds" to store what button to move up to when back at start button
@@ -146,21 +158,123 @@ public class CoalitionManager : NetworkBehaviour
         UpdatePlayerIdDataArray_OnServer(clientGameId, newTeamId, TeamCount);
     }
 
-    #endregion
-
-
-
 
     /// <summary>
     /// Get and update playerIdDataArray with team changes and send it back to ClientManager
     /// </summary>
-    private static void UpdatePlayerIdDataArray_OnServer(int clientGameId, int newTeamId, int newTeamCount)
+    private static async void UpdatePlayerIdDataArray_OnServer(int clientGameId, int newTeamId, int newTeamCount)
     {
         PlayerIdDataArray clientIdDataArrayCopy = ClientManager.GetPlayerIdDataArray();
 
         clientIdDataArrayCopy.MovePlayerToTeam(clientGameId, newTeamId, newTeamCount);
 
         ClientManager.UpdatePlayerIdDataArray_OnServer(clientIdDataArrayCopy);
+
+
+        //if teams are valid, start a countDownTimer
+        (bool areTeamsValid, bool areTeamsFair) = AreTeamsValid();
+        if (areTeamsValid)
+        {
+            //send serverTime so if the RPC is recieved a second late, the timer stats with a second less time
+            Instance.RestartCountDownTimer_ClientRPC(NetworkManager.Singleton.ServerTime.TimeAsFloat, areTeamsFair);
+
+            gameCanStart = await TryLockLobby();
+
+            if (gameCanStart == false)
+            {
+                Instance.ResetCountDownTimer_ClientRPC();
+                return;
+            }
+
+            if (gameIsStarting == false)
+            {
+                gameIsStarting = true;
+
+                //load main scene in background
+                SceneManager.LoadSceneOnNetwork("Nobe", LoadSceneMode.Additive);
+            }
+        }
+    }
+
+    #endregion
+
+
+
+
+    [ClientRpc(RequireOwnership = false)]
+    private void RestartCountDownTimer_ClientRPC(float serverTimeWhenSent, bool areTeamsFair)
+    {
+        //reset any buzy countDownTimer
+        StopAllCoroutines();
+
+        StartCoroutine(StartGameDelay(NetworkManager.ServerTime.TimeAsFloat - serverTimeWhenSent, areTeamsFair));
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    private void ResetCountDownTimer_ClientRPC()
+    {
+        //reset any buzy countDownTimer
+        StopAllCoroutines();
+        countDownTimerAnim.SetTrigger("Stop");
+    }
+
+    private IEnumerator StartGameDelay(float alreadyElapsedTime, bool areTeamsFair)
+    {
+        float timeLeft;
+        if (areTeamsFair)
+        {
+            timeLeft = startGameTime - alreadyElapsedTime;
+        }
+        else
+        {
+            timeLeft = unfairMatchStartGameTime - alreadyElapsedTime;
+        }
+
+        countDownTimerText.text = timeLeft.ToString();
+        countDownTimerAnim.SetTrigger("Start");
+
+        while (true)
+        {
+            yield return null;
+
+            timeLeft -= Time.deltaTime;
+
+            countDownTimerText.text = "Game Starts In: " + timeLeft.ToString();
+
+            if (timeLeft <= 0)
+            {
+                countDownTimerAnim.SetTrigger("Complete");
+
+                //if this client is the server, call TryStartGame
+                if (IsServer)
+                {
+                    StartGame();
+                }
+
+                yield break;
+            }
+        }
+    }
+
+    public static async Task<bool> TryLockLobby()
+    {
+        int playerCount = ClientManager.GetPlayerIdDataArray().PlayerCount;
+
+        await LobbyManager.SetLobbyLockStateAsync(true);
+
+        //if no player joined last second, return true, otehrwise false
+        return playerCount == NetworkManager.Singleton.ConnectedClientsIds.Count;
+    }
+
+    private void StartGame()
+    {
+        TribeSelecter.Instance.SelectTribe();
+
+        return;
+
+        Scene sceneToUnload = SceneManager.GetSceneByName("Nobe");
+
+        SceneManager.UnLoadSceneOnNetwork(sceneToUnload);
     }
 
 

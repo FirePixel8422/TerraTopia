@@ -14,6 +14,10 @@ public class NavButtonManager : NetworkBehaviour
     [SerializeField]
     public UnityEvent<int> OnConfirm, OnClick;
 
+    [Header("Call OnClick event on this script and selected button shen selecting new button")]
+    public bool callOnClickWhenSelectingButton;
+
+
     [Header("UI Movement Keys")]
     [SerializeField] private InputAction UIMoveInput = new InputAction("UIMove", InputActionType.Value);
 
@@ -28,7 +32,7 @@ public class NavButtonManager : NetworkBehaviour
     [SerializeField] protected int selectedButtonId;
 
 
-    protected bool buttonsEnabled = true;
+    public bool buttonsEnabled = true;
 
     [BurstCompile]
     public void ToggleEnabledState(bool state)
@@ -158,12 +162,13 @@ public class NavButtonManager : NetworkBehaviour
         int oldSelectedButtonId = selectedButtonId;
 
         //get potential new selectedButtonId
-        selectedButtonId = GetNewButtonIdFromMoveInput(moveInput);
+        (bool changed, int newSelectedButtonId) = GetNewButtonIdFromMoveInput(moveInput);
+        selectedButtonId = newSelectedButtonId;
 
 
 
         //if WASD movement cant select new button, call wobbly animation on current selected button adn return
-        if (oldSelectedButtonId == selectedButtonId)
+        if (changed == false)
         {
             buttonAnims[selectedButtonId].Anim.SetTrigger("MoveError");
             return;
@@ -198,9 +203,10 @@ public class NavButtonManager : NetworkBehaviour
     /// </summary>
     /// <returns>That buttons Id</returns>
     [BurstCompile]
-    protected int GetNewButtonIdFromMoveInput(Vector2 moveInput)
+    protected (bool changed, int newId) GetNewButtonIdFromMoveInput(Vector2 moveInput)
     {
         //pre-initialized
+        bool changed = false;
         int connectedButtonId;
         int newButtonId = selectedButtonId;
 
@@ -208,25 +214,29 @@ public class NavButtonManager : NetworkBehaviour
         if (moveInput.x < 0 && buttonAnims[selectedButtonId].TryGetConnection(0, out connectedButtonId))
         {
             newButtonId = connectedButtonId;
+            changed = true;
         }
         //right
         else if (moveInput.x > 0 && buttonAnims[selectedButtonId].TryGetConnection(1, out connectedButtonId))
         {
             newButtonId = connectedButtonId;
+            changed = true;
         }
 
         //up
         if (moveInput.y > 0 && buttonAnims[selectedButtonId].TryGetConnection(2, out connectedButtonId))
         {
             newButtonId = connectedButtonId;
+            changed = true;
         }
         //down
         else if (moveInput.y < 0 && buttonAnims[selectedButtonId].TryGetConnection(3, out connectedButtonId))
         {
             newButtonId = connectedButtonId;
+            changed = true;
         }
 
-        return newButtonId;
+        return (changed, newButtonId);
     }
 
 
@@ -236,6 +246,13 @@ public class NavButtonManager : NetworkBehaviour
     [BurstCompile]
     protected virtual void SelectNewButton_FromMoveInput(int oldButtonId, int newButtonId, Vector2 moveInput)
     {
+        if (callOnClickWhenSelectingButton)
+        {
+            //when a button is selected, invoke OnClick with buttonId and call OnClick on selected button
+            OnClick?.Invoke(newButtonId);
+            buttonAnims[selectedButtonId].OnClick?.Invoke();
+        }
+
         //deselect old button
         buttonAnims[oldButtonId].Anim.SetBool("Selected", false);
 

@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+
 
 public class CoalitionButtonManager : NavButtonManager
 {
@@ -83,11 +82,12 @@ public class CoalitionButtonManager : NavButtonManager
         //math.sign so when pressing A+W the vector2 which would be .7, .7 is converted to 1, 1.
         moveInput = GetTrueMoveInput(moveInput);
 
-        int newButtonId = GetNewButtonIdFromMoveInput(moveInput);
+        //get potential new selectedButtonId
+        (bool changed, int newButtonId) = GetNewButtonIdFromMoveInput(moveInput);
 
 
         //if WASD movement cant select new button, call wobbly animation animation on that reqeustingClient on current selected button and return
-        if (oldButtonId == newButtonId)
+        if (changed)
         {
             FailToSelectNewButton_ClientRPC(requestingClientGameId);
             return;
