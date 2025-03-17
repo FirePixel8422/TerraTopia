@@ -16,12 +16,20 @@ public struct PlayerIdDataArray : INetworkSerializable
     [SerializeField] private int[] teamIds;
 
 
+
     [Header("Total clients in server that are setup by game/team id system")]
     [SerializeField] private int playerCount;
 
-
     [Tooltip("Total clients in server that are setup by game/team id system")]
     public readonly int PlayerCount => playerCount;
+
+
+
+    [Header("Amount of teams with atleast 1 player in them")]
+    [SerializeField] private int teamCount;
+
+    [Tooltip("Amount of teams with atleast 1 player in them")]
+    public readonly int TeamCount => teamCount;
 
 
 
@@ -37,6 +45,7 @@ public struct PlayerIdDataArray : INetworkSerializable
         }
 
         playerCount = 0;
+        teamCount = 0;
     }
 
 
@@ -73,17 +82,13 @@ public struct PlayerIdDataArray : INetworkSerializable
     /// Move client to new team, id -1 means no team
     /// </summary>
     [BurstCompile]
-    public void MovePlayerToTeam(int clientGameId, int newTeamId)
+    public void MovePlayerToTeam(int clientGameId, int newTeamId, int newTeamCount)
     {
+        //update teamId
         teamIds[clientGameId] = newTeamId;
-    }
 
-    [BurstCompile]
-    public void MovePlayerToTeam(ulong clientNetworkId, int newTeamId)
-    {
-        int clientGameId = GetPlayerGameId(clientNetworkId);
-
-        teamIds[clientGameId] = newTeamId;
+        //set new TeamCount
+        teamCount = newTeamCount;
     }
 
     #endregion

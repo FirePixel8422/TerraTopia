@@ -40,7 +40,7 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
     }
 
 
-    [HideInInspector] public Animator anim;
+    public Animator Anim { get; private set; }
     private int buttonId = 0;
 
 
@@ -52,12 +52,7 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
 
         OnClickNavManagerCallback = onclickCallbackMethod;
 
-        anim = GetComponent<Animator>();
-
-
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-        savedButtonId = _buttonId;
-#endif
+        Anim = GetComponent<Animator>();
     }
 
     //destroy action callback reference
@@ -82,16 +77,9 @@ public class NavButton : MonoBehaviour, IPointerClickHandler
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
 
-    private int savedButtonId;
-
     private void OnValidate()
     {
-        if (buttonId != savedButtonId)
-        {
-            buttonId = savedButtonId;
-        }
-
-        if (connections.Length != 4)
+        if (connections.Length != 0)
         {
             DEBUG_Force4Connections();
         }

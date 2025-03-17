@@ -120,15 +120,19 @@ public class CharacterShowcaser : MonoBehaviour
         TribeSelecter.selectedTribeId = tribeId;
         cUnitId = unitId;
 
+        Quaternion rot = Quaternion.identity;
+
         if (modelTransform != null)
         {
+            rot = modelTransform.localRotation;
+
             Destroy(modelTransform.gameObject);
         }
 
-        modelTransform = InstantiateUnit_Locally(tribeId, unitId);
+        modelTransform = InstantiateUnit_Locally(tribeId, unitId, rot);
     }
 
-    private Transform InstantiateUnit_Locally(int tribeId, int unitId)
+    private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)
     {
         UnitSpawnData unitData = TribeSelecter.Instance.tribeData[tribeId].unitSpawnData[unitId];
 
@@ -136,8 +140,13 @@ public class CharacterShowcaser : MonoBehaviour
         UnitBase spawnedUnit = Instantiate(unitData.body, transform).GetComponent<UnitBase>();
         Instantiate(unitData.head, spawnedUnit.headTransform);
 
+        //set rot equal to previous preview units rot
+        spawnedUnit.transform.localRotation = rot;
+
+        //disble script
         spawnedUnit.enabled = false;
 
+        //set team color material
         spawnedUnit.colorRenderer.material = unitData.colorMaterials[tribeId];
 
         return spawnedUnit.transform;

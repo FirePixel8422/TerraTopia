@@ -9,20 +9,17 @@ public class TurnManager : NetworkBehaviour
     [SerializeField] private NetworkVariable<int> teamOnTurnId = new NetworkVariable<int>(-1);
 
 
-    /// <summary>
-    /// OnCycleStarted is called when all players did one turn (Before OnTurnEnded and OnTurnStarted are called)
-    /// </summary>
-    public static Action OnCycleStarted;
+    [Tooltip("OnCycleStarted<int cycleId> is called when all players did one turn (Before OnTurnEnded and OnTurnStarted are called)")]
+    public static Action<int> OnCycleStarted;
 
-    /// <summary>
-    /// OnTurnStarted is called on every client who his turn just started
-    /// </summary>
-    public static Action OnTurnStarted;
+    private static int currentCycle;
 
-    /// <summary>
-    /// OnTurnEnded is called on every client who his turn just ended
-    /// </summary>
-    public static Action OnTurnEnded;
+
+    [Tooltip("OnTurnStarted is called on every client who his turn just started")]
+    public static Action OnMyTurnStarted;
+
+    [Tooltip("OnTurnEnded is called on every client who his turn just ended")]
+    public static Action OnMyTurnEnded;
 
 
 
@@ -34,18 +31,19 @@ public class TurnManager : NetworkBehaviour
             //if the last teams turn has just ended, a new cycle begins
             if (newTeamOnTurnId == 0 && oldTeamOnTurnId == (CoalitionManager.TeamCount - 1))
             {
-                OnCycleStarted?.Invoke();
+                currentCycle += 1;
+                OnCycleStarted?.Invoke(currentCycle);
             }
 
             //if this clients teamId is the same as "newTeamOnTurnId", start its turn.
             if (newTeamOnTurnId == ClientManager.LocalClientTeamId)
             {
-                OnTurnStarted?.Invoke();
+                OnMyTurnStarted?.Invoke();
             }
             //if this clients teamId is the same as "oldTeamOnTurnId", end its turn.
             if (oldTeamOnTurnId == ClientManager.LocalClientTeamId)
             {
-                OnTurnEnded?.Invoke();
+                OnMyTurnEnded?.Invoke();
             }
         };
 

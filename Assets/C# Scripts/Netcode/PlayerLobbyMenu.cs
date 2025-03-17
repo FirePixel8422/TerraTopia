@@ -197,6 +197,8 @@ public class ClientLobbyMenu : NetworkBehaviour
 
     public override void OnDestroy()
     {
+        base.OnDestroy();
+
         ClientManager.OnClientDisconnectedCallback -= OnClientDisconnected_OnServer;
     }
 

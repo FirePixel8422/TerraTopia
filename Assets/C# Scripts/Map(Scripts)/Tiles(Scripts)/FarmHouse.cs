@@ -11,7 +11,7 @@ public class FarmHouse : TileObject
     {
         if (IsServer)
         {
-            TurnManager.OnTurnStarted += OnMyTurnStarted_OnServer;
+            TurnManager.OnMyTurnStarted += OnMyTurnStarted_OnServer;
 
             OwnerClientGameId = ClientManager.GetClientGameIdFromNetworkId(OwnerClientId);
         }
@@ -32,9 +32,11 @@ public class FarmHouse : TileObject
 
     public override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (IsServer)
         {
-            TurnManager.OnTurnStarted -= OnMyTurnStarted_OnServer;
+            TurnManager.OnMyTurnStarted -= OnMyTurnStarted_OnServer;
         }
     }
 }

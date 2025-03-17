@@ -60,6 +60,10 @@ public class ClientManager : NetworkBehaviour
     [Tooltip("Turn NetworkId into GameId")]
     public static int LocalClientTeamId { get; private set; }
 
+    [Tooltip("How Many Teams are there")]
+    public static int TeamCount { get; private set; }
+
+
 
     [Tooltip("Amount of Players in server that have been setup by ClientManager (game/team ID System")]
     public static int PlayerCount => playerIdDataArray.Value.PlayerCount;

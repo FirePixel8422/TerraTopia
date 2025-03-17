@@ -165,7 +165,6 @@ MonoBehaviour:
   - {fileID: 1549712729}
   - {fileID: 0}
   - {fileID: 0}
-  anim: {fileID: 0}
 --- !u!114 &216026155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -820,7 +819,6 @@ MonoBehaviour:
   - {fileID: 1961193411}
   - {fileID: 0}
   - {fileID: 0}
-  anim: {fileID: 0}
 --- !u!114 &389725222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -949,7 +947,7 @@ Animator:
   m_GameObject: {fileID: 553619599}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 41dd4134bad50904ebf770e7b1ac604e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0b8fbb052e77917468e90a05143a0c77, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1007,21 +1005,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 553619599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54f97e31eae59454da0086c659a9dead, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnClick:
+  m_Navigation:
+    m_Mode: 0
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 3
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 553619603}
+  m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  OnConfirm:
-    m_PersistentCalls:
-      m_Calls: []
-  connections:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 1366165800}
-  - {fileID: 1366165800}
-  anim: {fileID: 0}
 --- !u!1 &587735687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,9 +1338,8 @@ MonoBehaviour:
   connections:
   - {fileID: 1450252810}
   - {fileID: 1366165800}
-  - {fileID: 553619605}
-  - {fileID: 553619605}
-  anim: {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &680165947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,9 +1730,8 @@ MonoBehaviour:
   connections:
   - {fileID: 1366165800}
   - {fileID: 1450252810}
-  - {fileID: 553619605}
-  - {fileID: 553619605}
-  anim: {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &921825053
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,7 +2139,6 @@ MonoBehaviour:
   - {fileID: 389725221}
   - {fileID: 0}
   - {fileID: 0}
-  anim: {fileID: 0}
 --- !u!114 &1021154917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2245,7 +2260,6 @@ MonoBehaviour:
   - {fileID: 216026154}
   - {fileID: 0}
   - {fileID: 0}
-  anim: {fileID: 0}
 --- !u!114 &1065372548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2444,9 +2458,8 @@ MonoBehaviour:
   connections:
   - {fileID: 602168554}
   - {fileID: 898465636}
-  - {fileID: 553619605}
-  - {fileID: 553619605}
-  anim: {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1394911979
 GameObject:
   m_ObjectHideFlags: 0
@@ -2490,7 +2503,6 @@ MonoBehaviour:
   - {fileID: 1065372547}
   - {fileID: 0}
   - {fileID: 0}
-  anim: {fileID: 0}
 --- !u!114 &1394911981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2689,9 +2701,8 @@ MonoBehaviour:
   connections:
   - {fileID: 898465636}
   - {fileID: 602168554}
-  - {fileID: 553619605}
-  - {fileID: 553619605}
-  anim: {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1483553880
 GameObject:
   m_ObjectHideFlags: 0
@@ -2705,8 +2716,9 @@ GameObject:
   - component: {fileID: 1483553883}
   - component: {fileID: 1483553881}
   - component: {fileID: 1483553885}
+  - component: {fileID: 1483553886}
   m_Layer: 0
-  m_Name: TribeManager
+  m_Name: Tribe + CoalitionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2830,6 +2842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tribeData:
   - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
+  cityColorMaterials: []
   playerColors:
   - {r: 1, g: 0.10266739, b: 0, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
@@ -2839,6 +2852,21 @@ MonoBehaviour:
   - {r: 1, g: 0.4391233, b: 0, a: 1}
   - {r: 1, g: 0, b: 0.70731163, a: 1}
   - {r: 0.55356467, g: 0, b: 0.735849, a: 1}
+--- !u!114 &1483553886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483553880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9805c82f73a34c1428b7f873fec07b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DEBUG_teamIds: 
+  DEBUG_teamCounts: 
+  debugTeamCount: 0
 --- !u!1 &1500761181
 GameObject:
   m_ObjectHideFlags: 0
@@ -2971,7 +2999,6 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   selectedButtonId: 0
-  lastInput: {x: 0, y: 0}
 --- !u!1 &1549712728
 GameObject:
   m_ObjectHideFlags: 0
@@ -3015,7 +3042,6 @@ MonoBehaviour:
   - {fileID: 1639919883}
   - {fileID: 0}
   - {fileID: 0}
-  anim: {fileID: 0}
 --- !u!114 &1549712730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3287,7 +3313,6 @@ MonoBehaviour:
   - {fileID: 1021154916}
   - {fileID: 0}
   - {fileID: 0}
-  anim: {fileID: 0}
 --- !u!114 &1639919884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3468,7 +3493,6 @@ GameObject:
   - component: {fileID: 1716662623}
   - component: {fileID: 1716662626}
   - component: {fileID: 1716662629}
-  - component: {fileID: 1716662627}
   m_Layer: 0
   m_Name: Core Managers
   m_TagString: Untagged
@@ -3526,116 +3550,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamOnTurnId:
     m_InternalValue: 0
---- !u!114 &1716662627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1716662622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9805c82f73a34c1428b7f873fec07b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UIMoveInput:
-    m_Name: UI Move Input
-    m_Type: 0
-    m_ExpectedControlType: Vector2
-    m_Id: fcda263c-1c74-45fa-9ea7-efd76b8d2f16
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: WASD
-      m_Id: 08a72110-1b14-4bb2-8128-b792a5df767f
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 4
-    - m_Name: up
-      m_Id: 4ea7943d-a24d-4621-a9a6-fb2d656696b7
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: down
-      m_Id: c1fa5ebc-1682-4160-8099-a7f7037f6eb3
-      m_Path: <Keyboard>/s
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: left
-      m_Id: b951d1f9-fb9d-4bb5-b3e3-f16fe406ad19
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: right
-      m_Id: 212afcd7-e405-4b87-bf70-11893ae3aae0
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: Arrow Keys
-      m_Id: 893af884-d58b-48d9-826d-0571c136966a
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 4
-    - m_Name: up
-      m_Id: 15a52af4-d309-43fe-8228-7db9ea879e5f
-      m_Path: <Keyboard>/upArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: down
-      m_Id: 65c3d28c-5a78-4a79-970b-d7211b097a7f
-      m_Path: <Keyboard>/downArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: left
-      m_Id: dbeeb85f-10c0-49b1-a0b1-4dcb3ae84ef4
-      m_Path: <Keyboard>/leftArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    - m_Name: right
-      m_Id: 7f5ac8a2-71e5-433a-97d3-26426e633ad8
-      m_Path: <Keyboard>/rightArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: UI Move Input
-      m_Flags: 8
-    m_Flags: 0
-  buttonAnims:
-  - {fileID: 898465632}
-  - {fileID: 1450252806}
-  - {fileID: 602168550}
-  - {fileID: 1366165796}
-  startGameButton: {fileID: 0}
-  teamIds: 00000000000000000000000000000000
-  topRowLastSelectedTeamIds: 00000000000000000000000000000000
-  debugTeamCount: 0
 --- !u!114 &1716662629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3944,7 +3858,6 @@ MonoBehaviour:
   - {fileID: 1394911980}
   - {fileID: 0}
   - {fileID: 0}
-  anim: {fileID: 0}
 --- !u!114 &1961193412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4253,15 +4166,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1514800858443666290}
-  - component: {fileID: 7172267840686138877}
+  - component: {fileID: 7172267840686138878}
+  - component: {fileID: 7172267840686138879}
   m_Layer: 5
   m_Name: TeamSelectScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &7172267840686138877
+  m_IsActive: 1
+--- !u!114 &7172267840686138878
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4270,7 +4184,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 7172267840686138876}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce0e81a61f4c3845b553a3cd3ce024c, type: 3}
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3294114935
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &7172267840686138879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7172267840686138876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632215b89afeafa4bbc56541c987914e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnConfirm:
@@ -4346,7 +4281,6 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   selectedButtonId: 0
-  lastInput: {x: 0, y: 0}
 --- !u!1 &8731386023970260408
 GameObject:
   m_ObjectHideFlags: 0

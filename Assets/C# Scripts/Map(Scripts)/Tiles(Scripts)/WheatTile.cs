@@ -21,7 +21,7 @@ public class WheatTile : TileObject
     {
         if (IsServer)
         {
-            TurnManager.OnCycleStarted += CycleStarted;
+            TurnManager.OnCycleStarted += (_) => CycleStarted();
         }
     }
 
@@ -48,9 +48,11 @@ public class WheatTile : TileObject
 
     public override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (IsServer)
         {
-            TurnManager.OnCycleStarted -= CycleStarted;
+            TurnManager.OnCycleStarted -= (_) => CycleStarted();
         }
     }
 }
