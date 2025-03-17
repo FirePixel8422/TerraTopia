@@ -70,13 +70,16 @@ public class NavButtonManager : NetworkBehaviour
     /// <summary>
     /// Reset Button Animation States and set selected buttonId to 0
     /// </summary>
-    private void ResetNavButtonStates()
+    protected virtual void ResetNavButtonStates()
     {
-        buttonAnims = GetComponentsInChildren<NavButton>();
-
-        for (int i = 0; i < buttonAnims.Length; i++)
+        if (buttonAnims == null)
         {
-            buttonAnims[i].Initialize(i, OnSelectNewButton_FromMouseInput);
+            buttonAnims = GetComponentsInChildren<NavButton>(true);
+
+            for (int i = 0; i < buttonAnims.Length; i++)
+            {
+                buttonAnims[i].Initialize(i, OnSelectNewButton_FromMouseInput);
+            }
         }
 
         //select button 0

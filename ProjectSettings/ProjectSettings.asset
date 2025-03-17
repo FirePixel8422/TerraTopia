@@ -936,11 +936,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 0d5e9342-63d8-4921-af6a-08a53cddc3a4
+  cloudProjectId: 28ce1612-f3b8-44d0-ab28-261d816febbc
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: TerraTopia
-  organizationId: unity_bc060d758ebdb9cae46a
+  organizationId: fire-pixel8422
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

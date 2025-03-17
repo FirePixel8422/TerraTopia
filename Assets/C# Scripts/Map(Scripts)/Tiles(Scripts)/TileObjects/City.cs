@@ -1,14 +1,16 @@
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
 
-
+[BurstCompile]
 public class City : TileObject
 {
     public int level;
     public int borderSize = 1;
+    public float labSpeed;
 
     public MeshRenderer cityRenderer;
 
@@ -33,25 +35,28 @@ public class City : TileObject
         {
             ownerClientGameId = ClientManager.GetClientGameIdFromNetworkId(OwnerClientId);
 
-            OnSpawn_ClientRPC(ownerClientGameId);
+            SetupCityMaterial_ClientRPC(ownerClientGameId);
+
+            RecalculateBorderMesh_OnServer();
         }
     }
 
 
     public Material mat;
 
-
     [ClientRpc(RequireOwnership = false)]
-    private void OnSpawn_ClientRPC(int ownerPlayerGameId)
+    private void SetupCityMaterial_ClientRPC(int ownerPlayerGameId)
     {
         cityRenderer.material = Cityhandler.GetCityColorMaterial_OnServer(ownerPlayerGameId);
 
+        //store material reference
         mat = cityRenderer.material;
     }
 
 
 
     [ServerRpc(RequireOwnership = false)]
+    [BurstCompile]
     public void UpgradeCity_ServerRPC()
     {
         CityUpgradeData upgradeData = Cityhandler.GetCityUpgradeData_OnServer(ownerClientGameId, level);
@@ -62,16 +67,17 @@ public class City : TileObject
         if (upgradeData.gainedBorderSize != 0)
         {
             borderSize += upgradeData.gainedBorderSize;
+            labSpeed += upgradeData.gainedLabSpeed;
 
-            RecalculateBorderMesh_ServerRPC();
+            RecalculateBorderMesh_OnServer();
         }
 
         level += 1;
     }
 
 
-    [ServerRpc(RequireOwnership = false)]
-    private void RecalculateBorderMesh_ServerRPC(ulong clientId_ForUpdateRequest = ulong.MaxValue)
+    [BurstCompile]
+    private void RecalculateBorderMesh_OnServer()
     {
         // Loop over all tiles within the border range
         for (int xOffset = -borderSize; xOffset <= borderSize; xOffset++)
@@ -94,17 +100,31 @@ public class City : TileObject
             }
         }
 
-        ExpandCityBorder_ClientRPC(borderTilePositions.ToArray(), PlayerColorHandler.GetPlayerColor_OnServer(ownerClientGameId), clientId_ForUpdateRequest);
+        ExpandCityBorder_ClientRPC(borderTilePositions.ToArray(), PlayerColorHandler.GetPlayerColor_OnServer(ownerClientGameId));
     }
 
 
 
     [ClientRpc(RequireOwnership = false)]
-    private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, Vector4 borderColor, ulong clientId_ForUpdateRequest = ulong.MaxValue)
+    [BurstCompile]
+    private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, Vector4 borderColor)
     {
-        if (clientId_ForUpdateRequest != ulong.MaxValue && clientId_ForUpdateRequest != NetworkManager.LocalClientId)
+        //if clientId_ForUpdateRequest is the ownerCLient (updating his border), discover all clouds in the border
+        if (NetworkManager.LocalClientId == OwnerClientId) 
         {
-            return;
+            int borderTilesCount = borderTilePositions.Length;
+            Vector2 tilePos;
+
+            for (int i = 0; i < borderTilesCount; i++)
+            {
+                tilePos = borderTilePositions[i].ToVector2();
+
+                if (GridManager.DoesCloudExist(tilePos))
+                {
+                    GridManager.TryGetTileByPos(tilePos, out GameObject tile);
+                    tile.SetActive(true);
+                }
+            }
         }
 
         //update border mesh
@@ -115,17 +135,9 @@ public class City : TileObject
     }
 
 
-    public override void DiscoverObject()
-    {
-        base.DiscoverObject();
-
-        RecalculateBorderMesh_ServerRPC(NetworkManager.LocalClientId);
-    }
 
 
-
-
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR
 
     //[SerializeField]
     private Vector3[] vertices;

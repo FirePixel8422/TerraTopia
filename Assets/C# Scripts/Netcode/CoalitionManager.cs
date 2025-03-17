@@ -2,6 +2,7 @@ using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Burst;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -90,21 +91,12 @@ public class CoalitionManager : NetworkBehaviour
             }
         }
 
-        for (int i = 0; i < playerCount; i++)
-        {
-            //update mostMembersPerTeam int after increasing teamMemberValue
-            if (teamCounts[teamIds[i]] > mostMembersPerTeam)
-            {
-                mostMembersPerTeam = teamCounts[teamIds[i]];
-            }
-        }
-
 
         //check if all teams have the same amount of clients
         for (int i = 0; i < playerCount; i++)
         {
             //check if all teams have the same amount of clients, if not set fairTeams to false
-            if (teamCounts[i] != GameSettings.maxPlayers && teamCounts[i] != mostMembersPerTeam)
+            if (teamCounts[i] != 0 && teamCounts[i] != mostMembersPerTeam)
             {
                 fairTeams = false;
                 break;
@@ -114,7 +106,7 @@ public class CoalitionManager : NetworkBehaviour
 #if UNITY_EDITOR
         //if all clients are on 1 team and (the teams are fair or unfair teams are allowed): return true for valid, otherwise return false for valid.
         //return fairTeams for fairTeams
-        return (fairTeams || MatchManager.matchSettings.allowUnfairTeams, fairTeams);
+        return (playerCount > 0, fairTeams);
 #endif
 
 
@@ -203,6 +195,10 @@ public class CoalitionManager : NetworkBehaviour
                 return;
             }
         }
+        else
+        {
+            Instance.ResetCountDownTimer_ClientRPC();
+        }
     }
 
     #endregion
@@ -248,7 +244,7 @@ public class CoalitionManager : NetworkBehaviour
 
             timeLeft -= Time.deltaTime;
 
-            countDownTimerText.text = "Game Starts In: " + timeLeft.ToString();
+            countDownTimerText.text = "Game Starts In: " + (math.round(timeLeft * 10) / 10).ToString();
 
             if (timeLeft <= 0)
             {
@@ -257,7 +253,7 @@ public class CoalitionManager : NetworkBehaviour
                 //if this client is the server, call TryStartGame
                 if (IsServer)
                 {
-                    StartGame();
+                    SceneManager.LoadSceneOnNetwork("Nobe");
                 }
 
                 yield break;
@@ -273,17 +269,6 @@ public class CoalitionManager : NetworkBehaviour
 
         //if no player joined last second, return true, otehrwise false
         return playerCount == NetworkManager.Singleton.ConnectedClientsIds.Count;
-    }
-
-    private void StartGame()
-    {
-        TribeSelecter.Instance.SelectTribe();
-
-        return;
-
-        Scene sceneToUnload = SceneManager.GetSceneByName("Nobe");
-
-        SceneManager.UnLoadSceneOnNetwork(sceneToUnload);
     }
 
 

@@ -4,6 +4,25 @@ using UnityEngine;
 
 public class CoalitionButtonManager : NavButtonManager
 {
+    protected override void ResetNavButtonStates()
+    {
+        TrySelectButton_FromMouseInput_ServerRPC(ClientManager.LocalClientGameId, selectedButtonId, 0);
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (buttonAnims == null)
+        {
+            buttonAnims = GetComponentsInChildren<NavButton>(true);
+
+            for (int i = 0; i < buttonAnims.Length; i++)
+            {
+                buttonAnims[i].Initialize(i, OnSelectNewButton_FromMouseInput);
+            }
+        }
+    }
+
+
 
     #region Try Select New Button Through Mouse Input
 

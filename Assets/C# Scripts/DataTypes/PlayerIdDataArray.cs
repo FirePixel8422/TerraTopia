@@ -41,7 +41,7 @@ public struct PlayerIdDataArray : INetworkSerializable
         //fill team ids with -1s because clients are not part of any team when they join
         for (int i = 0; i < maxPlayerCount; i++)
         {
-            teamIds[i] = -1;
+            teamIds[i] = GameSettings.maxPlayers;
         }
 
         playerCount = 0;

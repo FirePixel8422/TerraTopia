@@ -17,25 +17,28 @@ public class TileObject : NetworkBehaviour, IBuildable, IOnClickable
 
     public void Initialize(bool activateImmediately)
     {
-        if (!GridManager.DoesCloudExist(transform.position.ToVector2()))
+        meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer == null)
         {
-            gameObject.SetActive(activateImmediately);
+            meshRenderer = GetComponentInChildren<MeshRenderer>(true);
+        }
 
 
-            //TEMP FIX
-
-            meshRenderer = GetComponent<MeshRenderer>();
-            if (meshRenderer != null)
-            {
-                meshRenderer = GetComponentInChildren<MeshRenderer>(true);
-            }
+        //if a cloud exists
+        if (GridManager.DoesCloudExist(transform.position.ToVector2()))
+        {
             meshRenderer.enabled = false;
+
+        }
+        else if (activateImmediately)
+        {
+            meshRenderer.enabled = true;
         }
     }
 
     public virtual void DiscoverObject()
     {
-        if(meshRenderer != null)
+        if (meshRenderer != null)
         {
             meshRenderer.enabled = true;
         }

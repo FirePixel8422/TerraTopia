@@ -33,9 +33,6 @@ public class GridManager : NetworkBehaviour
     [Tooltip("The Z-axis")]
     public int _length;
 
-    [Header("Player Values")]
-    [SerializeField] private int playerCount;
-
     public TileObjectLibrarySO tileObjectsData;
 
     private void Awake()
@@ -44,7 +41,7 @@ public class GridManager : NetworkBehaviour
     }
     public override void OnNetworkSpawn()
     {
-        GenerateGrid(playerCount);
+        GenerateGrid();
 
         if (IsServer)
         {
@@ -59,7 +56,7 @@ public class GridManager : NetworkBehaviour
 
 
     [BurstCompile]
-    private void GenerateGrid(int playerCount)
+    private void GenerateGrid()
     {
         //Checks whether the seed is already pre-determined or not with use of the Ternary Operator
         _seed = _seed == 0 ? _seed = Random.Range(int.MinValue, int.MaxValue) : _seed;
@@ -77,7 +74,7 @@ public class GridManager : NetworkBehaviour
     [ContextMenu("GenerateGrid_Debug")]
     public void GenerateGrid_Debug()
     {
-        GenerateGrid(playerCount);
+        GenerateGrid();
 
         for (int i = 0; i < tileObjectsData.tileObjects.Length; i++)
         {
@@ -90,7 +87,7 @@ public class GridManager : NetworkBehaviour
     private void SpawnMapAssets_OnServer()
     {
         //Generates a castle based on the grid
-        new CastlePosGenerator(_tiles, _seed, playerCount, _width, _length, _castlePrefabId);
+        new CastlePosGenerator(_tiles, _seed, ClientManager.PlayerCount, _width, _length, _castlePrefabId);
 
         //Adds supported enviromentel assets assigned within the unity inspector onto the previously created grid of tiles
         new EnviromentGenerator(_tiles, _seed);
