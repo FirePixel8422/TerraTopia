@@ -19,3 +19,4 @@ MonoBehaviour:
     stone: 0
     wood: 0
     gems: 0
+  isUnit: 1

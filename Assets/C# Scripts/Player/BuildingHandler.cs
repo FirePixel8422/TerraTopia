@@ -31,6 +31,7 @@ public class BuildingHandler : MonoBehaviour
                     bp.tileObjectId = buildings[i].buildingGOId;
                     bp.buildingCosts = buildings[i].costs;
                     bp.buildingHandler = this;
+                    bp.isUnit = buildings[i].isUnit;
                     _pooledObjects[i].SetActive(true);
                 }
             }
@@ -44,6 +45,7 @@ public class BuildingHandler : MonoBehaviour
                     bp.previewImage.sprite = buildings[i].buildingSprite;
                     bp.tileObjectId = buildings[i].buildingGOId;
                     bp.buildingCosts = buildings[i].costs;
+                    bp.isUnit = buildings[i].isUnit;
                     bp.buildingHandler = this;
                 }
             }

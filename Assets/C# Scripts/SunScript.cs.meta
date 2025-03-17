@@ -1,12 +1,9 @@
 fileFormatVersion: 2
-guid: 0c50ecbaec3bdb14a85c7a9fe2197871
+guid: 52ed7082234185140ae71f319dd5b63c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - colorRenderer: {instanceID: 0}
-  - headTransform: {instanceID: 0}
-  - _markerPrefab: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

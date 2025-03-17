@@ -20,10 +20,9 @@ MonoBehaviour:
   tileHeightMultiplier: 9
   cloudHeight: 0
   _possibleTiles:
-  - tileGO: {fileID: 2439768143273281686, guid: 00f4dae7ec16a014f8d43de48a99fe15,
-      type: 3}
+  - tileGO: {fileID: 156770383856751536, guid: 2315aba6a52bb264baafcc201e2fa16c, type: 3}
     weight: 0.3
-    constHeight: 2.59708
+    constHeight: 2.75
   - tileGO: {fileID: 1463485182777006543, guid: 9adb26a7c445bf14297af2f142570612,
       type: 3}
     weight: 0.35
@@ -31,9 +30,13 @@ MonoBehaviour:
   - tileGO: {fileID: 181569139973656431, guid: 16dd2e5510117c94f86714905b615f66, type: 3}
     weight: 0.5
     constHeight: 0
+  - tileGO: {fileID: 7255430232622651856, guid: a1179918c59a6154ea7f4b28337a62f3,
+      type: 3}
+    weight: 0.6
+    constHeight: 0
   - tileGO: {fileID: 7255430232622651856, guid: fbdeb17d72a7efb4298ae2610c2bf080,
       type: 3}
-    weight: 10
+    weight: 1000
     constHeight: 0
   _shouldDebug: 0
   debugPerlinValues: []

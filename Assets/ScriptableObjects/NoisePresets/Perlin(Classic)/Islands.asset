@@ -20,14 +20,12 @@ MonoBehaviour:
   tileHeightMultiplier: 5
   cloudHeight: 2.75
   _possibleTiles:
-  - tileGO: {fileID: 2439768143273281686, guid: 9391b649427c40947bf68109a7ab1822,
-      type: 3}
+  - tileGO: {fileID: 156770383856751536, guid: e50ebd584c661a3468f116dde767e371, type: 3}
     weight: 0.4
-    constHeight: 2.75
-  - tileGO: {fileID: 2439768143273281686, guid: 00f4dae7ec16a014f8d43de48a99fe15,
-      type: 3}
+    constHeight: 3.25
+  - tileGO: {fileID: 156770383856751536, guid: 2315aba6a52bb264baafcc201e2fa16c, type: 3}
     weight: 0.55
-    constHeight: 2.75
+    constHeight: 3.25
   - tileGO: {fileID: 1463485182777006543, guid: 9adb26a7c445bf14297af2f142570612,
       type: 3}
     weight: 0.6

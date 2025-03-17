@@ -89,24 +89,25 @@ public class PlayerInput : MonoBehaviour
 
     public void OnClick(InputAction.CallbackContext ctx)
     {
+        //Checks whether or not its hovering over an object and whether or not it already has assigned an hitobject before
         if (IsHoveringOverUI() || LastHitObject == null || !ctx.performed) return; 
 
+        //Null checks and checks whether or ot the same object is clicked twice
         if (SelectedObject != null && SelectedObject != LastHitObject)
         {
+            //Attempts to retrieve the IOnclickableInterface from the object before this one 
             if (SelectedObject.TryGetComponent(out IOnClickable previousIOC))
             {
+                print("Different object clicked");
                 previousIOC.OnDifferentClickableClicked(LastHitObject);
             }
         }
 
         if (SelectedObject != null)
         {
-            if (SelectedObject != LastHitObject)
+            if (LastHitObject.TryGetComponent(out IOnClickable IOC))
             {
-                if (LastHitObject.TryGetComponent(out IOnClickable IOC))
-                {
-                    IOC.OnClick();
-                }
+                IOC.OnClick();
             }
         }
 

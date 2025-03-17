@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 31846412
+  GlobalObjectIdHash: 1735450090
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -165,16 +165,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c50ecbaec3bdb14a85c7a9fe2197871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildings: []
   unitId: 0
   colorRenderer: {fileID: 0}
   headTransform: {fileID: 0}
   _health: 0
   _maxHealth: 0
-  _movementRange: 2
+  _movementRange: 5
   _detectionRange: 0
+  _allowedTileLayers: 1
+  _markerPrefab: {fileID: 8579309374006704232, guid: 55d2216c3ae173b47bff26b000df3709,
+    type: 3}
+  _stepHeight: 0.5
   _attackDamage: 0
   _unitsKilled: 0
   tilesVisited: 0
+  CurrentTile: {fileID: 0}
 --- !u!65 &1581446328559756085
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -264,6 +270,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6166751827419068980, guid: f31dfd2c9c3959041a05e21a570c8141,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3727231381
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

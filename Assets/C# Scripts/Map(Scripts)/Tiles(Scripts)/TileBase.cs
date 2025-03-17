@@ -2,10 +2,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.Netcode;
-
-
+using System;
+[Flags]
+public enum TileLayer
+{
+    none = 0,
+    ground = 1,
+    water = 2,
+}
 public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 {
+    [Tooltip("The layer of the tile(Depends on what stuff can move on)")]
+    //Standard is set to Ground to prevent searching why the hell it cant move during debugging
+    public TileLayer tileLayer;
+
     [Tooltip("Whether a castle can be placed on this tile or not")]
     public bool canHoldCastle;
 
@@ -18,16 +28,15 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     [Header("Enviromental Object Settings / Variables")]
     public List<EnviromentalItemData> _possibleEnviromentalObjects = new List<EnviromentalItemData>();
     [SerializeField] private TileObject _currentHeldEnviromentalObject;
-
     [SerializeField] private Transform _enviromentalObjectPosHolder;
-
+    public UnitBase CurrentHeldUnit { private set; get; }
     public bool isHoldingObject { private set; get; }
 
     public Transform hoverObjectHolder { get => transform; set => gameObject.AddComponent<Transform>(); }
     [SerializeField] private List<Building> buildings;
 
     [SerializeField] private float shakeStrength = 0.1f;
-
+    public bool canShake = true;
 
     private void OnEnable()
     {
@@ -40,12 +49,22 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
         shakeStrength = 0.1f;
     }
+    public void DoShake()
+    {
+        canShake = false;
+        transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1).OnComplete(() => { canShake = true; });
+    }
+
 
 
     public virtual void OnClick()
     {
-        transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1);
-        if (_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
+        if (canShake)
+        {
+            DoShake();
+            if (_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
+            if (CurrentHeldUnit) { CurrentHeldUnit.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
+        }
     }
     public void OnDifferentClickableClicked(GameObject newlyClickedObject)
     {
@@ -114,7 +133,23 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         else
         {
             GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately, ownerId);
+            isHoldingObject = true;
         }
+    }
+    public virtual void SpawnAndAssignUnit(int enviromentalObjectId)
+    {
+        UnitBase spawnedUnit = Instantiate(TileObjectPrefabManager.GetValue(enviromentalObjectId), transform.position, transform.rotation).GetComponent<UnitBase>();
+        AssignUnit(spawnedUnit);
+        spawnedUnit.CurrentTile = this;
+    }
+
+    public virtual void AssignUnit(UnitBase UB)
+    {
+       CurrentHeldUnit = UB; 
+    }
+    public virtual void DeAssignUnit(UnitBase UB)
+    {
+        CurrentHeldUnit = null;
     }
     #endregion
 }

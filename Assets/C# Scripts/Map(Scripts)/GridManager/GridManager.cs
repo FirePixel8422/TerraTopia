@@ -13,12 +13,6 @@ using static UnityEngine.Rendering.DebugUI;
 public class GridManager : NetworkBehaviour
 {
     public static GridManager Instance;
-    private void Awake()
-    {
-        Instance = this;
-    }
-
-
 
     private static Dictionary<Vector2, TileBase> _tiles;
     private static Dictionary<Vector2, GameObject> _clouds;
@@ -44,8 +38,10 @@ public class GridManager : NetworkBehaviour
 
     public TileObjectLibrarySO tileObjectsData;
 
-
-
+    private void Awake()
+    {
+        Instance = this;
+    }
     public override void OnNetworkSpawn()
     {
         GenerateGrid(playerCount);
@@ -61,10 +57,6 @@ public class GridManager : NetworkBehaviour
         }
     }
 
-    //private void Start()
-    //{
-    //    GenerateGrid(playerCount);
-    //}
 
     [BurstCompile]
     private void GenerateGrid(int playerCount)
@@ -130,9 +122,10 @@ public class GridManager : NetworkBehaviour
         }
     }
 
-
     public static bool TryGetTileByPos(Vector2 tilePos, out TileBase tile)
     {
+        tilePos.y = (int)tilePos.y;
+        tilePos.x = (int)tilePos.x;
         if (_tiles.TryGetValue(tilePos, out tile))
         {
             return true;
@@ -142,6 +135,22 @@ public class GridManager : NetworkBehaviour
             return false;
         }
     }
+    public static bool TryGetTileByPos(Vector2 tilePos, out GameObject tile)
+    {
+        tilePos.y = (int)tilePos.y;
+        tilePos.x = (int)tilePos.x;
+        if (_tiles.TryGetValue(tilePos, out TileBase tileBase))
+        {
+            tile = tileBase.gameObject;
+            return true;
+        }
+        else
+        {
+            tile = null; 
+            return false;
+        }
+    }
+
     public static bool DoesCloudExist(Vector2 tilePos)
     {
         if (_clouds.TryGetValue(tilePos, out _))

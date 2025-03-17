@@ -10,4 +10,5 @@ public class Building : ScriptableObject
 
     public BuildingCosts costs;
 
+    public bool isUnit;
 }

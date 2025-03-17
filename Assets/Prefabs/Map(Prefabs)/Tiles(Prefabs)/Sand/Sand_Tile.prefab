@@ -104,18 +104,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b734e7e25728dce40a57cd3c56b12868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileLayer: 1
   canHoldCastle: 1
   ownedByPlayerGameId: -1
   _perlinHeight: 0
-  _possibleEnviromentalObjects:
-  - _possibleEnviromentalObjectId: 8
-    _possibleEnviromentalPosHolder: {fileID: 2235061576925758325}
-    weight: 10
-    randomRotation: 1
+  _possibleEnviromentalObjects: []
   _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 2235061576925758325}
   buildings: []
   shakeStrength: 0.1
+  canShake: 1
 --- !u!65 &-4702040607379462329
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -109,7 +109,7 @@ public class ResourceManager : NetworkBehaviour
     /// <summary>
     /// Subtract the materialcost values from current materials
     /// </summary>
-    public static void BuildAndPayForBuilding(BuildingCosts buildingCosts, int buildingToPlaceId, TileBase tileToPlaceOn)
+    public static void BuildAndPayForBuilding(BuildingCosts buildingCosts, int buildingToPlaceId, TileBase tileToPlaceOn, bool isUnit = false)
     {
         int localGameId = ClientManager.LocalClientGameId;
 
@@ -125,7 +125,13 @@ public class ResourceManager : NetworkBehaviour
         playerResourcesDataArray.Value = resourceArrayCopy;
 
 
+        if (isUnit)
+        {
+            tileToPlaceOn.SpawnAndAssignUnit(buildingToPlaceId);
 
+            //End the method to stop it from spawning twice
+            return;
+        }
         tileToPlaceOn.AssignObject(buildingToPlaceId, true);
     }
 

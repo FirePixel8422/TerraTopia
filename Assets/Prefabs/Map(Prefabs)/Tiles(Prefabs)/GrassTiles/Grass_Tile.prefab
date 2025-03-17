@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b734e7e25728dce40a57cd3c56b12868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileLayer: 1
   canHoldCastle: 1
   ownedByPlayerGameId: 0
   _perlinHeight: 0
@@ -110,7 +111,9 @@ MonoBehaviour:
   buildings:
   - {fileID: 11400000, guid: 98809c190f3257e47a3d2e9c3e4e8b9d, type: 2}
   - {fileID: 11400000, guid: caf21368d75cfca48ac570f4e81ae4aa, type: 2}
+  - {fileID: 11400000, guid: b78e65fb5e5c8e04b9c8f113051d1156, type: 2}
   shakeStrength: 0.1
+  canShake: 1
 --- !u!65 &5118338741282654585
 BoxCollider:
   m_ObjectHideFlags: 0

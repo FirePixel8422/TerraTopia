@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class TileObject : NetworkBehaviour, IBuildable
+public class TileObject : NetworkBehaviour, IBuildable, IOnClickable
 {
     private Renderer meshRenderer;
 
@@ -39,5 +39,15 @@ public class TileObject : NetworkBehaviour, IBuildable
         {
             meshRenderer.enabled = true;
         }
+    }
+
+    public virtual void OnClick()
+    {
+       
+    }
+
+    public virtual void OnDifferentClickableClicked(GameObject newlyClickedObject)
+    {
+
     }
 }
