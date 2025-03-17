@@ -135,7 +135,7 @@ public class CharacterShowcaser : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    [Range(-1, GameSettings.maxPlayers)]
+    [Range(-1, GameSettings.maxPlayers - 1)]
     [SerializeField] private int overrideTeamColor;
 
     private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)
@@ -152,14 +152,14 @@ public class CharacterShowcaser : MonoBehaviour
         //disble script
         spawnedUnit.enabled = false;
 
-        if (overrideTeamColor != -1)
+        if (overrideTeamColor == -1)
         {
             spawnedUnit.colorRenderer.material = unitData.colorMaterials[ClientManager.LocalClientGameId];
         }
         else
         {
             //set team color material
-            spawnedUnit.colorRenderer.material = unitData.colorMaterials[ClientManager.LocalClientGameId];
+            spawnedUnit.colorRenderer.material = unitData.colorMaterials[overrideTeamColor];
         }
 
         return spawnedUnit.transform;
