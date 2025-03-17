@@ -170,6 +170,22 @@ public class GridManager : NetworkBehaviour
 
         _clouds.Remove(tilePos);
     }
+    public static void DestroyCloud3X3(Vector2 tilePos)
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                Vector2 offsetPos = tilePos + new Vector2(x, y);
+
+                if (_clouds.ContainsKey(offsetPos))
+                {
+                    Destroy(_clouds[offsetPos]);
+                    _clouds.Remove(offsetPos);
+                }
+            }
+        }
+    }
 
 
 
