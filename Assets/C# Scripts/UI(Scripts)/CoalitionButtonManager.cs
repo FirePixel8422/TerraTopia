@@ -85,9 +85,8 @@ public class CoalitionButtonManager : NavButtonManager
         //get potential new selectedButtonId
         (bool changed, int newButtonId) = GetNewButtonIdFromMoveInput(moveInput);
 
-
         //if WASD movement cant select new button, call wobbly animation animation on that reqeustingClient on current selected button and return
-        if (changed)
+        if (changed == false)
         {
             FailToSelectNewButton_ClientRPC(requestingClientGameId);
             return;

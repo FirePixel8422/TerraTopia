@@ -132,6 +132,41 @@ public class CharacterShowcaser : MonoBehaviour
         modelTransform = InstantiateUnit_Locally(tribeId, unitId, rot);
     }
 
+
+#if UNITY_EDITOR
+
+    [Range(-1, GameSettings.maxPlayers)]
+    [SerializeField] private int overrideTeamColor;
+
+    private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)
+    {
+        UnitSpawnData unitData = TribeSelecter.Instance.tribeData[tribeId].unitSpawnData[unitId];
+
+        //spawn unit (locally on server)
+        UnitBase spawnedUnit = Instantiate(unitData.body, transform).GetComponent<UnitBase>();
+        Instantiate(unitData.head, spawnedUnit.headTransform);
+
+        //set rot equal to previous preview units rot
+        spawnedUnit.transform.localRotation = rot;
+
+        //disble script
+        spawnedUnit.enabled = false;
+
+        if (overrideTeamColor != -1)
+        {
+            spawnedUnit.colorRenderer.material = unitData.colorMaterials[ClientManager.LocalClientGameId];
+        }
+        else
+        {
+            //set team color material
+            spawnedUnit.colorRenderer.material = unitData.colorMaterials[ClientManager.LocalClientGameId];
+        }
+
+        return spawnedUnit.transform;
+    }
+
+#else
+
     private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)
     {
         UnitSpawnData unitData = TribeSelecter.Instance.tribeData[tribeId].unitSpawnData[unitId];
@@ -147,8 +182,10 @@ public class CharacterShowcaser : MonoBehaviour
         spawnedUnit.enabled = false;
 
         //set team color material
-        spawnedUnit.colorRenderer.material = unitData.colorMaterials[tribeId];
+        spawnedUnit.colorRenderer.material = unitData.colorMaterials[ClientManager.LocalClientGameId];
 
         return spawnedUnit.transform;
     }
+
+#endif
 }

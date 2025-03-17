@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.Burst;
 using Unity.Netcode;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -73,6 +74,22 @@ public class CoalitionManager : NetworkBehaviour
         int playerCount = ClientManager.PlayerCount;
 
         //calculate how many clients are in each team
+        //and check if every player is in a team
+        for (int i = 0; i < playerCount; i++)
+        {
+            //a player has not selected a team yet
+            if (teamIds[i] == GameSettings.maxPlayers)
+            {
+                return (false, false);
+            }
+
+            //update mostMembersPerTeam int after increasing teamMemberValue
+            if (teamCounts[teamIds[i]] > mostMembersPerTeam)
+            {
+                mostMembersPerTeam = teamCounts[teamIds[i]];
+            }
+        }
+
         for (int i = 0; i < playerCount; i++)
         {
             //update mostMembersPerTeam int after increasing teamMemberValue
@@ -87,7 +104,7 @@ public class CoalitionManager : NetworkBehaviour
         for (int i = 0; i < playerCount; i++)
         {
             //check if all teams have the same amount of clients, if not set fairTeams to false
-            if (teamCounts[i] != mostMembersPerTeam)
+            if (teamCounts[i] != GameSettings.maxPlayers && teamCounts[i] != mostMembersPerTeam)
             {
                 fairTeams = false;
                 break;
@@ -184,14 +201,6 @@ public class CoalitionManager : NetworkBehaviour
             {
                 Instance.ResetCountDownTimer_ClientRPC();
                 return;
-            }
-
-            if (gameIsStarting == false)
-            {
-                gameIsStarting = true;
-
-                //load main scene in background
-                SceneManager.LoadSceneOnNetwork("Nobe", LoadSceneMode.Additive);
             }
         }
     }
