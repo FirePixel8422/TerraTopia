@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileObjects:
   - {fileID: 6454596518570392124, guid: 5514739dad7ec264582a112c7e7ffeff, type: 3}
-  - {fileID: 9114303952214433657, guid: 34f4268eb9d861449818222fa1806140, type: 3}
+  - {fileID: 3365588879018645068, guid: 8391cc19d8cd1464dbdb4b6ce418b089, type: 3}
   - {fileID: 1214595190187480106, guid: 2cf1d3e5830b01848960caf23c718e09, type: 3}
   - {fileID: 2780841821492536028, guid: 3913d5c39ee3c1140a49b9681922f6c9, type: 3}
   - {fileID: 5184699275576898796, guid: c3618583806cccd498a1b6f31b03dc0d, type: 3}
@@ -22,3 +22,6 @@ MonoBehaviour:
   - {fileID: 5184699275576898796, guid: 7cfed7147e888ad478619ddafd3a6669, type: 3}
   - {fileID: 856720043086961633, guid: cc9623af8f87404438ce183f9bb6a0b6, type: 3}
   - {fileID: 340736107098506243, guid: 5dcef6d2e35a302429bc29adf55e1d39, type: 3}
+  - {fileID: 4037396534236389630, guid: ea4048b2a5bcead48831151dd956edd8, type: 3}
+  - {fileID: 2832643087772523437, guid: fc3a2cfacf0d0db4f91658cfb70d6155, type: 3}
+  - {fileID: 6403616811122821784, guid: 97e5ead4a76d20e4386b6bda6f848ba8, type: 3}

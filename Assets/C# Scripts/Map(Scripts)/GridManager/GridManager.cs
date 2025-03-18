@@ -167,7 +167,7 @@ public class GridManager : NetworkBehaviour
 
         _clouds.Remove(tilePos);
     }
-    public static void DestroyCloud3X3(Vector2 tilePos)
+    public static void Discover3X3(Vector2 tilePos)
     {
         for (int x = -1; x <= 1; x++)
         {
@@ -175,10 +175,9 @@ public class GridManager : NetworkBehaviour
             {
                 Vector2 offsetPos = tilePos + new Vector2(x, y);
 
-                if (_clouds.ContainsKey(offsetPos))
+                if (_tiles.ContainsKey(offsetPos))
                 {
-                    Destroy(_clouds[offsetPos]);
-                    _clouds.Remove(offsetPos);
+                    _tiles[offsetPos].gameObject.SetActive(true);
                 }
             }
         }

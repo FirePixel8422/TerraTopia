@@ -176,6 +176,8 @@ public class UnitBase : TileObject
                     }
 
                     transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+
+                    GridManager.Discover3X3(currentTilePos.ToVector2());
                 });
             yield return new WaitForSeconds(moveDuration);
 

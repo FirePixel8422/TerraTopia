@@ -102,10 +102,18 @@ MonoBehaviour:
   ownedByPlayerGameId: 0
   _perlinHeight: 0
   _possibleEnviromentalObjects:
-  - _possibleEnviromentalObjectId: 1
+  - _possibleEnviromentalObjectId: 9
     _possibleEnviromentalPosHolder: {fileID: 706713878150370773}
-    weight: 50
-    randomRotation: 1
+    weight: 20
+    randomRotation: 0
+  - _possibleEnviromentalObjectId: 10
+    _possibleEnviromentalPosHolder: {fileID: 706713878150370773}
+    weight: 40
+    randomRotation: 0
+  - _possibleEnviromentalObjectId: 11
+    _possibleEnviromentalPosHolder: {fileID: 706713878150370773}
+    weight: 60
+    randomRotation: 0
   _currentHeldEnviromentalObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 706713878150370773}
   buildings:
