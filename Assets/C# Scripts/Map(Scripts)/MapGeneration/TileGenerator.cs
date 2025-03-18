@@ -30,7 +30,7 @@ public struct TileGenerator
             GameObject cloudObj = Object.Instantiate(cloudPrefab, new Vector3(tiles[i].Item2.x, noiseData.cloudHeight, tiles[i].Item2.y), Quaternion.identity, parent);
 
             TileBase tileBase = tileObj.GetComponent<TileBase>();
-            tileBase.ownedByPlayerGameId = -1;
+            tileBase.ownedByPlayerTeamId = -1;
 
             tilesToReturn.Add(tiles[i].Item2, tileBase);
             cloudsToReturn.Add(tiles[i].Item2, cloudObj);

@@ -29,7 +29,7 @@ public class TurnManager : NetworkBehaviour
         teamOnTurnId.OnValueChanged += (int oldTeamOnTurnId, int newTeamOnTurnId) =>
         {
             //if the last teams turn has just ended, a new cycle begins
-            if (newTeamOnTurnId == 0 && oldTeamOnTurnId == (CoalitionManager.TeamCount - 1))
+            if (newTeamOnTurnId == 0 && oldTeamOnTurnId == (ClientManager.TeamCount - 1))
             {
                 currentCycle += 1;
                 OnCycleStarted?.Invoke(currentCycle);
@@ -59,6 +59,6 @@ public class TurnManager : NetworkBehaviour
     public void NextTeam_ServerRPC()
     {
         //increment teamOnTurnId by 1 and subtract by TeamCount if its value becomes equal to TeamCount. (subtracting it will set the value to 0)
-        teamOnTurnId.Value = (teamOnTurnId.Value + 1) % CoalitionManager.TeamCount;
+        teamOnTurnId.Value = (teamOnTurnId.Value + 1) % ClientManager.TeamCount;
     }
 }

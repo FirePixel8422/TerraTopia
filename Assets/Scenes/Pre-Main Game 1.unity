@@ -3115,12 +3115,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9805c82f73a34c1428b7f873fec07b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGameTime: 4.5
-  unfairMatchStartGameTime: 12
+  startTime: 15
+  unfairTeamsStartTime: 15
   countDownTimerText: {fileID: 1467871095}
   DEBUG_teamIds: 
   DEBUG_teamCounts: 
-  debugTeamCount: 0
+  debugTotalTeamCount: 0
+  DEBUG_instaStartMatch: 0
 --- !u!1 &1500761181
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,13 +36,16 @@ public class ClientManager : NetworkBehaviour
 
 
     [Tooltip("Turn GameId into NetworkId")]
-    public static ulong GetClientNetworkIdFromGameId(int gameId) => playerIdDataArray.Value.GetPlayerNetworkId(gameId);
+    public static ulong GetClientNetworkId(int gameId) => playerIdDataArray.Value.GetPlayerNetworkId(gameId);
 
     [Tooltip("Turn NetworkId into GameId")]
-    public static int GetClientGameIdFromNetworkId(ulong networkId) => playerIdDataArray.Value.GetPlayerGameId(networkId);
+    public static int GetClientGameId(ulong networkId) => playerIdDataArray.Value.GetPlayerGameId(networkId);
 
     [Tooltip("Turn GameId into TeamId")]
     public static int GetClientTeamId(int gameId) => playerIdDataArray.Value.GetPlayerTeamId(gameId);
+
+    [Tooltip("Turn NetworkId into TeamId")]
+    public static int GetClientTeamId(ulong networkId) => playerIdDataArray.Value.GetPlayerTeamId(networkId);
 
 
 
@@ -189,7 +192,7 @@ public class ClientManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void DisconnectClient_ServerRPC(int clientGameId)
     {
-        ulong clientNetworkId = GetClientNetworkIdFromGameId(clientGameId);
+        ulong clientNetworkId = GetClientNetworkId(clientGameId);
 
         GetKicked_ClientRPC(clientNetworkId);
 

@@ -78,9 +78,16 @@ public struct CastlePosGenerator
 
 
         ulong castleId = 0;
+        int castleCount = playerCastlePositions.Count;
+        int r;
 
-        foreach (var pos in playerCastlePositions.Values)
+        for (int i = 0; i < castleCount; i++)
         {
+            r = rng.Next(0, playerCastlePositions.Count);
+
+            Vector2Int pos = playerCastlePositions[r];
+            playerCastlePositions.Remove(r);
+
             var castleTile = tiles.FirstOrDefault(a => a.Value.transform.position == new Vector3(pos.x, a.Value.transform.position.y, pos.y));
             if (castleTile.Value != null && castleTile.Value.TryGetComponent(out TileBase tb))
             {

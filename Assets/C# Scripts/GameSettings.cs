@@ -9,7 +9,7 @@ public static class GameSettings
 {
     public const int maxPlayers = 4;
     public const int maxTeams = 4;
-    public const int maxPlayersPerTeam = 1;
+    public const int maxPlayersPerTeam = 2;
 
     public const ulong UnAssignedPlayerId = maxPlayers + 1;
 

@@ -74,7 +74,7 @@ public class ClientLobbyMenu : NetworkBehaviour
 
         ClientManager.SetLocalUserName(userName);
 
-        int localClientGameId = ClientManager.GetClientGameIdFromNetworkId(NetworkManager.LocalClientId);
+        int localClientGameId = ClientManager.GetClientGameId(NetworkManager.LocalClientId);
 
         AddClient_ServerRPC(new FixedString64Bytes(userName), localClientGameId);
     }

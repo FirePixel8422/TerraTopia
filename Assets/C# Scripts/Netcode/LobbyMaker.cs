@@ -111,6 +111,8 @@ public class LobbyMaker : NetworkBehaviour
         {
             (bool lobbyFound, List<Lobby> lobbies) = await FindLobbiesAsync();
 
+            print(lobbyFound);
+
             if (lobbyFound == false)
             {
                 CreateLobbyAsync();

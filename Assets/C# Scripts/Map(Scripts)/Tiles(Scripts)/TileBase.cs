@@ -20,7 +20,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     public bool canHoldCastle;
 
     [Tooltip("In whos city is this tile")]
-    public int ownedByPlayerGameId;
+    public int ownedByPlayerTeamId;
 
 
     public float _perlinHeight;

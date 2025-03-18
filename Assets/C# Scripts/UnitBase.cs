@@ -281,7 +281,7 @@ public class UnitBase : TileObject
 
     public override void OnNetworkSpawn()
     {
-        ownerPlayerGameId = ClientManager.GetClientGameIdFromNetworkId(NetworkObject.OwnerClientId);
+        ownerPlayerGameId = ClientManager.GetClientGameId(NetworkObject.OwnerClientId);
         if (IsServer)
         {
             OnSpawn_ClientRPC(ownerPlayerGameId);

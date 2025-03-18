@@ -6,7 +6,7 @@ public class CoalitionButtonManager : NavButtonManager
 {
     protected override void ResetNavButtonStates()
     {
-        TrySelectButton_FromMouseInput_ServerRPC(ClientManager.LocalClientGameId, selectedButtonId, 0);
+        TrySelectButton_FromMouseInput_ServerRPC(ClientManager.LocalClientGameId, -1, 0);
     }
 
     public override void OnNetworkSpawn()

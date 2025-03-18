@@ -13,7 +13,7 @@ public class FarmHouse : TileObject
         {
             TurnManager.OnMyTurnStarted += OnMyTurnStarted_OnServer;
 
-            OwnerClientGameId = ClientManager.GetClientGameIdFromNetworkId(OwnerClientId);
+            OwnerClientGameId = ClientManager.GetClientGameId(OwnerClientId);
         }
     }
 

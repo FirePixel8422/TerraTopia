@@ -20,7 +20,8 @@ public class City : TileObject
     [SerializeField] private List<Vector3> borderTilePositions;
 
 
-    private int ownerClientGameId;
+    [SerializeField] private int ownerClientGameId;
+    [SerializeField] private int ownerClientTeamId;
 
 
 
@@ -33,7 +34,8 @@ public class City : TileObject
 
         if (IsServer)
         {
-            ownerClientGameId = ClientManager.GetClientGameIdFromNetworkId(OwnerClientId);
+            ownerClientGameId = ClientManager.GetClientGameId(OwnerClientId);
+            ownerClientTeamId = ClientManager.GetClientTeamId(ownerClientGameId);
 
             SetupCityMaterial_ClientRPC(ownerClientGameId);
 
@@ -90,9 +92,9 @@ public class City : TileObject
                 {
                     float3 tilePos = tile.transform.position;
 
-                    if (borderTilePositions.Contains(tilePos) == false && tile.ownedByPlayerGameId == -1)
+                    if (borderTilePositions.Contains(tilePos) == false && tile.ownedByPlayerTeamId == -1)
                     {
-                        tile.ownedByPlayerGameId = ownerClientGameId;
+                        tile.ownedByPlayerTeamId = ownerClientTeamId;
 
                         borderTilePositions.Add(tilePos);
                     }

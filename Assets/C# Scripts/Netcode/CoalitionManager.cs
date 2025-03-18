@@ -1,17 +1,17 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Burst;
 using Unity.Mathematics;
 using Unity.Netcode;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 /// <summary>
-/// Manages team data setup on the server and save it in clientManager
+/// Manages team data setup on the server and save it in clientManager, then this script gets destroyed
 /// </summary>
+[BurstCompile]
 public class CoalitionManager : NetworkBehaviour
 {
     public static CoalitionManager Instance;
@@ -30,14 +30,11 @@ public class CoalitionManager : NetworkBehaviour
     private static int[] teamCounts = new int[GameSettings.maxTeams];
 
     [Tooltip("Amount of teams with atleast 1 player in it")]
-    public static int TeamCount { get; private set; }
+    public static int TotalTeamCount { get; private set; }
 
 
-    [SerializeField] private float startGameTime;
-    [SerializeField] private float unfairMatchStartGameTime;
-
-    private static bool gameCanStart;
-    private static bool gameIsStarting;
+    [SerializeField] private float startTime;
+    [SerializeField] private float unfairTeamsStartTime;
 
     [SerializeField]
     private TextMeshProUGUI countDownTimerText;
@@ -54,7 +51,7 @@ public class CoalitionManager : NetworkBehaviour
     {
         for (int i = 0; i < teamIds.Length; i++)
         {
-            teamIds[i] = GameSettings.maxTeams;
+            teamIds[i] = -1;
         }
         countDownTimerAnim = countDownTimerText.GetComponent<Animator>();
     }
@@ -65,7 +62,6 @@ public class CoalitionManager : NetworkBehaviour
     /// <summary>
     /// Are all clients in a team and there are at least 2 teams that are fair if the matchsettings enforce it
     /// </summary>
-    [BurstCompile]
     public static (bool valid, bool fairTeams) AreTeamsValid()
     {
         int mostMembersPerTeam = 0;
@@ -79,7 +75,7 @@ public class CoalitionManager : NetworkBehaviour
         for (int i = 0; i < playerCount; i++)
         {
             //a player has not selected a team yet
-            if (teamIds[i] == GameSettings.maxPlayers)
+            if (teamIds[i] == -1)
             {
                 return (false, false);
             }
@@ -103,7 +99,7 @@ public class CoalitionManager : NetworkBehaviour
             }
         }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         //if all clients are on 1 team and (the teams are fair or unfair teams are allowed): return true for valid, otherwise return false for valid.
         //return fairTeams for fairTeams
         return (playerCount > 0, fairTeams);
@@ -134,28 +130,27 @@ public class CoalitionManager : NetworkBehaviour
     /// <summary>
     /// Update teamIds from client on the server, possibly update "topRowLastSelectedTeamIds" to store what button to move up to when back at start button
     /// </summary>
-    [BurstCompile]
     public static void SetNewTeam_OnServer(int clientGameId, int oldTeamId, int newTeamId)
     {
         //check if clientGameId was on no team and swaps to a valid team
         //if clientGameId is equal to GameSettings.maxPlayers (out of bounds) the player is in no team.
-        if (teamIds[clientGameId] == GameSettings.maxPlayers && newTeamId != GameSettings.maxPlayers)
+        if (teamIds[clientGameId] == -1 && newTeamId != -1)
         {
-            TeamCount += 1;
+            TotalTeamCount += 1;
         }
         //otherwise check if was on a team and swaps to no team
-        else if (teamIds[clientGameId] != GameSettings.maxPlayers && newTeamId == GameSettings.maxPlayers)
+        else if (teamIds[clientGameId] != -1 && newTeamId == -1)
         {
-            TeamCount -= 1;
+            TotalTeamCount -= 1;
         }
 
 
-        //Save TeamCounts, player left oldTeamId team and entered newTeamId Team
+        //Save TotalTeamCounts, player left oldTeamId team and entered newTeamId Team
         teamCounts[newTeamId] += 1;
 
         //only subtract teamCount of olfTeamId if the player has selected a team before. because the first time a player selects a team, it has no team to deselect, and default value is 0, so team 0 will then be -1, wrong
         //after the player selected a team atleast once, this if statement will be true and teamcount[oldteamId] may be decremented
-        if (teamIds[clientGameId] != GameSettings.maxPlayers)
+        if (teamIds[clientGameId] != -1)
         {
             teamCounts[oldTeamId] -= 1;
         }
@@ -164,18 +159,18 @@ public class CoalitionManager : NetworkBehaviour
         teamIds[clientGameId] = newTeamId;
 
         //update data array
-        UpdatePlayerIdDataArray_OnServer(clientGameId, newTeamId, TeamCount);
+        SetTeamInPlayerIdDataArray_OnServer(clientGameId, newTeamId, TotalTeamCount);
     }
 
 
     /// <summary>
     /// Get and update playerIdDataArray with team changes and send it back to ClientManager
     /// </summary>
-    private static async void UpdatePlayerIdDataArray_OnServer(int clientGameId, int newTeamId, int newTeamCount)
+    private static async void SetTeamInPlayerIdDataArray_OnServer(int clientGameId, int newTeamId, int newTotalTeamCount)
     {
         PlayerIdDataArray clientIdDataArrayCopy = ClientManager.GetPlayerIdDataArray();
 
-        clientIdDataArrayCopy.MovePlayerToTeam(clientGameId, newTeamId, newTeamCount);
+        clientIdDataArrayCopy.MovePlayerToTeam(clientGameId, newTeamId, newTotalTeamCount);
 
         ClientManager.UpdatePlayerIdDataArray_OnServer(clientIdDataArrayCopy);
 
@@ -187,7 +182,7 @@ public class CoalitionManager : NetworkBehaviour
             //send serverTime so if the RPC is recieved a second late, the timer stats with a second less time
             Instance.RestartCountDownTimer_ClientRPC(NetworkManager.Singleton.ServerTime.TimeAsFloat, areTeamsFair);
 
-            gameCanStart = await TryLockLobby();
+            bool gameCanStart = await TryLockLobby();
 
             if (gameCanStart == false)
             {
@@ -205,6 +200,8 @@ public class CoalitionManager : NetworkBehaviour
 
 
 
+
+    #region CountDown Timer
 
     [ClientRpc(RequireOwnership = false)]
     private void RestartCountDownTimer_ClientRPC(float serverTimeWhenSent, bool areTeamsFair)
@@ -225,14 +222,23 @@ public class CoalitionManager : NetworkBehaviour
 
     private IEnumerator StartGameDelay(float alreadyElapsedTime, bool areTeamsFair)
     {
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (IsServer && DEBUG_instaStartMatch)
+        {
+            StartGame_OnServer();
+        }
+#endif
+
+
         float timeLeft;
         if (areTeamsFair)
         {
-            timeLeft = startGameTime - alreadyElapsedTime;
+            timeLeft = startTime- alreadyElapsedTime;
         }
         else
         {
-            timeLeft = unfairMatchStartGameTime - alreadyElapsedTime;
+            timeLeft = unfairTeamsStartTime - alreadyElapsedTime;
         }
 
         countDownTimerText.text = timeLeft.ToString();
@@ -253,7 +259,7 @@ public class CoalitionManager : NetworkBehaviour
                 //if this client is the server, call TryStartGame
                 if (IsServer)
                 {
-                    SceneManager.LoadSceneOnNetwork("Nobe");
+                    StartGame_OnServer();
                 }
 
                 yield break;
@@ -261,14 +267,90 @@ public class CoalitionManager : NetworkBehaviour
         }
     }
 
+    #endregion
+
+
     public static async Task<bool> TryLockLobby()
     {
-        int playerCount = ClientManager.GetPlayerIdDataArray().PlayerCount;
+        int playerCount = ClientManager.PlayerCount;
 
         await LobbyManager.SetLobbyLockStateAsync(true);
 
         //if no player joined last second, return true, otehrwise false
         return playerCount == NetworkManager.Singleton.ConnectedClientsIds.Count;
+    }
+
+    [BurstCompile]
+    private void StartGame_OnServer()
+    {
+        SceneManager.LoadSceneOnNetwork("Nobe");
+
+
+        PlayerIdDataArray playerIdDataArrayCopy = ClientManager.GetPlayerIdDataArray();
+
+        int maxTotalTeamCount = teamCounts.Length;
+        bool teamExists;
+
+        int cPlayerTeamId;
+
+        int lowestTeamId;
+        List<int> playersWithLowestTeamId = new List<int>(GameSettings.maxPlayersPerTeam);
+
+        //fill team gaps
+        //cycle over all teams, except the last one, if that one is empty, it cant be filled because there are no teams after that one
+        for (int cTeamId = 0; cTeamId < maxTotalTeamCount - 1; cTeamId++)
+        {
+            teamExists = false;
+
+            for (int playerGameId = 0; playerGameId < maxTotalTeamCount; playerGameId++)
+            {
+                if (teamIds[playerGameId] == cTeamId)
+                {
+                    teamExists = true;
+                    break;
+                }
+            }
+            //if a team of cTeamId exists, check next teamId.
+            if (teamExists) continue;
+
+
+            //otherwise set player with lowest teamId's their team to cTeamId 
+            lowestTeamId = GameSettings.maxPlayers;
+            playersWithLowestTeamId.Clear();
+
+            for (int playerGameId = 0; playerGameId < maxTotalTeamCount; playerGameId++)
+            {
+                cPlayerTeamId = teamIds[playerGameId];
+
+                //Skip unassigned or lower teamIds then cTeamId
+                if (cPlayerTeamId == -1 || cPlayerTeamId < cTeamId) continue;
+
+
+                //if teamIds[playerGameId] is the new lowest teamId, update lowestTeamId, clear list and add the playerGameId
+                if (cPlayerTeamId < lowestTeamId)
+                {
+                    lowestTeamId = teamIds[playerGameId];
+
+                    playersWithLowestTeamId.Clear();
+                    playersWithLowestTeamId.Add(playerGameId);
+                }
+                //if teamIds[playerGameId] is equal to the lowest teamId, add the playerGameId
+                else if (cPlayerTeamId == lowestTeamId)
+                {
+                    playersWithLowestTeamId.Add(playerGameId);
+                }
+            }
+
+
+            //swap all players with lowest teamId above cteamId to cTeamId
+            for (int i = 0; i < playersWithLowestTeamId.Count; i++)
+            {
+                playerIdDataArrayCopy.MovePlayerToTeam(playersWithLowestTeamId[i], cTeamId, TotalTeamCount);
+                teamIds[playersWithLowestTeamId[i]] = cTeamId;
+            }
+        }
+
+        ClientManager.UpdatePlayerIdDataArray_OnServer(playerIdDataArrayCopy);
     }
 
 
@@ -283,15 +365,19 @@ public class CoalitionManager : NetworkBehaviour
     [SerializeField] private int[] DEBUG_teamCounts;
 
     [Tooltip("Amount of teams with atleast 1 player in it")]
-    [SerializeField] private int debugTeamCount;
+    [SerializeField] private int debugTotalTeamCount;
 
 
+
+    [SerializeField] private bool DEBUG_instaStartMatch;
+
+    [BurstCompile]
     private void Update()
     {
         DEBUG_teamIds = teamIds;
         DEBUG_teamCounts = teamCounts;
 
-        debugTeamCount = TeamCount;
+        debugTotalTeamCount = TotalTeamCount;
     }
 #endif
 }
