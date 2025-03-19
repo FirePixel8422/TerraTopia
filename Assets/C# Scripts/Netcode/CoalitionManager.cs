@@ -270,6 +270,10 @@ public class CoalitionManager : NetworkBehaviour
     #endregion
 
 
+
+
+    #region Starting The Lobby, Loading Next Scene and Updating MatchData (tribeData teamData)
+
     public static async Task<bool> TryLockLobby()
     {
         int playerCount = ClientManager.PlayerCount;
@@ -285,7 +289,16 @@ public class CoalitionManager : NetworkBehaviour
     {
         SceneManager.LoadSceneOnNetwork("Nobe");
 
+        //ReOrganiseTeamData();
+    }
 
+
+    /// <summary>
+    /// Fill team gaps
+    /// </summary>
+    [BurstCompile]
+    private void ReOrganiseTeamData()
+    {
         PlayerIdDataArray playerIdDataArrayCopy = ClientManager.GetPlayerIdDataArray();
 
         int maxTotalTeamCount = teamCounts.Length;
@@ -353,6 +366,7 @@ public class CoalitionManager : NetworkBehaviour
         ClientManager.UpdatePlayerIdDataArray_OnServer(playerIdDataArrayCopy);
     }
 
+    #endregion
 
 
 

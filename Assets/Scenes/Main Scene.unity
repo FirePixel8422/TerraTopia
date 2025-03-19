@@ -3418,8 +3418,9 @@ GameObject:
   - component: {fileID: 1009490109}
   - component: {fileID: 1009490108}
   - component: {fileID: 1009490110}
+  - component: {fileID: 1009490111}
   m_Layer: 0
-  m_Name: MatchMaker + ClientManager
+  m_Name: MatchManagement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3491,6 +3492,27 @@ MonoBehaviour:
     teamIds: 
     playerCount: 0
     teamCount: 0
+--- !u!114 &1009490111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009490106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1b7f7f391099414ebd8548935ba6b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UITransform: {fileID: 2058301357}
+  defaultMatchSettings:
+    maxPlayers: 0
+    maxTeams: 0
+    maxPlayersPerTeam: 0
+    allowUnfairTeams: 0
+    seed: 0
+    mapId: 0
+    privateLobby: 0
 --- !u!1 &1086622307
 GameObject:
   m_ObjectHideFlags: 0

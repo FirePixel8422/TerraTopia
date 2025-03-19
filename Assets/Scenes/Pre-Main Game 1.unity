@@ -3121,7 +3121,7 @@ MonoBehaviour:
   DEBUG_teamIds: 
   DEBUG_teamCounts: 
   debugTotalTeamCount: 0
-  DEBUG_instaStartMatch: 0
+  DEBUG_instaStartMatch: 1
 --- !u!1 &1500761181
 GameObject:
   m_ObjectHideFlags: 0

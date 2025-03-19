@@ -10,6 +10,9 @@ using UnityEngine;
 
 
 
+/// <summary>
+/// Responsible for creating and joining lobbies
+/// </summary>
 public class LobbyMaker : NetworkBehaviour
 {
     public static LobbyMaker Instance { get; private set; }

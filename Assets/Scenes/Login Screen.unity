@@ -2661,6 +2661,7 @@ GameObject:
   - component: {fileID: 1866564252}
   - component: {fileID: 1866564251}
   - component: {fileID: 1866564250}
+  - component: {fileID: 1866564253}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -2712,8 +2713,7 @@ MonoBehaviour:
     NetworkTransport: {fileID: 1866564250}
     PlayerPrefab: {fileID: 0}
     Prefabs:
-      NetworkPrefabsLists:
-      - {fileID: 11400000, guid: a7b8164e8cd626f4fb08650fcef720b4, type: 2}
+      NetworkPrefabsLists: []
     TickRate: 100
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -2747,6 +2747,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1866564253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866564249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30484fee1f4bf5c42bf224efa8409e18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkPrefabsList:
+  - {fileID: 11400000, guid: a7b8164e8cd626f4fb08650fcef720b4, type: 2}
+  tribePrefabsData:
+  - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
+  - {fileID: 11400000, guid: 3c82d8297126d2b43a34d56de92b587a, type: 2}
+  prefabsStrings: []
 --- !u!1 &1962471229
 GameObject:
   m_ObjectHideFlags: 0

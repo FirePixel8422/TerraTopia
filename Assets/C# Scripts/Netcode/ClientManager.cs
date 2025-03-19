@@ -9,12 +9,14 @@ public class ClientManager : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
+
+        DontDestroyOnLoad(gameObject);
     }
 
 
 
 
-    private static NetworkVariable<PlayerIdDataArray> playerIdDataArray = new NetworkVariable<PlayerIdDataArray>(new PlayerIdDataArray(4));
+    private static NetworkVariable<PlayerIdDataArray> playerIdDataArray = new NetworkVariable<PlayerIdDataArray>();
 
     /// <summary>
     /// Get PlayerIdDataArray Copy (changes on copy wont sync back to clientManager and wont cause a networkSync)
@@ -90,6 +92,8 @@ public class ClientManager : NetworkBehaviour
     {
         if (IsServer)
         {
+            playerIdDataArray.Value = new PlayerIdDataArray(MatchManager.settings.maxPlayers);
+
             //setup server only events
             NetworkManager.OnClientConnectedCallback += OnClientConnected_OnServer;
             NetworkManager.OnClientDisconnectCallback += OnClientDisconnected_OnServer;
@@ -160,7 +164,7 @@ public class ClientManager : NetworkBehaviour
 
 
         Destroy(gameObject);
-        Destroy(LobbyMaker.Instance.gameObject);
+        Destroy(CoalitionManager.Instance);
 
 
         if (IsServer)
