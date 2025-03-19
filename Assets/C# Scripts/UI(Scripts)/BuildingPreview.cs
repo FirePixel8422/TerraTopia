@@ -19,22 +19,15 @@ public class BuildingPreview : MonoBehaviour
         {
             if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
             {
-                if (isUnit = true & !tile.CurrentHeldUnit)
+                if (isUnit == true)
+                {
+                    if (tile.CurrentHeldUnit) { print("Tile already holds an unit"); return; }
+                    ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObjectId, tile, isUnit);
+                    return;
+                }
+                else if (isUnit == false)
                 {
                     ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObjectId, tile, isUnit);
-                    return; //Returns to prevent spawning it twice, once as a building and once as a unit
-                }
-                else
-                {
-                    print("Tile already holds a unit");
-                }
-                if (!tile.isHoldingObject)
-                {
-                    ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObjectId, tile, isUnit);
-                }
-                else
-                {
-                    print("Tile already holds an object");
                 }
             }
             else

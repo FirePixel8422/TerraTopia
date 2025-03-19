@@ -55,8 +55,8 @@ public class UnitBase : TileObject
     {
         if (newlyClickedObject.TryGetComponent(out TileBase TB))
         {
-            if (IsTileWithinReach(newlyClickedObject.transform.position))
-            {
+            if (IsTileWithinReach(newlyClickedObject.transform.position) & CanMoveToTile(TB))
+            {    
                 MoveToTile(newlyClickedObject);
             }
         }
@@ -72,15 +72,19 @@ public class UnitBase : TileObject
         }
     }
 
-    public bool IsTileWithinReach(Vector3 tilePos)
+    protected virtual bool IsTileWithinReach(Vector3 tilePos)
     {
         tilePos.y = 0f;
         int xDistance = Mathf.Abs((int)(currentTilePos.x - tilePos.x));
         int zDistance = Mathf.Abs((int)(currentTilePos.z - tilePos.z));
         return Mathf.Max(xDistance, zDistance) <= _movementRange;
     }
-
-    private void ClearMarkers()
+    protected virtual bool CanMoveToTile(TileBase TB)
+    {
+        if(TB.CurrentHeldUnit != null) { return false; }
+        return true;
+    }
+    protected virtual void ClearMarkers()
     {
         foreach (var marker in _tileMarkers)
         {
@@ -89,7 +93,7 @@ public class UnitBase : TileObject
         _tileMarkers.Clear();
     }
 
-    private void PlaceMarkersOnReachableTiles()
+    protected virtual void PlaceMarkersOnReachableTiles()
     {
         ClearMarkers();
 
@@ -102,10 +106,17 @@ public class UnitBase : TileObject
 
                 if (xDistance + zDistance <= _movementRange)
                 {
-                    Vector3 targetPos = unitPos + new Vector3(x, 0f, z);
+                    Vector3 targetPos = currentTilePos + new Vector3(x, 0f, z);
 
                     if (GridManager.TryGetTileByPos(targetPos.ToVector2(), out TileBase tb))
                     {
+                        //Break incase of an unit already inhabiting the "selected" tile
+                        if (tb.CurrentHeldUnit != null) { continue; }
+
+                        //Skips incase of the newly "selected" tile being the starting tile of the unit
+                        if (targetPos == currentTilePos) { continue; }
+
+                        //Checks if the Tile has the correct tags allowing the unit to walk on it
                         if (tb.tileLayer.HasFlag(_allowedTileLayers))
                         {
                             float heightDifference = Mathf.Abs(transform.position.y - tb.transform.position.y);
@@ -122,7 +133,7 @@ public class UnitBase : TileObject
         }
     }
 
-    private void MoveToTile(GameObject targetTile)
+    protected virtual void MoveToTile(GameObject targetTile)
     {
         if (targetTile == null) return;
         List<GameObject> path = FindPathToTile(targetTile);
@@ -133,62 +144,18 @@ public class UnitBase : TileObject
         }
     }
 
-    private void MoveAlongPath(List<GameObject> path)
+    protected virtual void MoveAlongPath(List<GameObject> path)
     {
         if (path == null || path.Count == 0) return;
 
         StartCoroutine(MoveThroughTiles(path));
     }
 
-    private IEnumerator MoveThroughTiles(List<GameObject> path)
-    {
-        foreach (var tile in path)
-        {
-            if (tile == null)
-            {
-                continue;
-            }
-
-            if (tile.transform == null)
-            {
-                continue;
-            }
-
-            Vector3 targetPosition = new Vector3(tile.transform.position.x, tile.transform.position.y, tile.transform.position.z);
-
-            float moveDuration = 0.5f;
-
-            transform.DOMove(targetPosition, moveDuration)
-                .SetEase(Ease.Linear)
-                .OnStart(() =>
-                {
-                    Vector3 direction = (targetPosition - transform.position).normalized;
-                    float targetYRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-                    transform.rotation = Quaternion.Euler(0, targetYRotation, 0);
-                })
-                .OnComplete(() =>
-                {
-                    if (tile.TryGetComponent(out TileBase tileBase))
-                    {
-                        CurrentTile.DeAssignUnit(this);
-                        CurrentTile = tileBase;
-                        CurrentTile.AssignUnit(this);
-                    }
-
-                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-
-                    GridManager.Discover3X3(currentTilePos.ToVector2());
-                });
-            yield return new WaitForSeconds(moveDuration);
-
-        }
-    }
-
-    //Uses BFS(Breadth First Search)
-    private List<GameObject> FindPathToTile(GameObject targetTile)
+    // Uses BFS (Breadth First Search)
+    protected virtual List<GameObject> FindPathToTile(GameObject targetTile)
     {
         List<GameObject> path = new List<GameObject>();
-        Vector3 startPos = currentTilePos; 
+        Vector3 startPos = currentTilePos;
         Vector3 targetPos = targetTile.transform.position;
 
         Queue<Vector3> queue = new Queue<Vector3>();
@@ -251,7 +218,7 @@ public class UnitBase : TileObject
                                 float heightDifference = Mathf.Abs(currentTile.y - nextTile.transform.position.y);
                                 Debug.Log($"Height difference to {neighbor}: {heightDifference}");
 
-                                // If height difference is lower thein stepheight it is considered valid
+                                // If height difference is lower than step height, it is considered valid
                                 if (heightDifference <= _stepHeight)
                                 {
                                     queue.Enqueue(neighbor);
@@ -272,7 +239,68 @@ public class UnitBase : TileObject
 
         return path;
     }
- 
+
+    protected virtual IEnumerator MoveThroughTiles(List<GameObject> path)
+    {
+        if (path.Count == 1)
+        {
+            Debug.Log("Clicked on the unit's starting tile, nothing happens");
+            yield return null;
+        }
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            var tile = path[i];
+            if (tile == null)
+            {
+                continue;
+            }
+
+            if (tile.transform == null)
+            {
+                continue;
+            }
+
+            Vector3 targetPosition = new Vector3(tile.transform.position.x, tile.transform.position.y, tile.transform.position.z);
+            Debug.Log($"Moving to tile at position {targetPosition}");
+
+            float moveDuration = 0.5f;
+
+            transform.DOMove(targetPosition, moveDuration)
+                .SetEase(Ease.Linear)
+                .OnStart(() =>
+                {
+                    Vector3 direction = (targetPosition - transform.position).normalized;
+                    float targetYRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+                    transform.rotation = Quaternion.Euler(0, targetYRotation, 0);
+                })
+                .OnComplete(() =>
+                {
+                    if (tile.TryGetComponent(out TileBase tileBase))
+                    {
+                        CurrentTile.DeAssignUnit(this);
+                        CurrentTile = tileBase;
+                        CurrentTile.AssignUnit(this);
+                    }
+
+                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+
+                    GridManager.Discover3X3(currentTilePos.ToVector2());
+                });
+
+            yield return new WaitForSeconds(moveDuration);
+        }
+
+        // Ensure the unit reaches the last tile
+        var lastTile = path[path.Count - 1];
+        if (lastTile != null && lastTile.transform != null)
+        {
+            Vector3 finalPosition = new Vector3(lastTile.transform.position.x, lastTile.transform.position.y, lastTile.transform.position.z);
+            transform.position = finalPosition;
+            Debug.Log($"Unit reached the final tile at position {finalPosition}");
+        }
+    }
+
 
 
 

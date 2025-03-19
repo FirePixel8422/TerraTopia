@@ -3506,7 +3506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UITransform: {fileID: 2058301357}
   defaultMatchSettings:
-    maxPlayers: 0
+    maxPlayers: 1
     maxTeams: 0
     maxPlayersPerTeam: 0
     allowUnfairTeams: 0

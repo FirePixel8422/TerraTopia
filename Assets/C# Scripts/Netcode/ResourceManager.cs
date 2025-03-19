@@ -132,7 +132,7 @@ public class ResourceManager : NetworkBehaviour
             //End the method to stop it from spawning twice
             return;
         }
-        tileToPlaceOn.AssignObject(buildingToPlaceId, true, ClientManager.UnAsignedPlayerId);
+        tileToPlaceOn.AssignObject(buildingToPlaceId, true, ClientManager.UnAsignedPlayerId, true);
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

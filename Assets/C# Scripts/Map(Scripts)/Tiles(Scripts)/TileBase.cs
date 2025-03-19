@@ -100,41 +100,64 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
 
 
-    public virtual void AssignObject(EnviromentalItemData enviromentalObject, bool activateImmediately, ulong ownerId)
+    public virtual void AssignObject(EnviromentalItemData enviromentalObject, bool activateImmediately, ulong ownerId, bool overwriteCurrent = false)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
-        if (!enviromentalObject._possibleEnviromentalPosHolder)
+        if (overwriteCurrent)
         {
-            print("No position to spawn enviromental Object. process ended");
-            return;
-        }
-
-        if (!isHoldingObject)
-        {
+            if (_currentHeldEnviromentalObject != null) { _currentHeldEnviromentalObject.NetworkObject.Despawn(); _currentHeldEnviromentalObject = null; }
             GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, activateImmediately, ownerId, enviromentalObject.randomRotation);
-            isHoldingObject = true;
-        }
-    }
-
-    public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately, ulong ownerId)
-    {
-        _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
-
-        if (!_enviromentalObjectPosHolder)
-        {
-            print("No position to spawn enviromental Object. process ended");
-            return;
-        }
-
-        if (isHoldingObject)
-        {
-            print("Object already contains an enviromental object");
         }
         else
         {
-            GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately, ownerId);
-            isHoldingObject = true;
+            if (!enviromentalObject._possibleEnviromentalPosHolder)
+            {
+                print("No position to spawn enviromental Object. process ended");
+                return;
+            }
+
+            if (!isHoldingObject)
+            {
+                GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, activateImmediately, ownerId, enviromentalObject.randomRotation);
+                isHoldingObject = true;
+            }
         }
+
+    }
+
+    public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately, ulong ownerId, bool overwriteCurrent = false)
+    {
+        _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
+        if (overwriteCurrent)
+        {
+            if (_currentHeldEnviromentalObject != null) { _currentHeldEnviromentalObject.NetworkObject.Despawn(); _currentHeldEnviromentalObject = null; }
+            GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately, ownerId);
+        }
+        else
+        {
+            if (!_enviromentalObjectPosHolder)
+            {
+                print("No position to spawn enviromental Object. process ended");
+                return;
+            }
+
+            if (isHoldingObject)
+            {
+                print("Object already contains an enviromental object");
+            }
+            else
+            {
+                GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately, ownerId);
+                isHoldingObject = true;
+            }
+        }
+    }
+    public virtual void AssignObjectLocal(EnviromentalItemData enviromentalObjectId, bool activateImmediately)
+    {
+        _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
+
+        Instantiate(TileObjectPrefabManager.GetValue(enviromentalObjectId._possibleEnviromentalObjectId), _enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation);
+        isHoldingObject = true;
     }
     public virtual void SpawnAndAssignUnit(int enviromentalObjectId)
     {
@@ -151,6 +174,6 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     {
         CurrentHeldUnit = null;
     }
-    #endregion
+    #endregion MatchManager
 }
 
