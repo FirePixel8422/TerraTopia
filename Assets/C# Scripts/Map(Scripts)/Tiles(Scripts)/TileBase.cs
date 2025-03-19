@@ -100,7 +100,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
 
 
-    public virtual void AssignObject(EnviromentalItemData enviromentalObject, bool activateImmediately, ulong ownerId = GameSettings.UnAssignedPlayerId)
+    public virtual void AssignObject(EnviromentalItemData enviromentalObject, bool activateImmediately, ulong ownerId)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
         if (!enviromentalObject._possibleEnviromentalPosHolder)
@@ -116,7 +116,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         }
     }
 
-    public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately, ulong ownerId = GameSettings.UnAssignedPlayerId)
+    public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately, ulong ownerId)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
 

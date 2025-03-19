@@ -8,7 +8,7 @@ public static class CustomUpdaterManager
 {
     public static void Initialize()
     {
-        updateStack = new List<ICustomUpdater>(GameSettings.updateManagerListPreSizeCapacity);
+        updateStack = new List<ICustomUpdater>(GlobalGameSettings.updateManagerListPreSizeCapacity);
 
         NetworkManager.Singleton.StartCoroutine(UpdateLoop());
     }

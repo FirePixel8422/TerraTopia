@@ -19,8 +19,7 @@ public class GridManager : NetworkBehaviour
 
 
     [Header("Preset MapGeneration Values")]
-    [Tooltip("If left at 0 it will generate a random seed")]
-    [SerializeField] private int _seed;
+    private int _seed;
     [SerializeField] private NoiseData _noiseData;
     [SerializeField] private int _castlePrefabId;
     [SerializeField] private GameObject cloudPrefab;
@@ -58,8 +57,11 @@ public class GridManager : NetworkBehaviour
     [BurstCompile]
     private void GenerateGrid()
     {
-        //Checks whether the seed is already pre-determined or not with use of the Ternary Operator
-        _seed = _seed == 0 ? _seed = Random.Range(int.MinValue, int.MaxValue) : _seed;
+        _seed = MatchManager.settings.seed;
+        if (_seed == 0)
+        {
+            _seed = Random.Range(int.MinValue, int.MaxValue);
+        }
 
         //Generates the grid in order:
 

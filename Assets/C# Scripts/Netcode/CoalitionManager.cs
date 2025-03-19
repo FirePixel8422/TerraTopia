@@ -23,11 +23,11 @@ public class CoalitionManager : NetworkBehaviour
 
 
     [Tooltip("What Team does PlayerGameId belong to, where playerGameId is the idnex of this array")]
-    private static int[] teamIds = new int[GameSettings.maxTeams];
+    private static int[] teamIds = new int[MatchManager.settings.maxPlayers];
 
 
     [Tooltip("Amount of players in each team")]
-    private static int[] teamCounts = new int[GameSettings.maxTeams];
+    private static int[] teamCounts = new int[MatchManager.settings.maxPlayers];
 
     [Tooltip("Amount of teams with atleast 1 player in it")]
     public static int TotalTeamCount { get; private set; }
@@ -108,7 +108,7 @@ public class CoalitionManager : NetworkBehaviour
 
         //if all clients are on 1 team and (the teams are fair or unfair teams are allowed): return true for valid, otherwise return false for valid.
         //return fairTeams for fairTeams
-        return (playerCount > 1 && (fairTeams || MatchManager.matchSettings.allowUnfairTeams), fairTeams);
+        return (playerCount > 1 && (fairTeams || MatchManager.settings.allowUnfairTeams), fairTeams);
     }
 
 
@@ -117,7 +117,7 @@ public class CoalitionManager : NetworkBehaviour
     /// </summary>
     public static bool IsTeamFull(int teamId)
     {
-        return teamCounts[teamId] == GameSettings.maxPlayersPerTeam;
+        return teamCounts[teamId] == MatchManager.settings.maxPlayersPerTeam;
     }
 
     #endregion
@@ -294,7 +294,7 @@ public class CoalitionManager : NetworkBehaviour
         int cPlayerTeamId;
 
         int lowestTeamId;
-        List<int> playersWithLowestTeamId = new List<int>(GameSettings.maxPlayersPerTeam);
+        List<int> playersWithLowestTeamId = new List<int>(MatchManager.settings.maxPlayersPerTeam);
 
         //fill team gaps
         //cycle over all teams, except the last one, if that one is empty, it cant be filled because there are no teams after that one
@@ -315,7 +315,7 @@ public class CoalitionManager : NetworkBehaviour
 
 
             //otherwise set player with lowest teamId's their team to cTeamId 
-            lowestTeamId = GameSettings.maxPlayers;
+            lowestTeamId = MatchManager.settings.maxPlayers;
             playersWithLowestTeamId.Clear();
 
             for (int playerGameId = 0; playerGameId < maxTotalTeamCount; playerGameId++)

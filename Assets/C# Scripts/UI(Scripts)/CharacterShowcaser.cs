@@ -135,7 +135,7 @@ public class CharacterShowcaser : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    [Range(-1, GameSettings.maxPlayers - 1)]
+    [Range(-1, 7)]
     [SerializeField] private int overrideTeamColor;
 
     private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)

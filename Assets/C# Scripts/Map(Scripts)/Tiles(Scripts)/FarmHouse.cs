@@ -23,7 +23,7 @@ public class FarmHouse : TileObject
     {
         if (wheatTile.FullyGrown)
         {
-            ResourceManager.ModifyFood_OnServer(OwnerClientGameId, GameSettings.wheatFoodSize);
+            ResourceManager.ModifyFood_OnServer(OwnerClientGameId, GlobalGameSettings.wheatFoodSize);
 
             wheatTile.HarvestCrop_ClientRPC();
         }

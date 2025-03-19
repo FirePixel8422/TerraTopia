@@ -14,7 +14,7 @@ public class ClientManager : NetworkBehaviour
 
 
 
-    private static NetworkVariable<PlayerIdDataArray> playerIdDataArray = new NetworkVariable<PlayerIdDataArray>(new PlayerIdDataArray(GameSettings.maxPlayers));
+    private static NetworkVariable<PlayerIdDataArray> playerIdDataArray = new NetworkVariable<PlayerIdDataArray>(new PlayerIdDataArray(4));
 
     /// <summary>
     /// Get PlayerIdDataArray Copy (changes on copy wont sync back to clientManager and wont cause a networkSync)
@@ -70,6 +70,9 @@ public class ClientManager : NetworkBehaviour
 
     [Tooltip("Amount of Players in server that have been setup by ClientManager (game/team ID System")]
     public static int PlayerCount => playerIdDataArray.Value.PlayerCount;
+
+    [Tooltip("Amount of Players in server that have been setup is 1 higher then the highestPlayerId")]
+    public static ulong UnAsignedPlayerId => (ulong)playerIdDataArray.Value.PlayerCount;
 
 
     [Tooltip("Local Client userName, value is set after ClientDisplayManager's OnNetworkSpawn")]
@@ -232,7 +235,10 @@ public class ClientManager : NetworkBehaviour
     public PlayerIdDataArray debugClientDataArray;
     private void Update()
     {
-        debugClientDataArray = playerIdDataArray.Value;
+        if (playerIdDataArray != null)
+        {
+            debugClientDataArray = playerIdDataArray.Value;
+        }
     }
 #endif
 }

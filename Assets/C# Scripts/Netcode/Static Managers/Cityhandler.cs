@@ -23,8 +23,8 @@ public static class Cityhandler
     /// </summary>
     public static void Initialize()
     {
-        cityUpgradesList = new CityUpgradeData[GameSettings.maxPlayers][];
-        cityMaterialList = new Material[GameSettings.maxPlayers];
+        cityUpgradesList = new CityUpgradeData[MatchManager.settings.maxPlayers][];
+        cityMaterialList = new Material[MatchManager.settings.maxPlayers];
     }
 
 

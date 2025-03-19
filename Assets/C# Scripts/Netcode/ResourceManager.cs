@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ResourceManager : NetworkBehaviour
 {
-    private static NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>(new PlayerResourcesDataArray(GameSettings.maxPlayers));
+    private static NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>(new PlayerResourcesDataArray(MatchManager.settings.maxPlayers));
 
     /// <summary>
     /// Get PlayerResourcesData Copy (changes on copy wont sync back to ResourceManager and wont cause a networkSync)
@@ -132,7 +132,7 @@ public class ResourceManager : NetworkBehaviour
             //End the method to stop it from spawning twice
             return;
         }
-        tileToPlaceOn.AssignObject(buildingToPlaceId, true);
+        tileToPlaceOn.AssignObject(buildingToPlaceId, true, ClientManager.UnAsignedPlayerId);
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

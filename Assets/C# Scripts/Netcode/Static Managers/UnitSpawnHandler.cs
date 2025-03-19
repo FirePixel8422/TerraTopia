@@ -23,7 +23,7 @@ public static class UnitSpawnHandler
     public static void Initialize()
     {
         //setup list by adding space for maxPlayers
-        unitCosmeticsList = new UnitSpawnData[GameSettings.maxPlayers][];
+        unitCosmeticsList = new UnitSpawnData[MatchManager.settings.maxPlayers][];
     }
 
 

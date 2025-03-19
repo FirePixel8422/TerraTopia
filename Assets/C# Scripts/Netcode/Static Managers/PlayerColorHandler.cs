@@ -16,7 +16,7 @@ public static class PlayerColorHandler
     /// </summary>
     public static void Initialize()
     {
-        playerColors = new Vector4[GameSettings.maxPlayers];
+        playerColors = new Vector4[MatchManager.settings.maxPlayers];
     }
 
 

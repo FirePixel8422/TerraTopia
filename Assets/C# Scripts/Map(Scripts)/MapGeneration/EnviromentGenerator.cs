@@ -13,7 +13,7 @@ public struct EnviromentGenerator
 
             if (CanChooseEnviromentalObject(selectedTile, out EnviromentalItemData enviromentalObject))
             {
-                selectedTile.AssignObject(enviromentalObject, false);
+                selectedTile.AssignObject(enviromentalObject, false, ClientManager.UnAsignedPlayerId);
             }
         }
 
