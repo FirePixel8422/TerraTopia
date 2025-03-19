@@ -22,7 +22,7 @@ MonoBehaviour:
   _possibleTiles:
   - tileGO: {fileID: 156770383856751536, guid: 2315aba6a52bb264baafcc201e2fa16c, type: 3}
     weight: 0.3
-    constHeight: 2.75
+    constHeight: 2.7
   - tileGO: {fileID: 1463485182777006543, guid: 9adb26a7c445bf14297af2f142570612,
       type: 3}
     weight: 0.35
