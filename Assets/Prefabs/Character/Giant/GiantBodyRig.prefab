@@ -83,6 +83,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8752049736748761581}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd4780a32c1eefe43a2c459824471906,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1308161469754328365}
   m_SourcePrefab: {fileID: 100100000, guid: dd4780a32c1eefe43a2c459824471906, type: 3}
 --- !u!137 &6926855430545261188 stripped
 SkinnedMeshRenderer:
@@ -108,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4146968217
+  GlobalObjectIdHash: 4200646062
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -137,9 +141,13 @@ MonoBehaviour:
   _maxHealth: 0
   _movementRange: 0
   _detectionRange: 0
+  _allowedTileLayers: 0
+  _markerPrefab: {fileID: 0}
+  _stepHeight: 0.5
   _attackDamage: 0
   _unitsKilled: 0
   tilesVisited: 0
+  CurrentTile: {fileID: 0}
 --- !u!95 &8752049736748761581
 Animator:
   serializedVersion: 5
@@ -161,6 +169,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1308161469754328365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780764591187234170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4502548858e28524da549f57122f53fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAnimation: Idle
+  idleAnimation: Idle
+  runAnimation: Walk
+  attackAnimation: Attack
+  hurtAnimation: Hurt
+  deathAnimation: Death
+  dead: 0
 --- !u!4 &8329185994690279448 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7733653137167873997, guid: dd4780a32c1eefe43a2c459824471906,

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3002300e69234b246924c6bde4954804, type: 3}
-  m_Name: Tribe 1
+  m_Name: Pirate Tribe
   m_EditorClassIdentifier: 
   unitSpawnData:
   - body: {fileID: -2104584173075352023, guid: 38dc8253122a49540b63e99e44be44d8, type: 3}
-    head: {fileID: 8420030423923112943, guid: 75b9bab9dec86ac4cbf5ade461ffd91d, type: 3}
+    head: {fileID: 5691763288108522624, guid: 03701f066de0968459948da3da352e65, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 11c38321448561a4597e0620cf102e88, type: 2}
     - {fileID: 2100000, guid: f0a18dede09302242a8e4ed123083e70, type: 2}
@@ -25,7 +25,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 326eb92b30c20c24c9aeba66bb0fd5c2, type: 2}
     - {fileID: 2100000, guid: 297d38179a2948a408275fb2daed663c, type: 2}
   - body: {fileID: 5880669039318488211, guid: 9cf11cd6d4ba9584289be9da9c4dd671, type: 3}
-    head: {fileID: 6166751827419068980, guid: f31dfd2c9c3959041a05e21a570c8141, type: 3}
+    head: {fileID: 4528547311867178585, guid: 2eea37427eae610408c5d3dc9c0d8d97, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 4dffd964ff5d9594ba19a53b3e402fd4, type: 2}
     - {fileID: 2100000, guid: 5be8074ac76c9e74eb214cc5504a9650, type: 2}
@@ -36,7 +36,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 7ed3c8460fc07964dbf7196c4150c861, type: 2}
     - {fileID: 2100000, guid: e9907b5cc79e6564aa787212faf0a971, type: 2}
   - body: {fileID: 1573086538692208591, guid: f1d5416a00f6bf149a4ea9773efeeef2, type: 3}
-    head: {fileID: 5777321484119304270, guid: 724a820e2da6f6e49af4d2bceef53760, type: 3}
+    head: {fileID: -5388687580118133934, guid: 41444417d30837e4884d4f4cf26202bb, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 69e87d76f424522499320d12ea90c3c9, type: 2}
     - {fileID: 2100000, guid: 253010cc057ff0146a98751339065593, type: 2}
@@ -47,7 +47,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 3d912f995a404584593de35a417ca965, type: 2}
     - {fileID: 2100000, guid: c573e5e539fcfd14a92019a60a44fb6c, type: 2}
   - body: {fileID: -5226293247528300773, guid: c771012fe5e82e041a9d71097455b7e3, type: 3}
-    head: {fileID: 4744620582134832400, guid: ba0680961d71ec846a73dc0c30131a1c, type: 3}
+    head: {fileID: -3197961687258922097, guid: 64478ddf86a7445478ce34f01ab919e9, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: ebc7822501b781545adda1d1679c701b, type: 2}
     - {fileID: 2100000, guid: 7757a3dcc10c3c946a5f68e5c005421b, type: 2}
@@ -58,7 +58,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 6b68ca7f113f1ae4396f3767fc5ca95d, type: 2}
     - {fileID: 2100000, guid: b7e12b39392b6674bbc32e1a106763e7, type: 2}
   - body: {fileID: 7733444632930478723, guid: 3a3751d748bf06c4183cf766e4ccd8c7, type: 3}
-    head: {fileID: 6939877306003657688, guid: 0bd53e41c6936d8478e3d7c277943e65, type: 3}
+    head: {fileID: 3815676369504283166, guid: b9650e73989adf64399daf8a3670f879, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: 6b128f815e22599468bff91b28bfa717, type: 2}
     - {fileID: 2100000, guid: cb1a464f7fad90e4785f92838fff6d57, type: 2}
@@ -69,7 +69,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 6f559e6dabdf22141a6df6b343d128cb, type: 2}
     - {fileID: 2100000, guid: 0e4367cd034364a41a59b4d69e03eaae, type: 2}
   - body: {fileID: 4354922201595196241, guid: 4f10d7d47536bf841bbc1ed972bdc9d5, type: 3}
-    head: {fileID: 1181740285225185311, guid: 7395509f9af5d9d429363833c52a8866, type: 3}
+    head: {fileID: 1282552463619611799, guid: 2992b990e707147498abb939fd259e8e, type: 3}
     colorMaterials:
     - {fileID: 2100000, guid: ad0e7d8a8756f324f9d91f68548c4ca0, type: 2}
     - {fileID: 2100000, guid: 21f74356de7086c45a48da7fc05913b7, type: 2}
