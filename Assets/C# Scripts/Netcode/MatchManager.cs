@@ -39,6 +39,8 @@ public class MatchManager : NetworkBehaviour
 
             UIInputHandlers[i].OnValueChanged += (value) => UpdateMatchSettingsData(dataIndex, value);
         }
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void UpdateMatchSettingsData(int sliderId, int value)

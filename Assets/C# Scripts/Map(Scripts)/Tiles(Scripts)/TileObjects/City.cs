@@ -13,6 +13,7 @@ public class City : TileObject
     public float labSpeed;
 
     public MeshRenderer cityRenderer;
+    private Material cityMaterial;
 
     [SerializeField] private MeshFilter borderMeshFilter;
     private Material borderMaterial;
@@ -27,32 +28,35 @@ public class City : TileObject
 
     public override void OnNetworkSpawn()
     {
-        borderMaterial = borderMeshFilter.GetComponent<Renderer>().material;
-        borderMeshFilter.mesh = new Mesh();
+        ownerClientGameId = ClientManager.GetClientGameId(OwnerClientId);
+        ownerClientTeamId = ClientManager.GetClientTeamId(ownerClientGameId);
 
-        borderMeshFilter.transform.parent = null;
+        SetupCityMeshData(ownerClientGameId);
 
         if (IsServer)
         {
-            ownerClientGameId = ClientManager.GetClientGameId(OwnerClientId);
-            ownerClientTeamId = ClientManager.GetClientTeamId(ownerClientGameId);
-
-            SetupCityMaterial_ClientRPC(ownerClientGameId);
-
             RecalculateBorderMesh_OnServer();
         }
     }
 
 
-    public Material mat;
-
-    [ClientRpc(RequireOwnership = false)]
-    private void SetupCityMaterial_ClientRPC(int ownerPlayerGameId)
+    /// <summary>
+    /// Called on all clients when the city is spawned
+    /// </summary>
+    private void SetupCityMeshData(int ownerPlayerGameId)
     {
-        cityRenderer.material = Cityhandler.GetCityColorMaterial_OnServer(ownerPlayerGameId);
+        //get playerColor material
+        cityRenderer.material = Cityhandler.GetCityColorMaterial(ownerPlayerGameId);
 
         //store material reference
-        mat = cityRenderer.material;
+        cityMaterial = cityRenderer.material;
+
+
+        //setup borderMeshFilter's MeshData and unparent it.
+        borderMaterial = borderMeshFilter.GetComponent<Renderer>().material;
+        borderMeshFilter.mesh = new Mesh();
+
+        borderMeshFilter.transform.parent = null;
     }
 
 

@@ -21,21 +21,39 @@ public static class Cityhandler
     /// <summary>
     /// Only call this from the server!!! _______ Initialized through TribeSelecter.cs
     /// </summary>
-    public static void Initialize()
+    public static void Initialize_OnServer()
     {
         cityUpgradesList = new CityUpgradeData[MatchManager.settings.maxPlayers][];
+
         cityMaterialList = new Material[MatchManager.settings.maxPlayers];
+    }
+
+    /// <summary>
+    /// Only call this from clients!!! _______ Initialized through TribeSelecter.cs
+    /// </summary>
+    public static void Initialize_OnClients()
+    {
+        cityMaterialList = new Material[MatchManager.settings.maxPlayers];
+    }
+
+
+
+
+    /// <summary>
+    /// Only call this from the server!!! _______ Add tribes cityUpgrades and add City Color Material equal to teamColor (to spare ref data and to easily acces them by playerGameId)
+    /// </summary>
+    public static void AddCityData_OnServer(CityUpgradeData[] cityUpgrades, int playerGameId)
+    {
+        cityUpgradesList[playerGameId] = cityUpgrades;
     }
 
 
     /// <summary>
     /// Only call this from the server!!! _______ Add tribes cityUpgrades and add City Color Material equal to teamColor (to spare ref data and to easily acces them by playerGameId)
     /// </summary>
-    public static void AddCityData_OnServer(CityUpgradeData[] cityUpgrades, Material cityMaterial, int playerGameId)
+    public static void AddCityMaterials(Material[] cityMaterials)
     {
-        cityUpgradesList[playerGameId] = cityUpgrades;
-
-        cityMaterialList[playerGameId] = cityMaterial;
+        cityMaterialList = cityMaterials;
     }
 
 
@@ -59,7 +77,7 @@ public static class Cityhandler
 
 
     /// <summary>
-    /// Get City Upgrade data from playerGameId and cityLevel
+    /// Only call this from the server!!! _______ Get City Upgrade data from playerGameId and cityLevel
     /// </summary>
     /// <returns>The cities next upgrade data</returns>
     public static CityUpgradeData GetCityUpgradeData_OnServer(int playerGameId, int cityLevel)
@@ -71,7 +89,7 @@ public static class Cityhandler
     /// Get City Colormaterial data from playerGameId
     /// </summary>
     /// <returns>The cities ColorMaterial that belongs to playerGameId</returns>
-    public static Material GetCityColorMaterial_OnServer(int playerGameId)
+    public static Material GetCityColorMaterial(int playerGameId)
     {
         return cityMaterialList[playerGameId];
     }

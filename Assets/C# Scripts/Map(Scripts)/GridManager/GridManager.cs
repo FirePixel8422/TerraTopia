@@ -42,13 +42,13 @@ public class GridManager : NetworkBehaviour
     {
         GenerateGrid();
 
+        for (int i = 0; i < tileObjectsData.tileObjects.Length; i++)
+        {
+            TileObjectPrefabManager.Add(tileObjectsData.tileObjects[i]);
+        }
+
         if (IsServer)
         {
-            for (int i = 0; i < tileObjectsData.tileObjects.Length; i++)
-            {
-                TileObjectPrefabManager.Add(tileObjectsData.tileObjects[i]);
-            }
-
             SpawnMapAssets_OnServer();
         }
     }
@@ -89,7 +89,7 @@ public class GridManager : NetworkBehaviour
     private void SpawnMapAssets_OnServer()
     {
         //Generates a castle based on the grid
-        new CastlePosGenerator(_tiles, _seed, ClientManager.PlayerCount, _width, _length, _castlePrefabId);
+        new CastlePosGenerator(_tiles, _seed, NetworkManager.ConnectedClientsIds.Count, _width, _length, _castlePrefabId);
 
         //Adds supported enviromentel assets assigned within the unity inspector onto the previously created grid of tiles
         new EnviromentGenerator(_tiles, _seed);

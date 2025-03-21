@@ -54,7 +54,12 @@ public class NetworkPrefabsHandler : MonoBehaviour
     {
         foreach (GameObject prefab in filterdPrefabSet)
         {
-            NetworkManager.Singleton.PrefabHandler.AddNetworkPrefab(prefab);
+            NetworkPrefab networkPrefab = new NetworkPrefab
+            {
+                Prefab = prefab
+            };
+
+            NetworkManager.Singleton.NetworkConfig.Prefabs.Add(networkPrefab);
         }
 
         Destroy(this);

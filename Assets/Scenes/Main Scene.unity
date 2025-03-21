@@ -3417,7 +3417,6 @@ GameObject:
   - component: {fileID: 1009490107}
   - component: {fileID: 1009490109}
   - component: {fileID: 1009490108}
-  - component: {fileID: 1009490110}
   - component: {fileID: 1009490111}
   m_Layer: 0
   m_Name: MatchManagement
@@ -3475,23 +3474,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1009490110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009490106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c777c1f5c5f3ad46ad95942a0c16876, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugClientDataArray:
-    networkIds: 
-    teamIds: 
-    playerCount: 0
-    teamCount: 0
 --- !u!114 &1009490111
 MonoBehaviour:
   m_ObjectHideFlags: 0

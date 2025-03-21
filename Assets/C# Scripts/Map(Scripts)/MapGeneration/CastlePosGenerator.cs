@@ -41,7 +41,9 @@ public struct CastlePosGenerator
                 validTiles.Add(tile);
         }
 
-        List<Vector2Int> chosenPositions = new List<Vector2Int>();
+        Debug.Log("playerCount: " + playerCount);
+
+        List<Vector2Int> chosenPositions = new List<Vector2Int>(playerCount);
 
 
         if (validTiles.Count > 0)
@@ -73,23 +75,22 @@ public struct CastlePosGenerator
             validTiles.RemoveAll(t => Vector2.Distance(t, bestCandidate) < 2f);
         }
 
-        for (int i = 0; i < chosenPositions.Count; i++)
-            playerCastlePositions[i] = chosenPositions[i];
-
-
         ulong castleId = 0;
-        int castleCount = playerCastlePositions.Count;
-        int r;
+        int castleCount = chosenPositions.Count;
 
         for (int i = 0; i < castleCount; i++)
         {
-            r = rng.Next(0, playerCastlePositions.Count);
+            Debug.Log(i);
 
-            Vector2Int pos = playerCastlePositions[r];
-            playerCastlePositions.Remove(r);
+            int r = rng.Next(0, chosenPositions.Count);
+
+            Debug.Log("r: " + r);
+
+            Vector2Int pos = chosenPositions[r];
+            chosenPositions.RemoveAt(r);
 
             var castleTile = tiles.FirstOrDefault(a => a.Value.transform.position == new Vector3(pos.x, a.Value.transform.position.y, pos.y));
-            if (castleTile.Value != null && castleTile.Value.TryGetComponent(out TileBase tb))
+            if (castleTile.Value.TryGetComponent(out TileBase tb))
             {
                 tb.AssignObject(castlePrefabId, true, castleId);
             }

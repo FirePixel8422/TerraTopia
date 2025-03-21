@@ -15,17 +15,6 @@ using UnityEngine;
 /// </summary>
 public class LobbyMaker : NetworkBehaviour
 {
-    public static LobbyMaker Instance { get; private set; }
-
-    private void Awake()
-    {
-        Instance = this;
-
-        DontDestroyOnLoad(gameObject);
-    }
-
-
-
     [SerializeField] private GameObject invisibleScreenCover;
     //[SerializeField] private Button rejoinButton;
 
@@ -113,8 +102,6 @@ public class LobbyMaker : NetworkBehaviour
         try
         {
             (bool lobbyFound, List<Lobby> lobbies) = await FindLobbiesAsync();
-
-            print(lobbyFound);
 
             if (lobbyFound == false)
             {

@@ -1,13 +1,16 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class CharacterShowcaser : MonoBehaviour
+public class CharacterShowcaser : NetworkBehaviour
 {
     [SerializeField] private InputAction mouseMoveInput;
     [Space]
     [SerializeField] private InputAction mouseClickInput;
+
+    [SerializeField] private UnitTribeListSO[] tribeData;
 
     [Space]
 
@@ -21,12 +24,6 @@ public class CharacterShowcaser : MonoBehaviour
 
 
 
-    private void Start()
-    {
-        UpdatePreviewModel(0, 0);
-    }
-
-
     private void OnEnable()
     {
         mouseMoveInput.Enable();
@@ -37,7 +34,7 @@ public class CharacterShowcaser : MonoBehaviour
         mouseClickInput.canceled += (InputAction.CallbackContext ctx) => OnMouseHeldChanged(false);
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         mouseMoveInput.Disable();
         mouseMoveInput.performed -= (InputAction.CallbackContext ctx) => OnMouseMovement(ctx.ReadValue<Vector2>());
@@ -49,13 +46,15 @@ public class CharacterShowcaser : MonoBehaviour
 
 
 
+    public override void OnNetworkSpawn()
+    {
+        //ClientManager.SubscribeToOnInitialized(() => UpdatePreviewModel(0, 0));
+    }
+
 
     private void OnMouseMovement(Vector2 mouseMovement)
     {
-        if (mouseHeld == false)
-        {
-            return;
-        }
+        if (mouseHeld == false) return;
 
         float rotY = modelTransform.localEulerAngles.y - mouseMovement.x * turnSpeed;
 
@@ -105,7 +104,7 @@ public class CharacterShowcaser : MonoBehaviour
 
     public void SelectNewTribe(int tribeId)
     {
-        if(TribeSelecter.Instance.tribeData.Length <= tribeId)
+        if (TribeSelecter.Instance.tribeData.Length <= tribeId)
         {
             Debug.LogError("Tribe " + tribeId + " does not exist yet");
             return;
@@ -133,59 +132,42 @@ public class CharacterShowcaser : MonoBehaviour
     }
 
 
-#if UNITY_EDITOR
-
-    [Range(-1, 7)]
-    [SerializeField] private int overrideTeamColor;
-
     private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)
     {
         UnitSpawnData unitData = TribeSelecter.Instance.tribeData[tribeId].unitSpawnData[unitId];
 
         //spawn unit (locally on server)
         UnitBase spawnedUnit = Instantiate(unitData.body, transform).GetComponent<UnitBase>();
-        Instantiate(unitData.head, spawnedUnit.headTransform);
+        NetworkObject unitHead = Instantiate(unitData.head, spawnedUnit.headTransform);
+
+        spawnedUnit.NetworkObject.enabled = false;
+        unitHead.enabled = false;
 
         //set rot equal to previous preview units rot
         spawnedUnit.transform.localRotation = rot;
 
-        //disble script
-        spawnedUnit.enabled = false;
-
-        if (overrideTeamColor == -1)
-        {
-            spawnedUnit.colorRenderer.material = unitData.colorMaterials[ClientManager.LocalClientGameId];
-        }
-        else
+#if UNITY_EDITOR
+        if (overrideTeamColor != -1)
         {
             //set team color material
             spawnedUnit.colorRenderer.material = unitData.colorMaterials[overrideTeamColor];
         }
-
-        return spawnedUnit.transform;
-    }
-
+        else
+        {
+            //set team color material
+            spawnedUnit.colorRenderer.material = unitData.colorMaterials[ClientManager.LocalClientGameId];
+        }
 #else
-
-    private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)
-    {
-        UnitSpawnData unitData = TribeSelecter.Instance.tribeData[tribeId].unitSpawnData[unitId];
-
-        //spawn unit (locally on server)
-        UnitBase spawnedUnit = Instantiate(unitData.body, transform).GetComponent<UnitBase>();
-        Instantiate(unitData.head, spawnedUnit.headTransform);
-
-        //set rot equal to previous preview units rot
-        spawnedUnit.transform.localRotation = rot;
-
-        //disble script
-        spawnedUnit.enabled = false;
-
         //set team color material
         spawnedUnit.colorRenderer.material = unitData.colorMaterials[ClientManager.LocalClientGameId];
+#endif
 
         return spawnedUnit.transform;
     }
 
+
+#if UNITY_EDITOR
+    [Range(-1, 7)]
+    [SerializeField] private int overrideTeamColor;
 #endif
 }

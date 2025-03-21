@@ -21,9 +21,6 @@ public class TribeSelecter : NetworkBehaviour
     [Header("Colors used for things like city borders")]
     [SerializeField] private Color[] playerColors;
 
-
-    private int playerCountThatSelectedTribe;
-
     public static int selectedTribeId;
 
 
@@ -33,25 +30,18 @@ public class TribeSelecter : NetworkBehaviour
     {
         if (IsServer)
         {
-            UnitSpawnHandler.Initialize();
-            PlayerColorHandler.Initialize();
+            UnitSpawnHandler.Initialize_OnServer();
+            PlayerColorHandler.Initialize_OnServer();
 
-            Cityhandler.Initialize();
-
-            FindObjectOfType<NavButtonManager>(true).OnConfirm.AddListener((int selectedButtonId) => SelectTribe_ServerRPC(selectedButtonId, ClientManager.LocalClientGameId));
+            Cityhandler.Initialize_OnServer();
         }
-    }
-
-
-    public void SelectTribe()
-    {
-        if (tribeData.Length <= selectedTribeId)
+        //for every NON-host client
+        else
         {
-            Debug.LogError("Tribe " + selectedTribeId + " does not exist yet");
-            return;
+            Cityhandler.Initialize_OnClients();
         }
 
-        SelectTribe_ServerRPC(selectedTribeId, ClientManager.LocalClientGameId);
+        Cityhandler.AddCityMaterials(cityColorMaterials);
     }
 
     public UnitSpawnData[] GetSelectedTribeData()
@@ -60,14 +50,19 @@ public class TribeSelecter : NetworkBehaviour
     }
 
 
+
+    public void SelectTribe()
+    {
+        SelectTribe_ServerRPC(selectedTribeId, ClientManager.LocalClientGameId);
+    }
+
     [ServerRpc(RequireOwnership = false)]
     private void SelectTribe_ServerRPC(int tribeId, int playerGameId)
     {
         print("Tribe: " + tribeId + " Selected");
 
         UnitSpawnHandler.AddTribe_OnServer(tribeData[tribeId].unitSpawnData, playerGameId);
-        PlayerColorHandler.AddPlayerColors_OnServer(playerColors[playerCountThatSelectedTribe], playerGameId);
 
-        Cityhandler.AddCityData_OnServer(tribeData[tribeId].cityUpgrades, cityColorMaterials[playerGameId], playerGameId);
+        Cityhandler.AddCityData_OnServer(tribeData[tribeId].cityUpgrades, playerGameId);
     }
 }

@@ -14,7 +14,7 @@ public static class PlayerColorHandler
     /// <summary>
     /// Only call this from the server!!! _______  Initialized through TribeSelecter.cs
     /// </summary>
-    public static void Initialize()
+    public static void Initialize_OnServer()
     {
         playerColors = new Vector4[MatchManager.settings.maxPlayers];
     }

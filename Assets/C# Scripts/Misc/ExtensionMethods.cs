@@ -2,7 +2,6 @@
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using DG.Tweening;
 
 public static class ExtensionMethods
 {
@@ -27,13 +26,13 @@ public static class ExtensionMethods
     private static IEnumerator InvokeRoutine(Action f, float delay)
     {
         yield return new WaitForSeconds(delay);
-        f();
+        f.Invoke();
     }
 
     private static IEnumerator InvokeRoutine<T>(Action<T> f, T param, float delay)
     {
         yield return new WaitForSeconds(delay);
-        f(param);
+        f.Invoke(param);
     }
 
     #endregion

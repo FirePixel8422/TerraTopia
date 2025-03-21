@@ -9,8 +9,6 @@ public class ClientManager : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
-
-        DontDestroyOnLoad(gameObject);
     }
 
 
@@ -58,6 +56,33 @@ public class ClientManager : NetworkBehaviour
     public static Action<ulong, int, int> OnClientDisconnectedCallback;
 
 
+    [Tooltip("Invoked after this scripts OnNetworkSpawn is fully executed")]
+    private static Action OnInitialized;
+    public static bool Initialized { get; private set; }
+
+
+
+    /// <summary>
+    /// Subscribe to OnInitialized event, if already initialized instead invoke the action (and dont subscribe to OnInitialized) 
+    /// </summary>
+    public static void SubscribeToOnInitialized(Action toExecuteAction, bool invokeIfAlreadyInitialized = true)
+    {
+        //if this script is already initialized
+        if (Initialized)
+        {
+            //invoke the action if "invokeIfAlreadyInitialized" is true
+            if (invokeIfAlreadyInitialized)
+            {
+                toExecuteAction.Invoke();
+            }
+
+            return;
+        }
+
+        OnInitialized += toExecuteAction;
+    }
+
+
 
     [Tooltip("Local Client gameId, the number equal to the clientCount when this client joined the lobby")]
     public static int LocalClientGameId { get; private set; }
@@ -90,6 +115,7 @@ public class ClientManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        print("caled");
         if (IsServer)
         {
             playerIdDataArray.Value = new PlayerIdDataArray(MatchManager.settings.maxPlayers);
@@ -108,6 +134,13 @@ public class ClientManager : NetworkBehaviour
             LocalClientGameId = newValue.GetPlayerGameId(NetworkManager.LocalClientId);
             LocalClientTeamId = newValue.GetPlayerTeamId(LocalClientGameId);
         };
+
+        DontDestroyOnLoad(gameObject);
+
+        //Invoke OnInitialized event after OnNetworkSpawn is fully executed, also Set initialized to true and clear OnInitialized Action
+        OnInitialized?.Invoke();
+        OnInitialized = null;
+        Initialized = true;
     }
 
 
@@ -135,12 +168,12 @@ public class ClientManager : NetworkBehaviour
     private void OnClientDisconnected_OnServer(ulong clientId)
     {
         //if the diconnecting client is the server dont update data, the server is shut down anyways.
-        if (clientId == 0)
+        if (IsServer)
         {
             return;
         }
 
-        OnClientDisconnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), NetworkManager.ConnectedClientsIds.Count);
+        OnClientDisconnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), PlayerCount);
 
 
         PlayerIdDataArray updatedDataArray = playerIdDataArray.Value;
@@ -164,7 +197,7 @@ public class ClientManager : NetworkBehaviour
 
 
         Destroy(gameObject);
-        Destroy(CoalitionManager.Instance);
+        //Destroy(TurnManager);
 
 
         if (IsServer)

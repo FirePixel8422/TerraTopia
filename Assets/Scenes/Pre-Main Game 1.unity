@@ -651,7 +651,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1500761181}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -3015,8 +3015,9 @@ MonoBehaviour:
       m_Action: Mouse Click Input
       m_Flags: 0
     m_Flags: 0
+  tribeData: []
   turnSpeed: 1.5
-  overrideTeamColor: 3
+  overrideTeamColor: -1
 --- !u!4 &1483553882
 Transform:
   m_ObjectHideFlags: 0
@@ -3088,7 +3089,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tribeData:
   - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
-  - {fileID: 11400000, guid: 3c82d8297126d2b43a34d56de92b587a, type: 2}
+  - {fileID: 11400000, guid: e916d4a2375c8df438ed881cfc526fa8, type: 2}
+  - {fileID: 11400000, guid: cfd096943ba02ea4db4a3014a442fb11, type: 2}
   cityColorMaterials:
   - {fileID: 2100000, guid: 8dd7c6f909770fe4d9894f35540318ba, type: 2}
   - {fileID: 2100000, guid: d63a4b11b0f6cf14fabf72ad9c75b83c, type: 2}
@@ -3115,8 +3117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9805c82f73a34c1428b7f873fec07b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startTime: 15
-  unfairTeamsStartTime: 15
+  startTime: 3
+  unfairTeamsStartTime: 5
   countDownTimerText: {fileID: 1467871095}
   DEBUG_teamIds: 
   DEBUG_teamCounts: 
@@ -3290,7 +3292,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1551303234}
-  - component: {fileID: 1551303236}
   - component: {fileID: 1551303235}
   m_Layer: 5
   m_Name: Tribe Buttons
@@ -3425,27 +3426,6 @@ MonoBehaviour:
     m_Flags: 0
   selectedButtonId: 0
   buttonsEnabled: 1
---- !u!114 &1551303236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1551303233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2828912585
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &1595901582
 GameObject:
   m_ObjectHideFlags: 0
@@ -3819,6 +3799,7 @@ GameObject:
   - component: {fileID: 1716662623}
   - component: {fileID: 1716662626}
   - component: {fileID: 1716662629}
+  - component: {fileID: 1716662630}
   m_Layer: 0
   m_Name: Core Managers
   m_TagString: Untagged
@@ -3893,6 +3874,23 @@ MonoBehaviour:
     stone: 
     gems: 
     food: 
+--- !u!114 &1716662630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716662622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c777c1f5c5f3ad46ad95942a0c16876, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugClientDataArray:
+    networkIds: 
+    teamIds: 
+    playerCount: 0
+    teamCount: 0
 --- !u!1 &1782026046
 GameObject:
   m_ObjectHideFlags: 0

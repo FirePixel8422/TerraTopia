@@ -289,7 +289,7 @@ public class CoalitionManager : NetworkBehaviour
     {
         SceneManager.LoadSceneOnNetwork("Nobe");
 
-        //ReOrganiseTeamData();
+        ReOrganiseTeamData();
     }
 
 

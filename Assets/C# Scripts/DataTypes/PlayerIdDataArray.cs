@@ -35,8 +35,6 @@ public struct PlayerIdDataArray : INetworkSerializable
 
     public PlayerIdDataArray(int maxPlayerCount)
     {
-        Debug.Log(maxPlayerCount);
-
         networkIds = new ulong[maxPlayerCount];
         teamIds = new int[maxPlayerCount];
 
@@ -58,8 +56,6 @@ public struct PlayerIdDataArray : INetworkSerializable
     [BurstCompile]
     public void AddPlayer(ulong addedNetworkId)
     {
-        Debug.Log(networkIds.Length);
-
         networkIds[playerCount] = addedNetworkId;
 
         playerCount += 1;

@@ -20,7 +20,7 @@ public static class UnitSpawnHandler
     /// <summary>
     /// Only call this from the server!!! _______ Initialized through TribeSelecter.cs
     /// </summary>
-    public static void Initialize()
+    public static void Initialize_OnServer()
     {
         //setup list by adding space for maxPlayers
         unitCosmeticsList = new UnitSpawnData[MatchManager.settings.maxPlayers][];

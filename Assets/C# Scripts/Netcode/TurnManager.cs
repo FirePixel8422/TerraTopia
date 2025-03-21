@@ -46,8 +46,6 @@ public class TurnManager : NetworkBehaviour
                 OnMyTurnEnded?.Invoke();
             }
         };
-
-        DontDestroyOnLoad(gameObject);
     }
 
 
