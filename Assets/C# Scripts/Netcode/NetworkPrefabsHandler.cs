@@ -52,7 +52,7 @@ public class NetworkPrefabsHandler : MonoBehaviour
 
     private void SetupNetworkPrefabs(HashSet<GameObject> filterdPrefabSet)
     {
-        foreach(GameObject prefab in filterdPrefabSet)
+        foreach (GameObject prefab in filterdPrefabSet)
         {
             NetworkManager.Singleton.PrefabHandler.AddNetworkPrefab(prefab);
         }
@@ -60,7 +60,7 @@ public class NetworkPrefabsHandler : MonoBehaviour
         Destroy(this);
     }
 
-
+#if UNITY_EDITOR
     private void Update()
     {
         prefabsStrings.Clear();
@@ -73,4 +73,5 @@ public class NetworkPrefabsHandler : MonoBehaviour
             }
         }
     }
+#endif
 }

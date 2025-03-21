@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a6955a834bdb62f4aa1b525270a8a774,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.949796
+      value: 11.915239
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6955a834bdb62f4aa1b525270a8a774,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000023841858
+      value: 0.30922604
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6955a834bdb62f4aa1b525270a8a774,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.671455
+      value: 31.003971
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6955a834bdb62f4aa1b525270a8a774,
         type: 3}
@@ -79,7 +79,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a6955a834bdb62f4aa1b525270a8a774,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 749005126238335392}
+      addedObject: {fileID: 8248940905385633587}
   m_SourcePrefab: {fileID: 100100000, guid: a6955a834bdb62f4aa1b525270a8a774, type: 3}
 --- !u!1 &5459331973901608439 stripped
 GameObject:
@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 701173622
+  InScenePlacedSourceGlobalObjectIdHash: 3414558101
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &749005126238335392
+--- !u!114 &8248940905385633587
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,7 +117,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5459331973901608439}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcd7187721dd30740a266e47eea353ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 120e0c521b131fb4da9a834e55b2fd2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileCanBeBuiltOn: 1
   buildings: []

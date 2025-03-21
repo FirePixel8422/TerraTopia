@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class TileObject : NetworkBehaviour, IBuildable, IOnClickable
 {
+    public bool tileCanBeBuiltOn = true;
     private Renderer meshRenderer;
 
 
     [SerializeField] private List<Building> buildings = new List<Building>();
+
     public List<Building> AvailableBuildings()
     {
         return buildings;

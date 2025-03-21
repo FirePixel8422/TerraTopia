@@ -125,4 +125,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd7187721dd30740a266e47eea353ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileCanBeBuiltOn: 1
   buildings: []

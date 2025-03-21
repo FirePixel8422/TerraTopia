@@ -26,12 +26,6 @@ public class PlayerInput : MonoBehaviour
         _gfxRayCaster = FindObjectOfType<GraphicRaycaster>(true);
     }
 
-    private void Start()
-    {
-        _hoverObject = Instantiate(_hoverObjectPrefab);
-        _hoverObject.SetActive(false);
-    }
-
     public void OnMouseMove(InputAction.CallbackContext ctx)
     {
         if (IsHoveringOverUI()) return;
@@ -90,7 +84,7 @@ public class PlayerInput : MonoBehaviour
     public void OnClick(InputAction.CallbackContext ctx)
     {
         //Checks whether or not its hovering over an object and whether or not it already has assigned an hitobject before
-        if (IsHoveringOverUI() || LastHitObject == null || !ctx.performed) return; 
+        if (IsHoveringOverUI() || LastHitObject == null || !ctx.performed) return;
 
         //Null checks and checks whether or ot the same object is clicked twice
         if (SelectedObject != null && SelectedObject != LastHitObject)
@@ -117,7 +111,21 @@ public class PlayerInput : MonoBehaviour
 
         if (SelectedObject.TryGetComponent(out IBuildable IB))
         {
-            HandleBuildingPanel(IB);
+            if (SelectedObject.TryGetComponent(out TileBase TB))
+            {
+                if (TB.CanBeBuiltOn)
+                {
+                    HandleBuildingPanel(IB);
+                }
+                else
+                {
+                    _buildingHandler.HideBuildingPanel();
+                }
+            }
+            else
+            {
+                HandleBuildingPanel(IB);
+            }
         }
         else
         {

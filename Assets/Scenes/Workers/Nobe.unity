@@ -362,12 +362,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e0bf1aa6bdb364a8d9ef245f84a766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _noiseData: {fileID: 11400000, guid: ebaecaee036b98147ba0e2bba22dad9f, type: 2}
+  _noiseData: {fileID: 11400000, guid: 4c18875da0305624daad3b023bd09157, type: 2}
   _castlePrefabId: 0
   cloudPrefab: {fileID: 919132149155446097, guid: f74318a1553978e45a5f242ec71fda96,
     type: 3}
-  _width: 40
-  _length: 40
+  _width: 10
+  _length: 10
   tileObjectsData: {fileID: 11400000, guid: 1377ffc3051b800439ffe18e75bdd376, type: 2}
 --- !u!114 &1849222576
 MonoBehaviour:

@@ -27,16 +27,40 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
     [Header("Enviromental Object Settings / Variables")]
     public List<EnviromentalItemData> _possibleEnviromentalObjects = new List<EnviromentalItemData>();
-    [SerializeField] private TileObject _currentHeldEnviromentalObject;
+    [SerializeField] private TileObject _tileObject;
+    private TileObject _currentHeldEnviromentalObject
+    {
+        get { return _tileObject; }
+        set
+        {
+            // If there's a current object and it has a NetworkObject component
+            if (_tileObject != null && _tileObject.NetworkObject != null && _tileObject.NetworkObject.IsSpawned)
+            {
+                // Despawn the current object properly
+                _tileObject.NetworkObject.Despawn();
+            }
+
+            _tileObject = value;
+
+            if (_tileObject != null)
+            {
+                _tileObject.Initialize(true); // Replace with your actual initialization method
+            }
+        }
+    }
+
+
     [SerializeField] private Transform _enviromentalObjectPosHolder;
     public UnitBase CurrentHeldUnit { private set; get; }
-    public bool isHoldingObject { private set; get; }
+    public bool IsHoldingObject { private set; get; }
 
     public Transform hoverObjectHolder { get => transform; set => gameObject.AddComponent<Transform>(); }
     [SerializeField] private List<Building> buildings;
 
     [SerializeField] private float shakeStrength = 0.1f;
     public bool canShake = true;
+
+    public bool CanBeBuiltOn { get; private set; } = true;
 
     private void OnEnable()
     {
@@ -54,9 +78,6 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         canShake = false;
         transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1).OnComplete(() => { canShake = true; });
     }
-
-
-
     public virtual void OnClick()
     {
         if (canShake)
@@ -68,7 +89,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     }
     public void OnDifferentClickableClicked(GameObject newlyClickedObject)
     {
-       
+
     }
 
     public virtual void OnHover(Transform _hoverObject)
@@ -89,13 +110,24 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
     public void SetObject(ulong networkObjectId, bool activateImmediately)
     {
-        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId].TryGetComponent(out TileObject tile))
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
-            _currentHeldEnviromentalObject = tile;
-            tile.Initialize(activateImmediately);
+            if (netObj.TryGetComponent(out TileObject tile))
+            {
+                _currentHeldEnviromentalObject = tile;
+                tile.Initialize(activateImmediately);
+            }
+            else
+            {
+                Debug.LogError("Spawned object does not have a TileObject component!");
+            }
+        }
+        else
+        {
+            Debug.LogError($"No object found with network ID {networkObjectId}");
         }
 
-        isHoldingObject = true;
+        IsHoldingObject = _currentHeldEnviromentalObject != null;
     }
 
 
@@ -103,61 +135,90 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     public virtual void AssignObject(EnviromentalItemData enviromentalObject, bool activateImmediately, ulong ownerId, bool overwriteCurrent = false)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
-        if (overwriteCurrent)
-        {
-            if (_currentHeldEnviromentalObject != null) { _currentHeldEnviromentalObject.NetworkObject.Despawn(); _currentHeldEnviromentalObject = null; }
-            GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, activateImmediately, ownerId, enviromentalObject.randomRotation);
-        }
-        else
-        {
-            if (!enviromentalObject._possibleEnviromentalPosHolder)
-            {
-                print("No position to spawn enviromental Object. process ended");
-                return;
-            }
+        var previousPreset = CanBeBuiltOn;
+        CanBeBuiltOn = TileObjectPrefabManager.GetValue(enviromentalObject._possibleEnviromentalObjectId)
+            .GetComponent<TileObject>().tileCanBeBuiltOn;
 
-            if (!isHoldingObject)
-            {
-                GridManager.Instance.SpawnObject_ServerRPC(enviromentalObject._possibleEnviromentalPosHolder.position, enviromentalObject._possibleEnviromentalPosHolder.rotation, enviromentalObject._possibleEnviromentalObjectId, activateImmediately, ownerId, enviromentalObject.randomRotation);
-                isHoldingObject = true;
-            }
+        // Overwrite current object if needed
+        if (overwriteCurrent && _currentHeldEnviromentalObject != null)
+        {
+            Debug.Log("Overwriting current environmental object.");
+            _currentHeldEnviromentalObject.NetworkObject.Despawn();
+            _currentHeldEnviromentalObject = null;
         }
 
+        if (IsHoldingObject && !overwriteCurrent)
+        {
+            Debug.LogWarning("Tile already contains an environmental object. Cannot place another one.");
+            CanBeBuiltOn = previousPreset;
+            return;
+        }
+
+        if (!enviromentalObject._possibleEnviromentalPosHolder)
+        {
+            Debug.LogWarning("No position to spawn environmental object. Process ended.");
+            CanBeBuiltOn = previousPreset;
+            return;
+        }
+
+        Debug.Log($"Spawning environmental object ID {enviromentalObject._possibleEnviromentalObjectId} at {enviromentalObject._possibleEnviromentalPosHolder.position}");
+
+        // Call the spawn function on the server
+        GridManager.Instance.SpawnObject_ServerRPC(
+            enviromentalObject._possibleEnviromentalPosHolder.position,
+            enviromentalObject._possibleEnviromentalPosHolder.rotation,
+            enviromentalObject._possibleEnviromentalObjectId,
+            activateImmediately,
+            ownerId,
+            enviromentalObject.randomRotation
+        );
+
+        // Mark as waiting for the new object
+        IsHoldingObject = true;
     }
+
 
     public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately, ulong ownerId, bool overwriteCurrent = false)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
-        if (overwriteCurrent)
-        {
-            if (_currentHeldEnviromentalObject != null) { _currentHeldEnviromentalObject.NetworkObject.Despawn(); _currentHeldEnviromentalObject = null; }
-            GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately, ownerId);
-        }
-        else
-        {
-            if (!_enviromentalObjectPosHolder)
-            {
-                print("No position to spawn enviromental Object. process ended");
-                return;
-            }
+        var previousPreset = CanBeBuiltOn;
+        CanBeBuiltOn = TileObjectPrefabManager.GetValue(enviromentalObjectId).GetComponent<TileObject>().tileCanBeBuiltOn;
 
-            if (isHoldingObject)
-            {
-                print("Object already contains an enviromental object");
-            }
-            else
-            {
-                GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately, ownerId);
-                isHoldingObject = true;
-            }
+        if (overwriteCurrent && _currentHeldEnviromentalObject != null)
+        {
+            Debug.Log("Overwriting current environmental object.");
+            _currentHeldEnviromentalObject.NetworkObject.Despawn();
+            _currentHeldEnviromentalObject = null;
         }
+
+        if (IsHoldingObject && !overwriteCurrent)
+        {
+            Debug.LogWarning("Tile already contains an environmental object. Cannot place another one.");
+            CanBeBuiltOn = previousPreset;
+            return;
+        }
+
+        Debug.Log($"Spawning object ID {enviromentalObjectId} at {_enviromentalObjectPosHolder.position}");
+
+        GridManager.Instance.SpawnObject_ServerRPC(_enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation, enviromentalObjectId, activateImmediately, ownerId);
+
+        // Mark as "waiting for object"
+        IsHoldingObject = true;
     }
+
     public virtual void AssignObjectLocal(EnviromentalItemData enviromentalObjectId, bool activateImmediately)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
 
+        if (IsHoldingObject)
+        {
+            Debug.LogWarning("Tile already contains an environmental object. Cannot place another one.");
+            return;
+        }
+
         Instantiate(TileObjectPrefabManager.GetValue(enviromentalObjectId._possibleEnviromentalObjectId), _enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation);
-        isHoldingObject = true;
+        CanBeBuiltOn = TileObjectPrefabManager.GetValue(enviromentalObjectId._possibleEnviromentalObjectId).GetComponent<TileObject>().tileCanBeBuiltOn;
+        IsHoldingObject = true;
     }
     public virtual void SpawnAndAssignUnit(int enviromentalObjectId)
     {
@@ -168,7 +229,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
     public virtual void AssignUnit(UnitBase UB)
     {
-       CurrentHeldUnit = UB; 
+        CurrentHeldUnit = UB;
     }
     public virtual void DeAssignUnit(UnitBase UB)
     {
