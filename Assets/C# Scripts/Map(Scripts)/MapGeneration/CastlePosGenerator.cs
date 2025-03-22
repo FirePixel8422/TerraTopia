@@ -41,8 +41,6 @@ public struct CastlePosGenerator
                 validTiles.Add(tile);
         }
 
-        Debug.Log("playerCount: " + playerCount);
-
         List<Vector2Int> chosenPositions = new List<Vector2Int>(playerCount);
 
 
@@ -80,11 +78,7 @@ public struct CastlePosGenerator
 
         for (int i = 0; i < castleCount; i++)
         {
-            Debug.Log(i);
-
             int r = rng.Next(0, chosenPositions.Count);
-
-            Debug.Log("r: " + r);
 
             Vector2Int pos = chosenPositions[r];
             chosenPositions.RemoveAt(r);

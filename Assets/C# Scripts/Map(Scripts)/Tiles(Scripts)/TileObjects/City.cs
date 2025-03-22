@@ -12,8 +12,7 @@ public class City : TileObject
     public int borderSize = 1;
     public float labSpeed;
 
-    public MeshRenderer cityRenderer;
-    private Material cityMaterial;
+    [SerializeField] private MeshRenderer cityRenderer;
 
     [SerializeField] private MeshFilter borderMeshFilter;
     private Material borderMaterial;
@@ -47,9 +46,6 @@ public class City : TileObject
     {
         //get playerColor material
         cityRenderer.material = Cityhandler.GetCityColorMaterial(ownerPlayerGameId);
-
-        //store material reference
-        cityMaterial = cityRenderer.material;
 
 
         //setup borderMeshFilter's MeshData and unparent it.
@@ -138,6 +134,7 @@ public class City : TileObject
 
         //update border color
         borderMaterial.color = borderColor;
+        print(borderColor);
     }
 
 

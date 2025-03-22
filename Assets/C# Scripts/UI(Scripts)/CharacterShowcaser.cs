@@ -32,6 +32,8 @@ public class CharacterShowcaser : NetworkBehaviour
         mouseClickInput.Enable();
         mouseClickInput.performed += (InputAction.CallbackContext ctx) => OnMouseHeldChanged(true);
         mouseClickInput.canceled += (InputAction.CallbackContext ctx) => OnMouseHeldChanged(false);
+
+        ClientManager.SubscribeToOnInitialized(() => UpdatePreviewModel(0, 0));
     }
 
     public override void OnDestroy()
@@ -44,12 +46,6 @@ public class CharacterShowcaser : NetworkBehaviour
         mouseClickInput.canceled -= (InputAction.CallbackContext ctx) => OnMouseHeldChanged(false);
     }
 
-
-
-    public override void OnNetworkSpawn()
-    {
-        //ClientManager.SubscribeToOnInitialized(() => UpdatePreviewModel(0, 0));
-    }
 
 
     private void OnMouseMovement(Vector2 mouseMovement)
@@ -134,7 +130,7 @@ public class CharacterShowcaser : NetworkBehaviour
 
     private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)
     {
-        UnitSpawnData unitData = TribeSelecter.Instance.tribeData[tribeId].unitSpawnData[unitId];
+        UnitSpawnData unitData = tribeData[tribeId].unitSpawnData[unitId];
 
         //spawn unit (locally on server)
         UnitBase spawnedUnit = Instantiate(unitData.body, transform).GetComponent<UnitBase>();

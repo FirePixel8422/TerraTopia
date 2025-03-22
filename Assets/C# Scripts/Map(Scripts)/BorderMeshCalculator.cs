@@ -109,8 +109,10 @@ public static class BorderMeshCalculator
         float3 widthDir = direction.x != 0 ? new float3(1, 0, 0) : new float3(0, 0, 1);
         float3 depthDir = direction.x != 0 ? new float3(0, 1, 0) : new float3(0, -1, 0); // Thin in perpendicular axis
 
+
+        // Tile depth multiplier to prevent z-fighting
+        float tileDepthMultiplier = .99998f;
         // Half sizes
-        float tileDepthMultiplier = .99999f;
         float halfWidth = 0.5f * tileDepthMultiplier;  // Always 1 unit wide
         float halfDepth = 0.1f;  // Thickness of the plane
 

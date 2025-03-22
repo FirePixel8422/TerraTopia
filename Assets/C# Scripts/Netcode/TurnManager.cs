@@ -22,6 +22,10 @@ public class TurnManager : NetworkBehaviour
     public static Action OnMyTurnEnded;
 
 
+    [Tooltip("is it this clients turn")]
+    public static bool IsMyTurn { get; private set; }
+
+
 
     public override void OnNetworkSpawn()
     {
@@ -38,11 +42,13 @@ public class TurnManager : NetworkBehaviour
             //if this clients teamId is the same as "newTeamOnTurnId", start its turn.
             if (newTeamOnTurnId == ClientManager.LocalClientTeamId)
             {
+                IsMyTurn = true;
                 OnMyTurnStarted?.Invoke();
             }
             //if this clients teamId is the same as "oldTeamOnTurnId", end its turn.
             if (oldTeamOnTurnId == ClientManager.LocalClientTeamId)
             {
+                IsMyTurn = false;
                 OnMyTurnEnded?.Invoke();
             }
         };
@@ -58,5 +64,14 @@ public class TurnManager : NetworkBehaviour
     {
         //increment teamOnTurnId by 1 and subtract by TeamCount if its value becomes equal to TeamCount. (subtracting it will set the value to 0)
         teamOnTurnId.Value = (teamOnTurnId.Value + 1) % ClientManager.TeamCount;
+    }
+
+    /// <summary>
+    /// Give random team the first turn
+    /// </summary>
+    [ServerRpc(RequireOwnership = false)]
+    public void SetRandomStartTeam_ServerRPC()
+    {
+        teamOnTurnId.Value = UnityEngine.Random.Range(0, ClientManager.TeamCount);
     }
 }

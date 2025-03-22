@@ -64,5 +64,7 @@ public class TribeSelecter : NetworkBehaviour
         UnitSpawnHandler.AddTribe_OnServer(tribeData[tribeId].unitSpawnData, playerGameId);
 
         Cityhandler.AddCityData_OnServer(tribeData[tribeId].cityUpgrades, playerGameId);
+
+        PlayerColorHandler.AddPlayerColors_OnServer(playerColors[playerGameId], playerGameId);
     }
 }

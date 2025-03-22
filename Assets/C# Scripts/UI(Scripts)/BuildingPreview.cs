@@ -15,29 +15,27 @@ public class BuildingPreview : MonoBehaviour
 
     public void OnBuyButtonClicked()
     {
-        if (ResourceManager.CanAfford(buildingCosts))
+#if !UNITY_EDITOR && !DEVELOPMENT_BUILD
+        if (TurnManager.IsMyTurn == false) return;
+#endif
+
+        if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
         {
-            if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
+            if (isUnit == true && tile.CurrentHeldUnit != null)
             {
-                if (isUnit == true)
-                {
-                    if (tile.CurrentHeldUnit) { print("Tile already holds an unit"); return; }
-                    ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObjectId, tile, isUnit);
-                    return;
-                }
-                else if (isUnit == false)
-                {
-                    ResourceManager.BuildAndPayForBuilding(buildingCosts, tileObjectId, tile, isUnit);
-                }
+                print("Tile already holds a unit");
+                return;
             }
-            else
+
+            //if TryBuild returns false, the player cannot afford the building
+            if (ResourceManager.TryBuild(buildingCosts, tileObjectId, tile.transform.position.ToVector2(), isUnit) == false)
             {
-                print("CurrentBuildingTile does  not contain a TileBase script");
+                print("Player cannot afford this building");
             }
         }
         else
         {
-            print("Player cannot afford this building");
+            print("CurrentBuildingTile does not contain a TileBase script");
         }
     }
 }

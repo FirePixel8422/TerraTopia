@@ -1,17 +1,16 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 public class ClientManager : NetworkBehaviour
 {
-    public static ClientManager Instance;
+    public static ClientManager Instance { get; private set; }
     private void Awake()
     {
         Instance = this;
     }
-
-
 
 
     private static NetworkVariable<PlayerIdDataArray> playerIdDataArray = new NetworkVariable<PlayerIdDataArray>();
@@ -19,7 +18,7 @@ public class ClientManager : NetworkBehaviour
     /// <summary>
     /// Get PlayerIdDataArray Copy (changes on copy wont sync back to clientManager and wont cause a networkSync)
     /// </summary>
-    /// <returns>Copy Of PlayerIdDataArray</returns>3
+    /// <returns>Copy Of PlayerIdDataArray</returns>
     public static PlayerIdDataArray GetPlayerIdDataArray()
     {
         return playerIdDataArray.Value;
@@ -44,10 +43,9 @@ public class ClientManager : NetworkBehaviour
     [Tooltip("Turn GameId into TeamId")]
     public static int GetClientTeamId(int gameId) => playerIdDataArray.Value.GetPlayerTeamId(gameId);
 
-    [Tooltip("Turn NetworkId into TeamId")]
-    public static int GetClientTeamId(ulong networkId) => playerIdDataArray.Value.GetPlayerTeamId(networkId);
 
 
+    #region OnConnect and OnDisconnect Callbacks
 
     [Tooltip("Invoked after NetworkManager.OnClientConnected, before updating ClientManager gameId logic. \nreturns: ulong clientId, int clientGamId, int clientInLobbyCount")]
     public static Action<ulong, int, int> OnClientConnectedCallback;
@@ -55,12 +53,15 @@ public class ClientManager : NetworkBehaviour
     [Tooltip("Invoked after NetworkManager.OnClientDisconnected, before updating ClientManager gameId logic. \nreturns: ulong clientId, int clientGamId, int clientInLobbyCount")]
     public static Action<ulong, int, int> OnClientDisconnectedCallback;
 
+    #endregion
+
+
+
+    #region Initialisation
 
     [Tooltip("Invoked after this scripts OnNetworkSpawn is fully executed")]
     private static Action OnInitialized;
     public static bool Initialized { get; private set; }
-
-
 
     /// <summary>
     /// Subscribe to OnInitialized event, if already initialized instead invoke the action (and dont subscribe to OnInitialized) 
@@ -82,7 +83,11 @@ public class ClientManager : NetworkBehaviour
         OnInitialized += toExecuteAction;
     }
 
+    #endregion
 
+
+
+    #region Usefull LocalClient and Global Lobby Data
 
     [Tooltip("Local Client gameId, the number equal to the clientCount when this client joined the lobby")]
     public static int LocalClientGameId { get; private set; }
@@ -105,20 +110,24 @@ public class ClientManager : NetworkBehaviour
     [Tooltip("Local Client userName, value is set after ClientDisplayManager's OnNetworkSpawn")]
     public static string LocalUserName { get; private set; }
 
-
     public static void SetLocalUserName(string newname)
     {
         LocalUserName = newname;
     }
 
+    #endregion
+
+
 
 
     public override void OnNetworkSpawn()
     {
-        print("caled");
         if (IsServer)
         {
             playerIdDataArray.Value = new PlayerIdDataArray(MatchManager.settings.maxPlayers);
+
+            //call manually for the server, since its only triggers for each joining client.
+            OnClientConnected_OnServer(0);
 
             //setup server only events
             NetworkManager.OnClientConnectedCallback += OnClientConnected_OnServer;
@@ -168,13 +177,9 @@ public class ClientManager : NetworkBehaviour
     private void OnClientDisconnected_OnServer(ulong clientId)
     {
         //if the diconnecting client is the server dont update data, the server is shut down anyways.
-        if (IsServer)
-        {
-            return;
-        }
+        if (clientId == 0) return;
 
         OnClientDisconnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), PlayerCount);
-
 
         PlayerIdDataArray updatedDataArray = playerIdDataArray.Value;
 
@@ -267,9 +272,9 @@ public class ClientManager : NetworkBehaviour
 
 
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR
 
-    public PlayerIdDataArray debugClientDataArray;
+    [SerializeField] private PlayerIdDataArray debugClientDataArray;
     private void Update()
     {
         if (playerIdDataArray != null)

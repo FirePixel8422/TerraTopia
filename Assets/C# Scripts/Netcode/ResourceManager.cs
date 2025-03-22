@@ -5,7 +5,14 @@ using UnityEngine;
 
 public class ResourceManager : NetworkBehaviour
 {
-    private static NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>(new PlayerResourcesDataArray(MatchManager.settings.maxPlayers));
+    public static ResourceManager Instance { get; private set; }
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
+    private static NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>();
 
     /// <summary>
     /// Get PlayerResourcesData Copy (changes on copy wont sync back to ResourceManager and wont cause a networkSync)
@@ -22,6 +29,15 @@ public class ResourceManager : NetworkBehaviour
     public static void UpdateResourceData(PlayerResourcesDataArray newValue)
     {
         playerResourcesDataArray.Value = newValue;
+    }
+
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer)
+        {
+            playerResourcesDataArray.Value = new PlayerResourcesDataArray(MatchManager.settings.maxPlayers);
+        }
     }
 
 
@@ -88,11 +104,35 @@ public class ResourceManager : NetworkBehaviour
 
 
 
+    #region Building And Payment
+
     /// <summary>
-    /// CHeck if you can afford this building by comparing buildingCosts with current materials
+    /// True if localClient has the updated resource values, set to false when a client modifies those resources, then set back to true once changes are processed through the server
     /// </summary>
-    /// <returns>wheater you can afford to build this building</returns>
-    public static bool CanAfford(BuildingCosts buildingCosts)
+    private static bool localClientHasUpdatedResources;
+
+
+    /// <summary>
+    /// Subtract the materialcost values from current materials
+    /// </summary>
+    public static bool TryBuild(BuildingCosts buildingCosts, int buildingToPlaceId, Vector2 tileToPlaceOnPos, bool isUnit = false)
+    {
+        //return false if client is not up to date with the latest server data OR cant afford the building
+        if (localClientHasUpdatedResources == false || CanBuild(buildingCosts) == false) return false;
+
+        //if the client is allowed to build AND can afford the building, build it and set "localClientHasUpdatedResources" to false until the server processes the resource payment update
+        localClientHasUpdatedResources = false;
+
+        //pay and build building on the server
+        Instance.SpawnBuilding_ServerRPC(ClientManager.LocalClientGameId, buildingCosts, buildingToPlaceId, tileToPlaceOnPos, isUnit);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Check if you can afford this building by comparing buildingCosts with current materials
+    /// </summary>
+    private static bool CanBuild(BuildingCosts buildingCosts)
     {
         int localGameId = ClientManager.LocalClientGameId;
 
@@ -107,41 +147,68 @@ public class ResourceManager : NetworkBehaviour
 
 
     /// <summary>
-    /// Subtract the materialcost values from current materials
+    /// Pay and build the building on the server
     /// </summary>
-    public static void BuildAndPayForBuilding(BuildingCosts buildingCosts, int buildingToPlaceId, TileBase tileToPlaceOn, bool isUnit = false)
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnBuilding_ServerRPC(int clientGameId, BuildingCosts buildingCosts, int buildingToPlaceId, Vector2 tileToPlaceOnPos, bool isUnit = false)
     {
-        int localGameId = ClientManager.LocalClientGameId;
+        #region Update Payed Resources
 
         //copy resourceArray
         PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
 
-        resourceArrayCopy.food[localGameId] -= buildingCosts.food;
-        resourceArrayCopy.wood[localGameId] -= buildingCosts.wood;
-        resourceArrayCopy.stone[localGameId] -= buildingCosts.stone;
-        resourceArrayCopy.gems[localGameId] -= buildingCosts.gems;
+        resourceArrayCopy.food[clientGameId] -= buildingCosts.food;
+        resourceArrayCopy.wood[clientGameId] -= buildingCosts.wood;
+        resourceArrayCopy.stone[clientGameId] -= buildingCosts.stone;
+        resourceArrayCopy.gems[clientGameId] -= buildingCosts.gems;
 
         //update copy back to original resourceArray
         playerResourcesDataArray.Value = resourceArrayCopy;
 
+        OnResourcesUpdated_ClientRPC(clientGameId);
+
+        #endregion
+
+
+        GridManager.TryGetTileByPos(tileToPlaceOnPos, out TileBase tileToPlaceOn);
 
         if (isUnit)
         {
             tileToPlaceOn.SpawnAndAssignUnit(buildingToPlaceId);
-
-            //End the method to stop it from spawning twice
-            return;
         }
-        tileToPlaceOn.AssignObject(buildingToPlaceId, true, ClientManager.UnAsignedPlayerId, true);
+        else
+        {
+            tileToPlaceOn.AssignObject(buildingToPlaceId, true, ClientManager.UnAsignedPlayerId, true);
+        }
     }
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 
-    public PlayerResourcesDataArray debugClientDataArray;
+    /// <summary>
+    /// Called on client when resources are updated through server
+    /// </summary>
+    [ClientRpc(RequireOwnership = false)]
+    private void OnResourcesUpdated_ClientRPC(int clientGameId)
+    {
+        //only update the client who built something
+        if (clientGameId != ClientManager.LocalClientGameId) return;
+
+        localClientHasUpdatedResources = true;
+    }
+
+    #endregion
+
+
+
+
+#if UNITY_EDITOR
+
+    [SerializeField] private PlayerResourcesDataArray debugClientDataArray;
     private void Update()
     {
-        debugClientDataArray = playerResourcesDataArray.Value;
+        if (playerResourcesDataArray != null)
+        {
+            debugClientDataArray = playerResourcesDataArray.Value;
+        }
     }
 #endif
-
 }
