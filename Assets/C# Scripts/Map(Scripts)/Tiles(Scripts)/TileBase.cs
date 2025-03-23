@@ -37,7 +37,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
             if (_tileObject != null && _tileObject.NetworkObject != null && _tileObject.NetworkObject.IsSpawned)
             {
                 // Despawn the current object properly
-                _tileObject.NetworkObject.Despawn();
+                //_tileObject.NetworkObject.Despawn();
             }
 
             _tileObject = value;
@@ -143,7 +143,29 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         if (overwriteCurrent && _currentHeldEnviromentalObject != null)
         {
             Debug.Log("Overwriting current environmental object.");
-            _currentHeldEnviromentalObject.NetworkObject.Despawn();
+            //_currentHeldEnviromentalObject.NetworkObject.Despawn();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             _currentHeldEnviromentalObject = null;
         }
 
@@ -187,7 +209,29 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         if (overwriteCurrent && _currentHeldEnviromentalObject != null)
         {
             Debug.Log("Overwriting current environmental object.");
-            _currentHeldEnviromentalObject.NetworkObject.Despawn();
+            //_currentHeldEnviromentalObject.NetworkObject.Despawn();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             _currentHeldEnviromentalObject = null;
         }
 
@@ -235,6 +279,6 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     {
         CurrentHeldUnit = null;
     }
-    #endregion MatchManager
+    #endregion
 }
 

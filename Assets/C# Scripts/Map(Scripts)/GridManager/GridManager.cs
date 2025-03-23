@@ -20,7 +20,7 @@ public class GridManager : NetworkBehaviour
 
     [Header("Preset MapGeneration Values")]
     private int _seed;
-    [SerializeField] private NoiseData _noiseData;
+    [SerializeField] private NoiseData[] _noiseData;
     [SerializeField] private int _castlePrefabId;
     [SerializeField] private GameObject cloudPrefab;
 
@@ -37,9 +37,14 @@ public class GridManager : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
+
+        NetworkManager.SceneManager.OnLoadEventCompleted += (_, _, _, _) => OnAllClientScenesLoaded();
     }
-    public override void OnNetworkSpawn()
+
+    private void OnAllClientScenesLoaded()
     {
+        NetworkManager.SceneManager.OnLoadEventCompleted -= (_, _, _, _) => OnAllClientScenesLoaded();
+
         GenerateGrid();
 
         for (int i = 0; i < tileObjectsData.tileObjects.Length; i++)
@@ -50,6 +55,8 @@ public class GridManager : NetworkBehaviour
         if (IsServer)
         {
             SpawnMapAssets_OnServer();
+
+            NetworkObject.InstantiateAndSpawn(tileObjectsData.tileObjects[4], NetworkManager, 0, true, false, false, new Vector3(0, 100,0));
         }
     }
 
@@ -58,10 +65,6 @@ public class GridManager : NetworkBehaviour
     private void GenerateGrid()
     {
         _seed = MatchManager.settings.seed;
-        if (_seed == 0)
-        {
-            _seed = Random.Range(int.MinValue, int.MaxValue);
-        }
 
         //Generates the grid in order:
 
@@ -70,7 +73,7 @@ public class GridManager : NetworkBehaviour
         //3 Finally the enviromental objects which CAN be placed specifically around the castles
 
         //Generates the tiles, without any non-grid logic
-        new TileGenerator(_noiseData, _width, _length, _seed, transform, cloudPrefab, out _tiles, out _clouds);
+        new TileGenerator(_noiseData[MatchManager.settings.mapId], _width, _length, _seed, transform, cloudPrefab, out _tiles, out _clouds);
     }
 
     [ContextMenu("GenerateGrid_Debug")]
@@ -152,14 +155,7 @@ public class GridManager : NetworkBehaviour
 
     public static bool DoesCloudExist(Vector2 tilePos)
     {
-        if (_clouds.TryGetValue(tilePos, out _))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return _clouds.TryGetValue(tilePos, out _);
     }
 
 

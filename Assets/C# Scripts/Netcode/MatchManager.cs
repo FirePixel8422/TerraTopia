@@ -1,11 +1,18 @@
 using System.Threading.Tasks;
-using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
 
 public class MatchManager : NetworkBehaviour
 {
+    public static MatchManager Instance { get; private set; }
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
+
     //networkVar responsible for syncing the MatchData
     private static NetworkVariable<MatchSettings> matchSettingsNetworkVar = new NetworkVariable<MatchSettings>();
 

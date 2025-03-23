@@ -154,6 +154,7 @@ public class ClientManager : NetworkBehaviour
 
 
 
+
     #region Join and Leave Callbacks
 
     /// <summary>
@@ -202,7 +203,8 @@ public class ClientManager : NetworkBehaviour
 
 
         Destroy(gameObject);
-        //Destroy(TurnManager);
+        Destroy(MatchManager.Instance.gameObject);
+        Destroy(NetworkManager.gameObject);
 
 
         if (IsServer)

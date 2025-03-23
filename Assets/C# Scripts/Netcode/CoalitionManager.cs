@@ -108,7 +108,7 @@ public class CoalitionManager : NetworkBehaviour
 
         //if all clients are on 1 team and (the teams are fair or unfair teams are allowed): return true for valid, otherwise return false for valid.
         //return fairTeams for fairTeams
-        return (playerCount > 1 && (fairTeams || MatchManager.settings.allowUnfairTeams), fairTeams);
+        return (playerCount == MatchManager.settings.maxPlayers && (fairTeams || MatchManager.settings.allowUnfairTeams), fairTeams);
     }
 
 
@@ -370,7 +370,7 @@ public class CoalitionManager : NetworkBehaviour
 
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 
     [Tooltip("What Team does PlayerGameId belong to, where playerGameId is the idnex of this array")]
     [SerializeField] private int[] DEBUG_teamIds;

@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 
 public class CharacterShowcaser : NetworkBehaviour
@@ -32,8 +33,6 @@ public class CharacterShowcaser : NetworkBehaviour
         mouseClickInput.Enable();
         mouseClickInput.performed += (InputAction.CallbackContext ctx) => OnMouseHeldChanged(true);
         mouseClickInput.canceled += (InputAction.CallbackContext ctx) => OnMouseHeldChanged(false);
-
-        ClientManager.SubscribeToOnInitialized(() => UpdatePreviewModel(0, 0));
     }
 
     public override void OnDestroy()
@@ -44,6 +43,19 @@ public class CharacterShowcaser : NetworkBehaviour
         mouseClickInput.Disable();
         mouseClickInput.performed -= (InputAction.CallbackContext ctx) => OnMouseHeldChanged(true);
         mouseClickInput.canceled -= (InputAction.CallbackContext ctx) => OnMouseHeldChanged(false);
+    }
+
+
+    private void Awake()
+    {
+        //NetworkManager.SceneManager.OnLoadEventCompleted += (_, _, _, _) => OnAllClientScenesLoaded();
+    }
+
+    private void OnAllClientScenesLoaded()
+    {
+        NetworkManager.SceneManager.OnLoadEventCompleted -= (_, _, _, _) => OnAllClientScenesLoaded();
+
+        UpdatePreviewModel(0, 0);
     }
 
 
@@ -135,9 +147,6 @@ public class CharacterShowcaser : NetworkBehaviour
         //spawn unit (locally on server)
         UnitBase spawnedUnit = Instantiate(unitData.body, transform).GetComponent<UnitBase>();
         NetworkObject unitHead = Instantiate(unitData.head, spawnedUnit.headTransform);
-
-        spawnedUnit.NetworkObject.enabled = false;
-        unitHead.enabled = false;
 
         //set rot equal to previous preview units rot
         spawnedUnit.transform.localRotation = rot;

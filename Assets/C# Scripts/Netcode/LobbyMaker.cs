@@ -37,7 +37,7 @@ public class LobbyMaker : NetworkBehaviour
     public async void CreateLobbyAsync()
     {
         invisibleScreenCover.SetActive(true);
-        int maxPlayers = 4;
+        int maxPlayers = MatchManager.settings.maxPlayers;
 
         try
         {
@@ -138,6 +138,8 @@ public class LobbyMaker : NetworkBehaviour
                 _joinData.HostConnectionData);
 
             NetworkManager.StartClient();
+
+            //SceneManager.LoadScene("Pre-Main Game 1");
         }
         catch (LobbyServiceException e)
         {

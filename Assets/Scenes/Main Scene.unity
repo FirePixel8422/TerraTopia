@@ -3488,11 +3488,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UITransform: {fileID: 2058301357}
   defaultMatchSettings:
-    maxPlayers: 1
-    maxTeams: 0
-    maxPlayersPerTeam: 0
+    maxPlayers: 4
+    maxTeams: 4
+    maxPlayersPerTeam: 2
     allowUnfairTeams: 0
-    seed: 0
+    seed: 8422
     mapId: 0
     privateLobby: 0
 --- !u!1 &1086622307
@@ -9561,6 +9561,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4827663874241120422}
+  - component: {fileID: 6155095957977801092}
   - component: {fileID: 6155095957977801091}
   m_Layer: 5
   m_Name: Settings Tab
@@ -9664,6 +9665,27 @@ MonoBehaviour:
     m_Flags: 0
   selectedButtonId: 0
   buttonsEnabled: 1
+--- !u!114 &6155095957977801092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6155095957977801090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3274839637
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &6422692569436454566
 GameObject:
   m_ObjectHideFlags: 0

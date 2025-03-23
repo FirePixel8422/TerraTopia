@@ -58,6 +58,7 @@ public class City : TileObject
 
 
     [ServerRpc(RequireOwnership = false)]
+    [ContextMenu("upgrade")]
     [BurstCompile]
     public void UpgradeCity_ServerRPC()
     {
@@ -121,6 +122,7 @@ public class City : TileObject
             {
                 tilePos = borderTilePositions[i].ToVector2();
 
+                print(tilePos);
                 if (GridManager.DoesCloudExist(tilePos))
                 {
                     GridManager.TryGetTileByPos(tilePos, out GameObject tile);
@@ -134,7 +136,6 @@ public class City : TileObject
 
         //update border color
         borderMaterial.color = borderColor;
-        print(borderColor);
     }
 
 

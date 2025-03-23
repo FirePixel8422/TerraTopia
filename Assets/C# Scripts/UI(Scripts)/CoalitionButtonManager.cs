@@ -40,12 +40,14 @@ public class CoalitionButtonManager : NavButtonManager
     [ServerRpc(RequireOwnership = false)]
     private void TrySelectButton_FromMouseInput_ServerRPC(int requestingClientGameId, int oldButtonId, int newButtonId)
     {
-        bool isTeamFull = CoalitionManager.IsTeamFull(newButtonId);
+        bool changed = oldButtonId == newButtonId;
+
+        bool teamFull = CoalitionManager.IsTeamFull(newButtonId);
 
         //if already selected button is pressed again with mouse OR the team is already full, call wobbly animation on current selected button and return
-        if (oldButtonId == newButtonId || isTeamFull)
+        if (changed == false || teamFull)
         {
-            FailToSelectNewButton_ClientRPC(requestingClientGameId, isTeamFull);
+            FailToSelectNewButton_ClientRPC(requestingClientGameId, teamFull);
             return;
         }
 
@@ -101,11 +103,14 @@ public class CoalitionButtonManager : NavButtonManager
         //math.sign so when pressing A+W the vector2 which would be .7, .7 is converted to 1, 1.
         moveInput = GetTrueMoveInput(moveInput);
 
+
         //get potential new selectedButtonId
         (bool changed, int newButtonId) = GetNewButtonIdFromMoveInput(moveInput);
 
+        bool teamFull = CoalitionManager.IsTeamFull(newButtonId);
+
         //if WASD movement cant select new button, call wobbly animation animation on that reqeustingClient on current selected button and return
-        if (changed == false)
+        if (changed == false || teamFull)
         {
             FailToSelectNewButton_ClientRPC(requestingClientGameId);
             return;

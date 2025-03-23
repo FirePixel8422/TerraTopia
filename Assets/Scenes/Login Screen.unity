@@ -1371,7 +1371,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -2731,7 +2731,7 @@ MonoBehaviour:
     EnableNetworkLogs: 1
     OldPrefabList: []
   RunInBackground: 1
-  LogLevel: 1
+  LogLevel: 3
 --- !u!4 &1866564252
 Transform:
   m_ObjectHideFlags: 0
@@ -2765,7 +2765,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
   - {fileID: 11400000, guid: e916d4a2375c8df438ed881cfc526fa8, type: 2}
   - {fileID: 11400000, guid: cfd096943ba02ea4db4a3014a442fb11, type: 2}
-  prefabsStrings: []
 --- !u!1 &1962471229
 GameObject:
   m_ObjectHideFlags: 0
