@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3002300e69234b246924c6bde4954804, type: 3}
+  m_Name: StrawHat Tribe
+  m_EditorClassIdentifier: 
+  unitSpawnData:
+  - body: {fileID: -2104584173075352023, guid: 38dc8253122a49540b63e99e44be44d8, type: 3}
+    head: {fileID: 4100400893209933372, guid: bfaadac435b5ed94a979b9cdf15941d0, type: 3}
+    colorMaterials:
+    - {fileID: 2100000, guid: 11c38321448561a4597e0620cf102e88, type: 2}
+    - {fileID: 2100000, guid: f0a18dede09302242a8e4ed123083e70, type: 2}
+    - {fileID: 2100000, guid: aac020f62244ec2419d6cc4f1b81486c, type: 2}
+    - {fileID: 2100000, guid: c9405b2022b3ed24bb75630bdf45393c, type: 2}
+    - {fileID: 2100000, guid: e431b8d8c91af2648ad657fbb2dd5e39, type: 2}
+    - {fileID: 2100000, guid: 5d0427a516c3c7c499907dad68c651b5, type: 2}
+    - {fileID: 2100000, guid: 326eb92b30c20c24c9aeba66bb0fd5c2, type: 2}
+    - {fileID: 2100000, guid: 297d38179a2948a408275fb2daed663c, type: 2}
+  - body: {fileID: 5880669039318488211, guid: 9cf11cd6d4ba9584289be9da9c4dd671, type: 3}
+    head: {fileID: 2873573299271243292, guid: 95e967deeca7c374a9960abf526f6fc7, type: 3}
+    colorMaterials:
+    - {fileID: 2100000, guid: 4dffd964ff5d9594ba19a53b3e402fd4, type: 2}
+    - {fileID: 2100000, guid: 5be8074ac76c9e74eb214cc5504a9650, type: 2}
+    - {fileID: 2100000, guid: c604beee39d8e954da5a35d9b64092ed, type: 2}
+    - {fileID: 2100000, guid: ef070c62c2cf2384c908e0d8762e3116, type: 2}
+    - {fileID: 2100000, guid: 4f07734c1222cf747a3eee77d54bd31a, type: 2}
+    - {fileID: 2100000, guid: 33f75971533c52947b68a843609dc829, type: 2}
+    - {fileID: 2100000, guid: 7ed3c8460fc07964dbf7196c4150c861, type: 2}
+    - {fileID: 2100000, guid: e9907b5cc79e6564aa787212faf0a971, type: 2}
+  - body: {fileID: 1573086538692208591, guid: f1d5416a00f6bf149a4ea9773efeeef2, type: 3}
+    head: {fileID: 1575101422332008920, guid: c572fa0629925814bbfd0edb94d0fc3c, type: 3}
+    colorMaterials:
+    - {fileID: 2100000, guid: 69e87d76f424522499320d12ea90c3c9, type: 2}
+    - {fileID: 2100000, guid: 253010cc057ff0146a98751339065593, type: 2}
+    - {fileID: 2100000, guid: e5bc4aa107b7326428e8ac92e84d7acc, type: 2}
+    - {fileID: 2100000, guid: e4e4557a2295f284db3a8de4091ed152, type: 2}
+    - {fileID: 2100000, guid: 1ec801241f6d70449944a7a7b4e2f41a, type: 2}
+    - {fileID: 2100000, guid: 4654c93cd47daac4babf39100e096356, type: 2}
+    - {fileID: 2100000, guid: 3d912f995a404584593de35a417ca965, type: 2}
+    - {fileID: 2100000, guid: c573e5e539fcfd14a92019a60a44fb6c, type: 2}
+  - body: {fileID: -5226293247528300773, guid: c771012fe5e82e041a9d71097455b7e3, type: 3}
+    head: {fileID: 586553207649566723, guid: 9721621953e5b8648b29a73a10c8b5e0, type: 3}
+    colorMaterials:
+    - {fileID: 2100000, guid: ebc7822501b781545adda1d1679c701b, type: 2}
+    - {fileID: 2100000, guid: 7757a3dcc10c3c946a5f68e5c005421b, type: 2}
+    - {fileID: 2100000, guid: 6aac22a368eaf444fafa4bfd3e4cffaf, type: 2}
+    - {fileID: 2100000, guid: b8f5a1056ea08f147bd467b81b09a8c3, type: 2}
+    - {fileID: 2100000, guid: 4f13613131aee854086c1eb652bc6f25, type: 2}
+    - {fileID: 2100000, guid: bce03ccb4b4e98d42829876e4641b796, type: 2}
+    - {fileID: 2100000, guid: 6b68ca7f113f1ae4396f3767fc5ca95d, type: 2}
+    - {fileID: 2100000, guid: b7e12b39392b6674bbc32e1a106763e7, type: 2}
+  - body: {fileID: 7733444632930478723, guid: 3a3751d748bf06c4183cf766e4ccd8c7, type: 3}
+    head: {fileID: 308351979912405570, guid: 30be21f33802a6e498576bf0ecaa2283, type: 3}
+    colorMaterials:
+    - {fileID: 2100000, guid: 6b128f815e22599468bff91b28bfa717, type: 2}
+    - {fileID: 2100000, guid: cb1a464f7fad90e4785f92838fff6d57, type: 2}
+    - {fileID: 2100000, guid: d7a8159198083bc418693d791e956dc8, type: 2}
+    - {fileID: 2100000, guid: 5481f4600a2ed2e4587467b56f8305df, type: 2}
+    - {fileID: 2100000, guid: f42635863ccf46a4cbbc083a58564d5d, type: 2}
+    - {fileID: 2100000, guid: 874067ff365e9364ba1c023ca371c8ef, type: 2}
+    - {fileID: 2100000, guid: 6f559e6dabdf22141a6df6b343d128cb, type: 2}
+    - {fileID: 2100000, guid: 0e4367cd034364a41a59b4d69e03eaae, type: 2}
+  - body: {fileID: 4354922201595196241, guid: 4f10d7d47536bf841bbc1ed972bdc9d5, type: 3}
+    head: {fileID: 3849979127592693191, guid: 57052c614dd606f46ba526ccbfa8c17a, type: 3}
+    colorMaterials:
+    - {fileID: 2100000, guid: ad0e7d8a8756f324f9d91f68548c4ca0, type: 2}
+    - {fileID: 2100000, guid: 21f74356de7086c45a48da7fc05913b7, type: 2}
+    - {fileID: 2100000, guid: 7a786becdcc9f4140a48d50bd9402701, type: 2}
+    - {fileID: 2100000, guid: 223b03d566638ed4e9930ae05ddaec5c, type: 2}
+    - {fileID: 2100000, guid: 8b6dc408ae645b647af3a03e75dd06cb, type: 2}
+    - {fileID: 2100000, guid: 60b2b4cbe7466a9479d4207de9b640ba, type: 2}
+    - {fileID: 2100000, guid: 88bf779ce629e5d4ead1c3f28e5dfc35, type: 2}
+    - {fileID: 2100000, guid: 32512315ccfa012489ac030b8b071efc, type: 2}
+  cityUpgrades:
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 5
+    gainedLabSpeed: 0

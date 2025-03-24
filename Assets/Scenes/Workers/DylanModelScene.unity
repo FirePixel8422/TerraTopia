@@ -5018,6 +5018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c50ecbaec3bdb14a85c7a9fe2197871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileCanBeBuiltOn: 1
   buildings: []
   unitId: 0
   colorRenderer: {fileID: 0}
@@ -5025,11 +5026,12 @@ MonoBehaviour:
   _health: 0
   _maxHealth: 0
   _movementRange: 0
-  _detectionRange: 0
   _allowedTileLayers: 0
   _markerPrefab: {fileID: 0}
   _stepHeight: 0.5
   _attackDamage: 0
+  _attackRange: 0
+  _attackMarkerPrefab: {fileID: 0}
   _unitsKilled: 0
   tilesVisited: 0
   CurrentTile: {fileID: 0}
