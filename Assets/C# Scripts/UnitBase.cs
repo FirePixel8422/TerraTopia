@@ -3,7 +3,8 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-public class UnitBase : TileObject
+using System;
+public class UnitBase : TileObject, IOnTurnChangable
 {
     private int ownerPlayerGameId;
     public int unitId;
@@ -18,13 +19,14 @@ public class UnitBase : TileObject
 
     [Header("Movement based variables")]
     [SerializeField] private int _movementRange;
-    [SerializeField] private int _detectionRange;
     [SerializeField] private TileLayer _allowedTileLayers;
     [SerializeField] private GameObject _markerPrefab;
     [SerializeField] private float _stepHeight = 0.5f;
 
     [Header("Combat based variables")]
     [SerializeField] private int _attackDamage;
+    [SerializeField] private int _attackRange;
+    [SerializeField] private GameObject _attackMarkerPrefab;
 
     [Header("Achievements")]
     [SerializeField] private int _unitsKilled;
@@ -34,17 +36,33 @@ public class UnitBase : TileObject
 
     private List<GameObject> _tileMarkers = new List<GameObject>();
 
-    public void TakeDamage(int damageToTake)
+    [Tooltip("The amount of turn actions the unit has left, in this case being MOVEMENT STEPS")]
+    public int TurnActionsLeft { get; set; }
+
+    [Tooltip("The amount of alternative turn actions the unit has left, in this case being ATTACK MOVES")]
+    public int AltTurnActionsLeft { get; set; }
+
+    public void Awake()
+    {
+        OnTurnChange(0);
+    }
+    #region Interfaces
+    [ServerRpc(RequireOwnership = false)]
+    public void TakeDamage_ServerRPC(int damageToTake)
     {
         _health -= damageToTake;
         if (_health <= 0)
         {
-            Die();
+            Die_ClientRPC();
+            NetworkObject.Despawn(true);
         }
     }
 
-    public override void OnClick()
+    public override void OnClick(int playerId)
     {
+        //Make sure the player is the owner of the unit, otherwise returns
+        if (playerId != ownerPlayerGameId) { return; }
+
         if (_markerPrefab)
         {
             PlaceMarkersOnReachableTiles();
@@ -53,17 +71,46 @@ public class UnitBase : TileObject
 
     public override void OnDifferentClickableClicked(GameObject newlyClickedObject)
     {
-        if (newlyClickedObject.TryGetComponent(out TileBase TB))
+        if (TurnActionsLeft >= 1)
         {
-            if (IsTileWithinReach(newlyClickedObject.transform.position) & CanMoveToTile(TB))
-            {    
-                MoveToTile(newlyClickedObject);
+            if (newlyClickedObject.TryGetComponent(out TileBase TB))
+            {
+                //Checks whether the tile holds an unit or not
+                if (TB.CurrentHeldUnit != null)
+                {
+                    //Checks if the unit has any alternative actions left(in this case being attack moves)
+                    if (AltTurnActionsLeft >= 1)
+                    {
+                        //Checks if the unit is within the attack range
+                        if (Vector3.Distance(newlyClickedObject.transform.position, currentTilePos) <= _attackRange)
+                        {
+                            if (AltTurnActionsLeft <= 0) { return; }
+                            TB.CurrentHeldUnit.TakeDamage_ServerRPC(_attackDamage);
+                            AltTurnActionsLeft--;
+                            return;
+                        }
+
+                    }
+                }
+                //If the tile does not hold an unit, the unit will try to move to the tile
+                else
+                {
+                    //Checks whether or not the tile is able to be moved to
+                    if (IsTileWithinReach(newlyClickedObject.transform.position) & CanMoveToTile(TB))
+                    {
+                        MoveToTile(newlyClickedObject);
+                    }
+                }
             }
         }
         ClearMarkers();
     }
-
-    Vector3 unitPos => new Vector3(transform.position.x, 0, transform.position.z);
+    public void OnTurnChange(int turn)
+    {
+        TurnActionsLeft = 1;
+        AltTurnActionsLeft = 1;
+    }
+    #endregion
     private Vector3 currentTilePos
     {
         get
@@ -71,7 +118,7 @@ public class UnitBase : TileObject
             return CurrentTile != null ? new Vector3(CurrentTile.transform.position.x, CurrentTile.transform.position.y, CurrentTile.transform.position.z) : transform.position;
         }
     }
-
+    #region Movement
     protected virtual bool IsTileWithinReach(Vector3 tilePos)
     {
         tilePos.y = 0f;
@@ -96,6 +143,7 @@ public class UnitBase : TileObject
     protected virtual void PlaceMarkersOnReachableTiles()
     {
         ClearMarkers();
+        Vector3 startTilePos = currentTilePos;
 
         for (int x = -_movementRange; x <= _movementRange; x++)
         {
@@ -108,10 +156,32 @@ public class UnitBase : TileObject
                 {
                     Vector3 targetPos = currentTilePos + new Vector3(x, 0f, z);
 
+                    //Prevent searching the starting tile
+                    if (targetPos.ToVector2() == startTilePos.ToVector2()) { continue; }
+
                     if (GridManager.TryGetTileByPos(targetPos.ToVector2(), out TileBase tb))
                     {
                         //Break incase of an unit already inhabiting the "selected" tile
-                        if (tb.CurrentHeldUnit != null) { continue; }
+                        if (tb.CurrentHeldUnit != null)
+                        {
+                            //Checks whether or not the unit has any alternative actions left(in this case being attack moves)
+                            if (AltTurnActionsLeft <= 0) { continue; }
+
+                            //Checks if the unit has the same owner as this one, if so it will continue the loop. 
+                            if (tb.CurrentHeldUnit.ownerPlayerGameId == ownerPlayerGameId) { continue; }
+
+                            //Checks if the unit is within attack range
+                            if (Vector3.Distance(targetPos, currentTilePos) <= _attackRange)
+                            {
+                                targetPos.y = tb.transform.position.y;
+                                GameObject marker = Instantiate(_attackMarkerPrefab, targetPos, Quaternion.identity);
+                                _tileMarkers.Add(marker);
+                            }
+                            continue;
+
+                        }
+
+                        if (TurnActionsLeft <= 0) { print("No actions left"); continue; }
 
                         //Skips incase of the newly "selected" tile being the starting tile of the unit
                         if (targetPos == currentTilePos) { continue; }
@@ -261,8 +331,13 @@ public class UnitBase : TileObject
                 continue;
             }
 
+            ///
+            /// Make sure the unit can move before taking off the turn action
+            ///
+            TurnActionsLeft--;
+
+
             Vector3 targetPosition = new Vector3(tile.transform.position.x, tile.transform.position.y, tile.transform.position.z);
-            Debug.Log($"Moving to tile at position {targetPosition}");
 
             float moveDuration = 0.5f;
 
@@ -300,9 +375,7 @@ public class UnitBase : TileObject
             Debug.Log($"Unit reached the final tile at position {finalPosition}");
         }
     }
-
-
-
+    #endregion
 
     public void OnSpawnUnit_OnServer(ulong clientNetworkId, int playerGameId)
     {
@@ -323,10 +396,10 @@ public class UnitBase : TileObject
     {
         colorRenderer.material = UnitSpawnHandler.GetTeamColorMaterial_OnServer(ownerPlayerGameId, unitId);
     }
-
-    private void Die()
+    [ClientRpc(RequireOwnership = false)]
+    private void Die_ClientRPC()
     {
         CurrentTile.DeAssignUnit(this);
-        Destroy(gameObject);
     }
 }
+

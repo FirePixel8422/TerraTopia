@@ -21,6 +21,7 @@ public class BuildingPreview : MonoBehaviour
 
         if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
         {
+
             if (isUnit == true && tile.CurrentHeldUnit != null)
             {
                 print("Tile already holds a unit");
@@ -28,7 +29,7 @@ public class BuildingPreview : MonoBehaviour
             }
 
             //if TryBuild returns false, the player cannot afford the building
-            if (ResourceManager.TryBuild(buildingCosts, tileObjectId, tile.transform.position.ToVector2(), isUnit) == false)
+            if (ResourceManager.TryBuild(buildingCosts, tileObjectId, tile.transform.position.ToRoundedVector2(), isUnit) == false)
             {
                 print("Player cannot afford this building");
             }

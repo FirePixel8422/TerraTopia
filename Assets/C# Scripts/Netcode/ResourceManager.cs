@@ -117,14 +117,19 @@ public class ResourceManager : NetworkBehaviour
     /// </summary>
     public static bool TryBuild(BuildingCosts buildingCosts, int buildingToPlaceId, Vector2 tileToPlaceOnPos, bool isUnit = false)
     {
+#if !Unity_Editor
         //return false if client is not up to date with the latest server data OR cant afford the building
         if (localClientHasUpdatedResources == false || CanBuild(buildingCosts) == false) return false;
+#endif
+        //return false if client is not up to date with the latest server data OR cant afford the building
+        if (localClientHasUpdatedResources == false) { print("The client does not have the updatedResources"); return false;  } 
+        if(CanBuild(buildingCosts) == false) { print("The client cannot afford this building"); return false; }
 
         //if the client is allowed to build AND can afford the building, build it and set "localClientHasUpdatedResources" to false until the server processes the resource payment update
         localClientHasUpdatedResources = false;
 
         //pay and build building on the server
-        Instance.SpawnBuilding_ServerRPC(ClientManager.LocalClientGameId, buildingCosts, buildingToPlaceId, tileToPlaceOnPos, isUnit);
+        Instance.SpawnBuilding_ServerRPC(ClientManager.LocalClientGameId, buildingCosts, buildingToPlaceId, tileToPlaceOnPos.ToRoundedVector2(), isUnit);
 
         return true;
     }
@@ -152,7 +157,7 @@ public class ResourceManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SpawnBuilding_ServerRPC(int clientGameId, BuildingCosts buildingCosts, int buildingToPlaceId, Vector2 tileToPlaceOnPos, bool isUnit = false)
     {
-        #region Update Payed Resources
+        #region Update Paid Resources
 
         //copy resourceArray
         PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
@@ -170,7 +175,7 @@ public class ResourceManager : NetworkBehaviour
         #endregion
 
 
-        GridManager.TryGetTileByPos(tileToPlaceOnPos, out TileBase tileToPlaceOn);
+        GridManager.TryGetTileByPos(tileToPlaceOnPos.ToRoundedVector2(), out TileBase tileToPlaceOn);
 
         if (isUnit)
         {
@@ -205,6 +210,7 @@ public class ResourceManager : NetworkBehaviour
     [SerializeField] private PlayerResourcesDataArray debugClientDataArray;
     private void Update()
     {
+        localClientHasUpdatedResources = true;  
         if (playerResourcesDataArray != null)
         {
             debugClientDataArray = playerResourcesDataArray.Value;

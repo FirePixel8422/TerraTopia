@@ -78,7 +78,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         canShake = false;
         transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1).OnComplete(() => { canShake = true; });
     }
-    public virtual void OnClick()
+    public virtual void OnClick(int playerId)
     {
         if (canShake)
         {

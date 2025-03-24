@@ -205,6 +205,14 @@ public static class VectorLogic
     {
         return new Vector2(value.x, value.z);
     }
+    public static Vector2 ToRoundedVector2(this Vector3 value)
+    {
+        return new Vector2(math.round(value.x), math.round( value.z));
+    }
+    public static Vector2 ToRoundedVector2(this Vector2 value)
+    {
+        return new Vector2(math.round(value.x), math.round(value.y));
+    }
 
 
     /// <summary>

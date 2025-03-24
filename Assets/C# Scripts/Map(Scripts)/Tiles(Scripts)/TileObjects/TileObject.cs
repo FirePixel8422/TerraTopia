@@ -46,7 +46,7 @@ public class TileObject : NetworkBehaviour, IBuildable, IOnClickable
         }
     }
 
-    public virtual void OnClick()
+    public virtual void OnClick(int playerId)
     {
        
     }

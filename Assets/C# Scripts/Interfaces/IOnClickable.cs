@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IOnClickable 
 {
-    public void OnClick();
+    public void OnClick(int playerId);
 
     public void OnDifferentClickableClicked(GameObject newlyClickedObject);
 }

@@ -173,12 +173,14 @@ MonoBehaviour:
   _health: 0
   _maxHealth: 0
   _movementRange: 5
-  _detectionRange: 0
   _allowedTileLayers: 1
   _markerPrefab: {fileID: 8579309374006704232, guid: 55d2216c3ae173b47bff26b000df3709,
     type: 3}
   _stepHeight: 0.5
   _attackDamage: 0
+  _attackRange: 1
+  _attackMarkerPrefab: {fileID: 8579309374006704232, guid: dff189d657ca0cf4e842e70f7cce95c9,
+    type: 3}
   _unitsKilled: 0
   tilesVisited: 0
   CurrentTile: {fileID: 0}

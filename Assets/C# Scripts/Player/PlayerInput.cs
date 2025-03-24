@@ -19,6 +19,8 @@ public class PlayerInput : MonoBehaviour
     public GameObject SelectedObject { get; private set; }
     public GameObject CurrentBuildingTile { get; private set; }
 
+    public int PlayerId => ClientManager.LocalClientGameId;
+
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
@@ -92,7 +94,6 @@ public class PlayerInput : MonoBehaviour
             //Attempts to retrieve the IOnclickableInterface from the object before this one 
             if (SelectedObject.TryGetComponent(out IOnClickable previousIOC))
             {
-                print("Different object clicked");
                 previousIOC.OnDifferentClickableClicked(LastHitObject);
             }
         }
@@ -101,7 +102,7 @@ public class PlayerInput : MonoBehaviour
         {
             if (LastHitObject.TryGetComponent(out IOnClickable IOC))
             {
-                IOC.OnClick();
+                IOC.OnClick(PlayerId);
             }
         }
 
