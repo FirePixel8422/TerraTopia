@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class DevTools : MonoBehaviour
+public class DevTools : NetworkBehaviour
 {
-    [ContextMenu("AddMaterials")]
-    public void AddMaterials()
+    [ServerRpc(RequireOwnership = false)]
+    private void AddMaterials_ServerRPC()
     {
         PlayerResourcesDataArray resourcesCopy = ResourceManager.GetResourceData();
-        resourcesCopy.gems[0] = 10000000;
-        resourcesCopy.wood[0] = 10000000;
-        resourcesCopy.food[0] = 10000000;
-        resourcesCopy.stone[0] = 10000000;
+
+        for (int i = 0; i < ClientManager.PlayerCount; i++)
+        {
+            resourcesCopy.gems[i] = 10000000;
+            resourcesCopy.wood[i] = 10000000;
+            resourcesCopy.food[i] = 10000000;
+            resourcesCopy.stone[i] = 10000000;
+        }
 
 
-        ResourceManager.UpdateResourceData(resourcesCopy);
+        ResourceManager.UpdateResourceData_OnServer(resourcesCopy);
     }
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            AddMaterials();
+            AddMaterials_ServerRPC();
         }
     }
 }

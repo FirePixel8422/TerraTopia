@@ -42,11 +42,13 @@ public static class UnitSpawnHandler
     /// Only call this from the server!!! _______ Instantiate Unit with correct cosmetic of the requesting client on server, then spawn it on network.
     /// </summary>
     /// <returns>The Spawned Unit (Not yet spawned on network)</returns>
-    public static UnitBase InstantiateUnit_OnServer(ulong clientNetworkId, int playerGameId, int unitId)
+    public static UnitBase InstantiateUnit_OnServer(int clientGameId, int unitId)
     {
+        ulong clientNetworkId = ClientManager.GetClientNetworkId(clientGameId);
+
         //get units list from "clientGameId" and get "unitId" from that list 
-        UnitBase unitBodyPrefab = unitCosmeticsList[playerGameId][unitId].body;
-        NetworkObject unitHeadPrefab = unitCosmeticsList[playerGameId][unitId].head;
+        UnitBase unitBodyPrefab = unitCosmeticsList[clientGameId][unitId].body;
+        NetworkObject unitHeadPrefab = unitCosmeticsList[clientGameId][unitId].head;
 
         //spawn unit (locally on server)
         UnitBase spawnedUnit = unitBodyPrefab.NetworkObject.InstantiateAndSpawn(NetworkManager.Singleton, clientNetworkId, true).GetComponent<UnitBase>();

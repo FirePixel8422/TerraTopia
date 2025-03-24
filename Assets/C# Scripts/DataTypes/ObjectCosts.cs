@@ -2,7 +2,7 @@ using System;
 using Unity.Netcode;
 
 [Serializable]
-public struct BuildingCosts : INetworkSerializable
+public struct ObjectCosts : INetworkSerializable
 {
     public int food;
     public int stone;

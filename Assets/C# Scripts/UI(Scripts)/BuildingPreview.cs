@@ -9,9 +9,8 @@ public class BuildingPreview : MonoBehaviour
     public Image previewImage;
     public int tileObjectId;
 
-    public bool isUnit;
     //The materials needed to buy the building
-    public BuildingCosts buildingCosts;
+    public ObjectCosts buildingCosts;
 
     public void OnBuyButtonClicked()
     {
@@ -21,15 +20,8 @@ public class BuildingPreview : MonoBehaviour
 
         if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
         {
-
-            if (isUnit == true && tile.CurrentHeldUnit != null)
-            {
-                print("Tile already holds a unit");
-                return;
-            }
-
             //if TryBuild returns false, the player cannot afford the building
-            if (ResourceManager.TryBuild(buildingCosts, tileObjectId, tile.transform.position.ToRoundedVector2(), isUnit) == false)
+            if (ResourceManager.TrySpawnBuilding(buildingCosts, tileObjectId, tile.transform.position.ToRoundedVector2()) == false)
             {
                 print("Player cannot afford this building");
             }

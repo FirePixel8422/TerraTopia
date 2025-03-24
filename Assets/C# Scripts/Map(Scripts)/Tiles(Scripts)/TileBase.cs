@@ -80,12 +80,12 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     }
     public virtual void OnClick(int playerId)
     {
-        if (canShake)
-        {
-            DoShake();
-            if (_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
-            if (CurrentHeldUnit) { CurrentHeldUnit.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
-        }
+        //if (canShake)
+        //{
+        //    DoShake();
+        //    if (_currentHeldEnviromentalObject) { _currentHeldEnviromentalObject.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
+        //    if (CurrentHeldUnit) { CurrentHeldUnit.transform.DOPunchPosition(new Vector3(0, 0, shakeStrength), 1); }
+        //}
     }
     public void OnDifferentClickableClicked(GameObject newlyClickedObject)
     {
@@ -142,30 +142,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         // Overwrite current object if needed
         if (overwriteCurrent && _currentHeldEnviromentalObject != null)
         {
-            Debug.Log("Overwriting current environmental object.");
-            //_currentHeldEnviromentalObject.NetworkObject.Despawn();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            _currentHeldEnviromentalObject.NetworkObject.Despawn();
             _currentHeldEnviromentalObject = null;
         }
 
@@ -200,7 +177,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     }
 
 
-    public virtual void AssignObject(int enviromentalObjectId, bool activateImmediately, ulong ownerId, bool overwriteCurrent = false)
+    public virtual void AssignObject_OnServer(int enviromentalObjectId, bool activateImmediately, ulong ownerId, bool overwriteCurrent = false)
     {
         _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
         var previousPreset = CanBeBuiltOn;
@@ -208,30 +185,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
         if (overwriteCurrent && _currentHeldEnviromentalObject != null)
         {
-            Debug.Log("Overwriting current environmental object.");
-            //_currentHeldEnviromentalObject.NetworkObject.Despawn();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            _currentHeldEnviromentalObject.NetworkObject.Despawn();
             _currentHeldEnviromentalObject = null;
         }
 
@@ -250,32 +204,23 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         IsHoldingObject = true;
     }
 
-    public virtual void AssignObjectLocal(EnviromentalItemData enviromentalObjectId, bool activateImmediately)
+    public UnitBase SpawnAndAssignUnit_OnServer(int clientGameId, int unitId)
     {
-        _enviromentalObjectPosHolder = _enviromentalObjectPosHolder == null ? transform : _enviromentalObjectPosHolder;
+        UnitBase spawnedUnit = UnitSpawnHandler.InstantiateUnit_OnServer(clientGameId, unitId);
 
-        if (IsHoldingObject)
-        {
-            Debug.LogWarning("Tile already contains an environmental object. Cannot place another one.");
-            return;
-        }
-
-        Instantiate(TileObjectPrefabManager.GetValue(enviromentalObjectId._possibleEnviromentalObjectId), _enviromentalObjectPosHolder.position, _enviromentalObjectPosHolder.rotation);
-        CanBeBuiltOn = TileObjectPrefabManager.GetValue(enviromentalObjectId._possibleEnviromentalObjectId).GetComponent<TileObject>().tileCanBeBuiltOn;
-        IsHoldingObject = true;
-    }
-    public virtual void SpawnAndAssignUnit(int enviromentalObjectId)
-    {
-        UnitBase spawnedUnit = Instantiate(TileObjectPrefabManager.GetValue(enviromentalObjectId), transform.position, transform.rotation).GetComponent<UnitBase>();
-        AssignUnit(spawnedUnit);
-        spawnedUnit.CurrentTile = this;
+        return spawnedUnit;
     }
 
-    public virtual void AssignUnit(UnitBase UB)
+    [ClientRpc(RequireOwnership = false)]
+    public void AssignUnit_ClientRPC(UnitBase UB)
     {
         CurrentHeldUnit = UB;
+
+        UB.CurrentTile = this;
     }
-    public virtual void DeAssignUnit(UnitBase UB)
+
+    [ClientRpc(RequireOwnership = false)]
+    public void DeAssignUnit_ClientRPC(UnitBase UB)
     {
         CurrentHeldUnit = null;
     }

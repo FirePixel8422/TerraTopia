@@ -26,7 +26,7 @@ public class ResourceManager : NetworkBehaviour
     /// <summary>
     /// Set Value Of PlayerResourcesData, Must be called from server (Will trigger networkSync)
     /// </summary>
-    public static void UpdateResourceData(PlayerResourcesDataArray newValue)
+    public static void UpdateResourceData_OnServer(PlayerResourcesDataArray newValue)
     {
         playerResourcesDataArray.Value = newValue;
     }
@@ -112,32 +112,44 @@ public class ResourceManager : NetworkBehaviour
     private static bool localClientHasUpdatedResources;
 
 
-    /// <summary>
-    /// Subtract the materialcost values from current materials
-    /// </summary>
-    public static bool TryBuild(BuildingCosts buildingCosts, int buildingToPlaceId, Vector2 tileToPlaceOnPos, bool isUnit = false)
+
+    public static bool TrySpawnBuilding(ObjectCosts buildingCosts, int buildingToPlaceId, Vector2 tileToPlaceOnPos)
     {
-#if !Unity_Editor
+#if !Unity_Editor && !DEVELOPMENT_BUILD
         //return false if client is not up to date with the latest server data OR cant afford the building
-        if (localClientHasUpdatedResources == false || CanBuild(buildingCosts) == false) return false;
+        if (localClientHasUpdatedResources == false || CanAffordObject(buildingCosts) == false) return false;
 #endif
-        //return false if client is not up to date with the latest server data OR cant afford the building
-        if (localClientHasUpdatedResources == false) { print("The client does not have the updatedResources"); return false;  } 
-        if(CanBuild(buildingCosts) == false) { print("The client cannot afford this building"); return false; }
 
         //if the client is allowed to build AND can afford the building, build it and set "localClientHasUpdatedResources" to false until the server processes the resource payment update
         localClientHasUpdatedResources = false;
 
         //pay and build building on the server
-        Instance.SpawnBuilding_ServerRPC(ClientManager.LocalClientGameId, buildingCosts, buildingToPlaceId, tileToPlaceOnPos.ToRoundedVector2(), isUnit);
+        Instance.SpawnBuilding_ServerRPC(ClientManager.LocalClientGameId, buildingCosts, buildingToPlaceId, tileToPlaceOnPos.ToRoundedVector2());
 
         return true;
     }
 
+    public static bool TrySpawnUnit(ObjectCosts buildingCosts, int unitId, Vector2 tileToPlaceOnPos)
+    {
+#if !Unity_Editor && !DEVELOPMENT_BUILD
+        //return false if client is not up to date with the latest server data OR cant afford the building
+        if (localClientHasUpdatedResources == false || CanAffordObject(buildingCosts) == false) return false;
+#endif
+
+        //if the client is allowed to build AND can afford the building, build it and set "localClientHasUpdatedResources" to false until the server processes the resource payment update
+        localClientHasUpdatedResources = false;
+
+        //pay and build building on the server
+        Instance.SpawnUnit_ServerRPC(ClientManager.LocalClientGameId, buildingCosts, unitId, tileToPlaceOnPos.ToRoundedVector2());
+
+        return true;
+    }
+
+
     /// <summary>
     /// Check if you can afford this building by comparing buildingCosts with current materials
     /// </summary>
-    private static bool CanBuild(BuildingCosts buildingCosts)
+    private static bool CanAffordObject(ObjectCosts buildingCosts)
     {
         int localGameId = ClientManager.LocalClientGameId;
 
@@ -155,7 +167,7 @@ public class ResourceManager : NetworkBehaviour
     /// Pay and build the building on the server
     /// </summary>
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnBuilding_ServerRPC(int clientGameId, BuildingCosts buildingCosts, int buildingToPlaceId, Vector2 tileToPlaceOnPos, bool isUnit = false)
+    private void SpawnBuilding_ServerRPC(int clientGameId, ObjectCosts buildingCosts, int buildingToPlaceId, Vector2 tileToPlaceOnPos)
     {
         #region Update Paid Resources
 
@@ -177,14 +189,38 @@ public class ResourceManager : NetworkBehaviour
 
         GridManager.TryGetTileByPos(tileToPlaceOnPos.ToRoundedVector2(), out TileBase tileToPlaceOn);
 
-        if (isUnit)
-        {
-            tileToPlaceOn.SpawnAndAssignUnit(buildingToPlaceId);
-        }
-        else
-        {
-            tileToPlaceOn.AssignObject(buildingToPlaceId, true, ClientManager.UnAsignedPlayerId, true);
-        }
+        tileToPlaceOn.AssignObject_OnServer(buildingToPlaceId, true, ClientManager.UnAsignedPlayerId, true);
+    }
+
+
+    /// <summary>
+    /// Pay and build the unit on the server
+    /// </summary>
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnUnit_ServerRPC(int clientGameId, ObjectCosts buildingCosts, int unitId, Vector2 tileToPlaceOnPos)
+    {
+        #region Update Paid Resources
+
+        //copy resourceArray
+        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+
+        resourceArrayCopy.food[clientGameId] -= buildingCosts.food;
+        resourceArrayCopy.wood[clientGameId] -= buildingCosts.wood;
+        resourceArrayCopy.stone[clientGameId] -= buildingCosts.stone;
+        resourceArrayCopy.gems[clientGameId] -= buildingCosts.gems;
+
+        //update copy back to original resourceArray
+        playerResourcesDataArray.Value = resourceArrayCopy;
+
+        OnResourcesUpdated_ClientRPC(clientGameId);
+
+        #endregion
+
+
+        GridManager.TryGetTileByPos(tileToPlaceOnPos.ToRoundedVector2(), out TileBase tileToPlaceOn);
+
+        UnitBase spawnedUnit = tileToPlaceOn.SpawnAndAssignUnit_OnServer(clientGameId, unitId);
+        tileToPlaceOn.AssignUnit_ClientRPC(spawnedUnit);
     }
 
 
@@ -210,7 +246,6 @@ public class ResourceManager : NetworkBehaviour
     [SerializeField] private PlayerResourcesDataArray debugClientDataArray;
     private void Update()
     {
-        localClientHasUpdatedResources = true;  
         if (playerResourcesDataArray != null)
         {
             debugClientDataArray = playerResourcesDataArray.Value;

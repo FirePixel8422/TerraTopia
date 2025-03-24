@@ -8,7 +8,7 @@ public class Building : ScriptableObject
 
     public Sprite buildingSprite;
 
-    public BuildingCosts costs;
+    public ObjectCosts costs;
 
     public bool isUnit;
 }

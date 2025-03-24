@@ -162,13 +162,13 @@ public class ClientManager : NetworkBehaviour
     /// </summary>
     private void OnClientConnected_OnServer(ulong clientId)
     {
-        OnClientConnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), NetworkManager.ConnectedClientsIds.Count);
-
         PlayerIdDataArray updatedDataArray = playerIdDataArray.Value;
 
         updatedDataArray.AddPlayer(clientId);
 
         playerIdDataArray.Value = updatedDataArray;
+
+        OnClientConnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), NetworkManager.ConnectedClientsIds.Count);
     }
 
 
@@ -180,13 +180,13 @@ public class ClientManager : NetworkBehaviour
         //if the diconnecting client is the server dont update data, the server is shut down anyways.
         if (clientId == 0) return;
 
-        OnClientDisconnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), PlayerCount);
-
         PlayerIdDataArray updatedDataArray = playerIdDataArray.Value;
 
         updatedDataArray.RemovePlayer(clientId);
 
         playerIdDataArray.Value = updatedDataArray;
+
+        OnClientDisconnectedCallback?.Invoke(clientId, playerIdDataArray.Value.GetPlayerGameId(clientId), PlayerCount);
     }
 
 
@@ -204,7 +204,6 @@ public class ClientManager : NetworkBehaviour
 
         Destroy(gameObject);
         Destroy(MatchManager.Instance.gameObject);
-        Destroy(NetworkManager.gameObject);
 
 
         if (IsServer)

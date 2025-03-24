@@ -53,7 +53,7 @@ public class UnitBase : TileObject, IOnTurnChangable
         _health -= damageToTake;
         if (_health <= 0)
         {
-            Die_ClientRPC();
+            CurrentTile.DeAssignUnit_ClientRPC(this);
             NetworkObject.Despawn(true);
         }
     }
@@ -345,19 +345,19 @@ public class UnitBase : TileObject, IOnTurnChangable
                 .SetEase(Ease.Linear)
                 .OnStart(() =>
                 {
+                    if (tile.TryGetComponent(out TileBase tileBase))
+                    {
+                        CurrentTile.AssignUnit_ClientRPC(this);
+                        CurrentTile = tileBase;
+                        CurrentTile.DeAssignUnit_ClientRPC(this);
+                    }
+
                     Vector3 direction = (targetPosition - transform.position).normalized;
                     float targetYRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
                     transform.rotation = Quaternion.Euler(0, targetYRotation, 0);
                 })
                 .OnComplete(() =>
                 {
-                    if (tile.TryGetComponent(out TileBase tileBase))
-                    {
-                        CurrentTile.DeAssignUnit(this);
-                        CurrentTile = tileBase;
-                        CurrentTile.AssignUnit(this);
-                    }
-
                     transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
                     GridManager.Discover3X3(currentTilePos.ToVector2());
@@ -395,11 +395,6 @@ public class UnitBase : TileObject, IOnTurnChangable
     private void OnSpawn_ClientRPC(int ownerPlayerGameId)
     {
         colorRenderer.material = UnitSpawnHandler.GetTeamColorMaterial_OnServer(ownerPlayerGameId, unitId);
-    }
-    [ClientRpc(RequireOwnership = false)]
-    private void Die_ClientRPC()
-    {
-        CurrentTile.DeAssignUnit(this);
     }
 }
 

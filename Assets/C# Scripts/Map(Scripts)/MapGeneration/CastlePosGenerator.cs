@@ -86,7 +86,7 @@ public struct CastlePosGenerator
             var castleTile = tiles.FirstOrDefault(a => a.Value.transform.position == new Vector3(pos.x, a.Value.transform.position.y, pos.y));
             if (castleTile.Value.TryGetComponent(out TileBase tb))
             {
-                tb.AssignObject(castlePrefabId, true, castleId);
+                tb.AssignObject_OnServer(castlePrefabId, true, castleId);
             }
 
             castleId += 1;

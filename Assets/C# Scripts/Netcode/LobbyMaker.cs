@@ -139,7 +139,7 @@ public class LobbyMaker : NetworkBehaviour
 
             NetworkManager.StartClient();
 
-            //SceneManager.LoadScene("Pre-Main Game 1");
+            SceneManager.LoadScene("Pre-Main Game 1");
         }
         catch (LobbyServiceException e)
         {

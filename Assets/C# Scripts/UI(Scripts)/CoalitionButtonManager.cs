@@ -40,7 +40,7 @@ public class CoalitionButtonManager : NavButtonManager
     [ServerRpc(RequireOwnership = false)]
     private void TrySelectButton_FromMouseInput_ServerRPC(int requestingClientGameId, int oldButtonId, int newButtonId)
     {
-        bool changed = oldButtonId == newButtonId;
+        bool changed = oldButtonId != newButtonId;
 
         bool teamFull = CoalitionManager.IsTeamFull(newButtonId);
 
