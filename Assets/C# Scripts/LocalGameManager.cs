@@ -8,11 +8,14 @@ public static class LocalGameManager
 
     public static bool TileIsWithinBorder(Vector3 tilePos)
     {
-        for(int i = 0; i < ownedCities.Count; i++)
+        for (int i = 0; i < ownedCities.Count; i++)
         {
-            if (ownedCities[i].BorderTilePositions.Contains(tilePos))
+            foreach (var tile in ownedCities[i].BorderTilePositions)
             {
-                return true;
+                if (tile == tilePos)
+                {
+                    return true;
+                }
             }
         }
         return false;

@@ -137,6 +137,7 @@ public class PlayerInput : MonoBehaviour
             }
             else
             {
+                print("Tile is not within border"); 
                 _buildingHandler.HideBuildingPanel();
             }
         }
