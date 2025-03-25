@@ -11,8 +11,6 @@ public class CharacterShowcaser : NetworkBehaviour
     [Space]
     [SerializeField] private InputAction mouseClickInput;
 
-    [SerializeField] private UnitTribeListSO[] tribeData;
-
     [Space]
 
     [SerializeField] private float turnSpeed;
@@ -142,7 +140,7 @@ public class CharacterShowcaser : NetworkBehaviour
 
     private Transform InstantiateUnit_Locally(int tribeId, int unitId, Quaternion rot)
     {
-        UnitSpawnData unitData = tribeData[tribeId].unitSpawnData[unitId];
+        UnitSpawnData unitData = TribeSelecter.Instance.tribeData[tribeId].unitSpawnData[unitId];
 
         //spawn unit (locally on server)
         UnitBase spawnedUnit = Instantiate(unitData.body, transform).GetComponent<UnitBase>();

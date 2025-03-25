@@ -4,28 +4,17 @@ using UnityEngine;
 
 public class InstancedMeshRenderer : MonoBehaviour
 {
-    public int meshInstanceIndex;
+    public MeshInstancedRenderData meshData;
 
 
-    public void UpdateMatrix()
+    private void Start()
     {
-
-    }
-
-
-    private void OnEnable()
-    {
-
-    }
-
-    private void OnDisable()
-    {
-
+        InstancedMeshRenderManager.Instance.AddInstancedMesh(meshData);
     }
 
 
     private void OnDestroy()
     {
-
+        InstancedMeshRenderManager.Instance.RemoveInstancedMesh(meshData);
     }
 }

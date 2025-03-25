@@ -18,7 +18,8 @@ public struct MatchSettings : INetworkSerializable
             3 => allowUnfairTeams ? 1 : 0,
             4 => seed,
             5 => mapId,
-            6 => privateLobby ? 1 : 0,
+            6 => mapSize,
+            7 => privateLobby ? 1 : 0,
             _ => -1,
         };
     }
@@ -45,6 +46,9 @@ public struct MatchSettings : INetworkSerializable
                 mapId = value;
                 break;
             case 6:
+                mapSize = value;
+                break;
+            case 7:
                 privateLobby = value == 1;
                 break;
             default:
@@ -64,6 +68,7 @@ public struct MatchSettings : INetworkSerializable
 
     public int seed;
     public int mapId;
+    public int mapSize;
     public bool privateLobby;
 
 

@@ -160,7 +160,6 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
             return;
         }
 
-        Debug.Log($"Spawning environmental object ID {enviromentalObject._possibleEnviromentalObjectId} at {enviromentalObject._possibleEnviromentalPosHolder.position}");
 
         // Call the spawn function on the server
         GridManager.Instance.SpawnObject_ServerRPC(

@@ -3015,10 +3015,6 @@ MonoBehaviour:
       m_Action: Mouse Click Input
       m_Flags: 0
     m_Flags: 0
-  tribeData:
-  - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
-  - {fileID: 11400000, guid: e916d4a2375c8df438ed881cfc526fa8, type: 2}
-  - {fileID: 11400000, guid: cfd096943ba02ea4db4a3014a442fb11, type: 2}
   turnSpeed: 1.5
   overrideTeamColor: -1
 --- !u!4 &1483553882
@@ -3094,6 +3090,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
   - {fileID: 11400000, guid: e916d4a2375c8df438ed881cfc526fa8, type: 2}
   - {fileID: 11400000, guid: cfd096943ba02ea4db4a3014a442fb11, type: 2}
+  - {fileID: 11400000, guid: 4f6e85a81188593488605f08c1feb7d8, type: 2}
   cityColorMaterials:
   - {fileID: 2100000, guid: 8dd7c6f909770fe4d9894f35540318ba, type: 2}
   - {fileID: 2100000, guid: d63a4b11b0f6cf14fabf72ad9c75b83c, type: 2}

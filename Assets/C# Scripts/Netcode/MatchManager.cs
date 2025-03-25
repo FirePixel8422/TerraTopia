@@ -63,7 +63,14 @@ public class MatchManager : NetworkBehaviour
     {
         if (IsServer)
         {
-            matchSettingsNetworkVar.Value = settings;
+            MatchSettings settingsCopy = settings;
+            if (settings.seed == 0)
+            {
+                settingsCopy.seed = Random.Range(int.MinValue, int.MaxValue);
+            }
+
+            matchSettingsNetworkVar.Value = settingsCopy;
+
 
             await SaveSettingsAsync(settings);
         }

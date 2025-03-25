@@ -122,7 +122,6 @@ public class City : TileObject
             {
                 tilePos = borderTilePositions[i].ToVector2();
 
-                print(tilePos);
                 if (GridManager.DoesCloudExist(tilePos))
                 {
                     GridManager.TryGetTileByPos(tilePos, out GameObject tile);
