@@ -345,13 +345,12 @@ public class UnitBase : TileObject
                 .SetEase(Ease.Linear)
                 .OnStart(() =>
                 {
-                    path[path.Count].GetComponent<TileBase>().AssignUnit_ClientRPC(this);
-                    //if (tile.TryGetComponent(out TileBase tileBase))
-                    //{
-                    //    CurrentTile.AssignUnit_ClientRPC(this);
-                    //    CurrentTile = tileBase;
-                    //    CurrentTile.DeAssignUnit_ClientRPC(this);
-                    //}
+                    if (tile.TryGetComponent(out TileBase tileBase))
+                    {
+                        CurrentTile.AssignUnit_ClientRPC(this);
+                        CurrentTile = tileBase;
+                        CurrentTile.DeAssignUnit_ClientRPC(this);
+                    }
 
                     Vector3 direction = (targetPosition - transform.position).normalized;
                     float targetYRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
