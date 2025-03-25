@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
-public class RecourceUpdater : MonoBehaviour
+public class RecourceUpdater : NetworkBehaviour
 {
-    private TextMeshProUGUI[] naam;
+    [SerializeField] private TextMeshProUGUI[] naam;
 
-
-
-    private void Start()
+    public override void OnNetworkSpawn()
     {
         ResourceManager.playerResourcesDataArray.OnValueChanged += (PlayerResourcesDataArray oldValue, PlayerResourcesDataArray newValue) => OnresourceUpdate(newValue);
     }
@@ -18,9 +17,11 @@ public class RecourceUpdater : MonoBehaviour
     private void OnresourceUpdate(PlayerResourcesDataArray newValue)
     {
         int food = newValue.food[ClientManager.LocalClientGameId];
-        int stone = newValue.food[ClientManager.LocalClientGameId];
-        int wood = newValue.food[ClientManager.LocalClientGameId];
-        int gems = newValue.food[ClientManager.LocalClientGameId];
+        int stone = newValue.stone[ClientManager.LocalClientGameId];
+        int wood = newValue.wood[ClientManager.LocalClientGameId];
+        int gems = newValue.gems[ClientManager.LocalClientGameId];
+
+        Debug.Log($"Food: {food}, Stone: {stone}, Wood: {wood}, Gems: {gems}");
 
         var iterator = 0;
         var isTrue = true;
