@@ -44,7 +44,7 @@ public class UnitBase : TileObject
 
     public void Awake()
     {
-        OnTurnChange(0);
+        TurnManager.OnMyTurnStarted += OnTurnChange;
     }
     #region Interfaces
     [ServerRpc(RequireOwnership = false)]
@@ -105,7 +105,7 @@ public class UnitBase : TileObject
         }
         ClearMarkers();
     }
-    public void OnTurnChange(int turn)
+    public void OnTurnChange()
     {
         TurnActionsLeft = 1;
         AltTurnActionsLeft = 1;
