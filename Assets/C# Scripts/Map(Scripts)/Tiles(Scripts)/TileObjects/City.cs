@@ -17,7 +17,7 @@ public class City : TileObject
     [SerializeField] private MeshFilter borderMeshFilter;
     private Material borderMaterial;
 
-    [SerializeField] private List<Vector3> borderTilePositions;
+    public List<Vector3> BorderTilePositions { get; private set; } = new List<Vector3>();
 
 
     [SerializeField] private int ownerClientGameId;
@@ -35,6 +35,10 @@ public class City : TileObject
         if (IsServer)
         {
             RecalculateBorderMesh_OnServer();
+        }
+        if (ownerClientGameId == ClientManager.LocalClientGameId)
+        {
+            LocalGameManager.ownedCities.Add(this);
         }
     }
 
@@ -93,17 +97,17 @@ public class City : TileObject
                 {
                     float3 tilePos = tile.transform.position;
 
-                    if (borderTilePositions.Contains(tilePos) == false && tile.ownedByPlayerTeamId == -1)
+                    if (BorderTilePositions.Contains(tilePos) == false && tile.ownedByPlayerTeamId == -1)
                     {
                         tile.ownedByPlayerTeamId = ownerClientTeamId;
 
-                        borderTilePositions.Add(tilePos);
+                        BorderTilePositions.Add(tilePos);
                     }
                 }
             }
         }
 
-        ExpandCityBorder_ClientRPC(borderTilePositions.ToArray(), PlayerColorHandler.GetPlayerColor_OnServer(ownerClientGameId));
+        ExpandCityBorder_ClientRPC(BorderTilePositions.ToArray(), PlayerColorHandler.GetPlayerColor_OnServer(ownerClientGameId));
     }
 
 
@@ -113,7 +117,7 @@ public class City : TileObject
     private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, Vector4 borderColor)
     {
         //if clientId_ForUpdateRequest is the ownerCLient (updating his border), discover all clouds in the border
-        if (NetworkManager.LocalClientId == OwnerClientId) 
+        if (NetworkManager.LocalClientId == OwnerClientId)
         {
             int borderTilesCount = borderTilePositions.Length;
             Vector2 tilePos;
@@ -150,9 +154,9 @@ public class City : TileObject
 
     private void OnDrawGizmos()
     {
-        for (int i = 0; i < borderTilePositions.Count; i++)
+        for (int i = 0; i < BorderTilePositions.Count; i++)
         {
-            Gizmos.DrawWireCube(borderTilePositions[i], Vector3.one);
+            Gizmos.DrawWireCube(BorderTilePositions[i], Vector3.one);
         }
 
         if (Application.isPlaying == false)

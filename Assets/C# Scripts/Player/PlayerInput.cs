@@ -109,23 +109,35 @@ public class PlayerInput : MonoBehaviour
 
         SelectedObject = LastHitObject;
 
+        //Check if the object can be built on
 
         if (SelectedObject.TryGetComponent(out IBuildable IB))
         {
-            if (SelectedObject.TryGetComponent(out TileBase TB))
+            //Check if the tile is within the border
+            if (LocalGameManager.TileIsWithinBorder(SelectedObject.transform.position))
             {
-                if (TB.CanBeBuiltOn)
+                //Gets the tilebase component from the object
+                if (SelectedObject.TryGetComponent(out TileBase TB))
                 {
-                    HandleBuildingPanel(IB);
+                    //If the tile can be built on, it will show the building panel
+                    if (TB.CanBeBuiltOn)
+                    {
+                        HandleBuildingPanel(IB);
+                    }
+                    //Else it hides it 
+                    else
+                    {
+                        _buildingHandler.HideBuildingPanel();
+                    }
                 }
                 else
                 {
-                    _buildingHandler.HideBuildingPanel();
+                    HandleBuildingPanel(IB);
                 }
             }
             else
             {
-                HandleBuildingPanel(IB);
+                _buildingHandler.HideBuildingPanel();
             }
         }
         else

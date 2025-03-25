@@ -106,14 +106,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileLayer: 1
   canHoldCastle: 1
-  ownedByPlayerGameId: 0
+  ownedByPlayerTeamId: 0
   _perlinHeight: 0
   _possibleEnviromentalObjects:
   - _possibleEnviromentalObjectId: 2
     _possibleEnviromentalPosHolder: {fileID: 8069227839190860650}
     weight: 10
     randomRotation: 0
-  _currentHeldEnviromentalObject: {fileID: 0}
+  - _possibleEnviromentalObjectId: 20
+    _possibleEnviromentalPosHolder: {fileID: 8069227839190860650}
+    weight: 40
+    randomRotation: 1
+  - _possibleEnviromentalObjectId: 21
+    _possibleEnviromentalPosHolder: {fileID: 8069227839190860650}
+    weight: 41
+    randomRotation: 1
+  _tileObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 8069227839190860650}
   buildings: []
   shakeStrength: 0.1
