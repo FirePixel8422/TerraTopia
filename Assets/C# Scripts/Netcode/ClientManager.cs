@@ -130,6 +130,7 @@ public class ClientManager : NetworkBehaviour
                 "CraniumSnuiver",
                 "Moe-Lester",
                 "69PussySlayer69",
+                "HonkiePlonkie",
             };
 
             int r = UnityEngine.Random.Range(0, funnyNames.Length);

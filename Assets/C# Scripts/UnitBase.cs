@@ -395,6 +395,8 @@ public class UnitBase : TileObject
     private void OnSpawn_ClientRPC(int ownerPlayerGameId)
     {
         colorRenderer.material = UnitSpawnHandler.GetTeamColorMaterial_OnServer(ownerPlayerGameId, unitId);
+
+        UnitSpawnHandler.SpawnUnitHead(headTransform, ownerPlayerGameId, unitId);
     }
 }
 

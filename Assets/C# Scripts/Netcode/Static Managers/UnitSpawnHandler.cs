@@ -41,25 +41,28 @@ public static class UnitSpawnHandler
     /// <summary>
     /// Only call this from the server!!! _______ Instantiate Unit with correct cosmetic of the requesting client on server, then spawn it on network.
     /// </summary>
-    /// <returns>The Spawned Unit (Not yet spawned on network)</returns>
-    public static UnitBase InstantiateUnit_OnServer(int clientGameId, int unitId, Vector3 pos, Quaternion rot)
+    /// <returns>The Spawned Unit</returns>
+    public static UnitBase SpawnUnit_OnServer(int clientGameId, int unitId, Vector3 pos, Quaternion rot)
     {
         ulong clientNetworkId = ClientManager.GetClientNetworkId(clientGameId);
 
         //get units list from "clientGameId" and get "unitId" from that list 
         UnitBase unitBodyPrefab = unitCosmeticsList[clientGameId][unitId].body;
-        NetworkObject unitHeadPrefab = unitCosmeticsList[clientGameId][unitId].head;
-
-        //spawn unit (locally on server)
-        Debug.Log(unitBodyPrefab.GetComponent<NetworkObject>());
  
         UnitBase spawnedUnit = unitBodyPrefab.GetComponent<NetworkObject>().InstantiateAndSpawn(NetworkManager.Singleton, clientNetworkId, true, false, false, pos, rot).GetComponent<UnitBase>();
-        unitHeadPrefab.InstantiateAndSpawn(NetworkManager.Singleton, clientNetworkId, true);
-
-        //attach head to body
-        unitHeadPrefab.TrySetParent(unitHeadPrefab, false);
 
         return spawnedUnit;
+    }
+
+
+    /// <summary>
+    /// Only call this from the server!!! _______ Instantiate Unit with correct cosmetic of the requesting client on server, then spawn it on network.
+    /// </summary>
+    public static void SpawnUnitHead(Transform headHolderTransform, int clientGameId, int unitId)
+    {
+        NetworkObject unitHeadPrefab = unitCosmeticsList[clientGameId][unitId].head;
+
+        Object.Instantiate(unitHeadPrefab, headHolderTransform, false);
     }
 
 

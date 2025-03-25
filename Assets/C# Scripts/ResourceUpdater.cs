@@ -4,53 +4,33 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
-public class RecourceUpdater : NetworkBehaviour
+public class RecourceUpdater : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI[] naam;
+    [SerializeField] private TextMeshProUGUI[] resourcesTextObjs;
 
-    public override void OnNetworkSpawn()
+    private void Start()
     {
-        ResourceManager.playerResourcesDataArray.OnValueChanged += (PlayerResourcesDataArray oldValue, PlayerResourcesDataArray newValue) => OnresourceUpdate(newValue);
+        ResourceManager.OnResourcesUpdated += OnresourceUpdate;
     }
 
 
     private void OnresourceUpdate(PlayerResourcesDataArray newValue)
     {
-        int food = newValue.food[ClientManager.LocalClientGameId];
-        int stone = newValue.stone[ClientManager.LocalClientGameId];
-        int wood = newValue.wood[ClientManager.LocalClientGameId];
-        int gems = newValue.gems[ClientManager.LocalClientGameId];
+        int localClientGameId = ClientManager.LocalClientGameId;
 
-        Debug.Log($"Food: {food}, Stone: {stone}, Wood: {wood}, Gems: {gems}");
+        int food = newValue.food[localClientGameId];
+        int stone = newValue.stone[localClientGameId];
+        int wood = newValue.wood[localClientGameId];
+        int gems = newValue.gems[localClientGameId];
 
-        var iterator = 0;
-        var isTrue = true;
-        while (isTrue)
-        {
-            isTrue = false;
-            for (int i = 0; i < 4; i++)
-            {
-                if (i == 0)
-                {
-                    iterator++;
-                    naam[iterator].text = food.ToString();
-                }
-                else if (i == 1)
-                {
-                    iterator++;
-                    naam[iterator].text = stone.ToString();
-                }
-                else if (i == 2)
-                {
-                    iterator++;
-                    naam[iterator].text = wood.ToString();
-                }
-                else 
-                {
-                    iterator++;
-                    naam[iterator].text = gems.ToString();
-                }
-            }
-        }
+        resourcesTextObjs[0].text = food.ToString();
+        resourcesTextObjs[1].text = stone.ToString();
+        resourcesTextObjs[2].text = wood.ToString();
+        resourcesTextObjs[3].text = gems.ToString();
+    }
+
+    private void OnDestroy()
+    {
+        ResourceManager.OnResourcesUpdated -= OnresourceUpdate;
     }
 }

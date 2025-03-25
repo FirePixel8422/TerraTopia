@@ -93,7 +93,7 @@ public class CoalitionManager : NetworkBehaviour
         {
             if (teamCounts[i] > 0)
             {
-                teamCount += 0;
+                teamCount += 1;
             }
         }
 
@@ -114,6 +114,8 @@ public class CoalitionManager : NetworkBehaviour
         //return fairTeams for fairTeams
         return (playerCount > 0, fairTeams);
 #endif
+
+        return (playerCount > 0, fairTeams);
 
 
         //DEBUG
