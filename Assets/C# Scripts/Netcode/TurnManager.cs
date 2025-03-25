@@ -27,8 +27,13 @@ public class TurnManager : NetworkBehaviour
 
 
 
-    public override void OnNetworkSpawn()
+    public void OnAllClientsLoaded()
     {
+        if (IsServer)
+        {
+            SetRandomStartTeam_ServerRPC();
+        }
+
         //when the turn changes
         teamOnTurnId.OnValueChanged += (int oldTeamOnTurnId, int newTeamOnTurnId) =>
         {

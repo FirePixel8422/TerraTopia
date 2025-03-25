@@ -1,5 +1,6 @@
 using System;
 using Unity.Netcode;
+using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,6 +31,7 @@ public class ClientManager : NetworkBehaviour
     public static void UpdatePlayerIdDataArray_OnServer(PlayerIdDataArray newValue)
     {
         playerIdDataArray.Value = newValue;
+        playerIdDataArray.SetDirty(true);
     }
 
 
@@ -110,9 +112,33 @@ public class ClientManager : NetworkBehaviour
     [Tooltip("Local Client userName, value is set after ClientDisplayManager's OnNetworkSpawn")]
     public static string LocalUserName { get; private set; }
 
-    public static void SetLocalUserName(string newname)
+    private void CreateLocalUsername()
     {
-        LocalUserName = newname;
+        string userName = AuthenticationService.Instance.PlayerInfo.Username;
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (string.IsNullOrEmpty(userName))
+        {
+            string[] funnyNames = new string[]
+            {
+                "JohnDoe",
+                "WillowWilson",
+                "BijnaMichael",
+                "Yi-Long-Ma",
+                "Loading4Ever",
+                "DickSniffer",
+                "CraniumSnuiver",
+                "Moe-Lester",
+                "69PussySlayer69",
+            };
+
+            int r = UnityEngine.Random.Range(0, funnyNames.Length);
+
+            userName = funnyNames[r];
+        }
+#endif
+
+        LocalUserName = userName;
     }
 
     #endregion
@@ -142,9 +168,12 @@ public class ClientManager : NetworkBehaviour
         {
             LocalClientGameId = newValue.GetPlayerGameId(NetworkManager.LocalClientId);
             LocalClientTeamId = newValue.GetPlayerTeamId(LocalClientGameId);
+
+            TeamCount = newValue.TeamCount;
         };
 
         DontDestroyOnLoad(gameObject);
+        CreateLocalUsername();
 
         //Invoke OnInitialized event after OnNetworkSpawn is fully executed, also Set initialized to true and clear OnInitialized Action
         OnInitialized?.Invoke();

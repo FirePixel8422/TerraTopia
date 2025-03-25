@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3108164534
+  GlobalObjectIdHash: 1721390940
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -233,7 +233,7 @@ MonoBehaviour:
   buildings:
   - {fileID: 11400000, guid: b78e65fb5e5c8e04b9c8f113051d1156, type: 2}
   level: 0
-  borderSize: 1
+  borderSize: 2
   labSpeed: 0
   cityRenderer: {fileID: 4797364007804853225}
   borderMeshFilter: {fileID: 1257945936693446541}

@@ -29,6 +29,7 @@ public class ResourceManager : NetworkBehaviour
     public static void UpdateResourceData_OnServer(PlayerResourcesDataArray newValue)
     {
         playerResourcesDataArray.Value = newValue;
+        playerResourcesDataArray.SetDirty(true);
     }
 
 
@@ -109,7 +110,7 @@ public class ResourceManager : NetworkBehaviour
     /// <summary>
     /// True if localClient has the updated resource values, set to false when a client modifies those resources, then set back to true once changes are processed through the server
     /// </summary>
-    private static bool localClientHasUpdatedResources;
+    private static bool localClientHasUpdatedResources = true;
 
 
 

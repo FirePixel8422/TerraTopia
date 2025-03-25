@@ -72,7 +72,7 @@ public class ClientLobbyMenu : NetworkBehaviour
             startGameButton.SetActive(true);
         }
 
-        ClientManager.SetLocalUserName(userName);
+        ///ClientManager.SetLocalUserName(userName);
 
         int localClientGameId = ClientManager.GetClientGameId(NetworkManager.LocalClientId);
 

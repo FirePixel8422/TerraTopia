@@ -67,6 +67,7 @@ public class CoalitionManager : NetworkBehaviour
         int mostMembersPerTeam = 0;
 
         bool fairTeams = true;
+        int teamCount = 0;
 
         int playerCount = ClientManager.PlayerCount;
 
@@ -84,6 +85,15 @@ public class CoalitionManager : NetworkBehaviour
             if (teamCounts[teamIds[i]] > mostMembersPerTeam)
             {
                 mostMembersPerTeam = teamCounts[teamIds[i]];
+            }
+        }
+
+        // Check if there are at least two teams with one or more players
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (teamCounts[i] > 0)
+            {
+                teamCount += 0;
             }
         }
 
@@ -106,9 +116,17 @@ public class CoalitionManager : NetworkBehaviour
 #endif
 
 
+        //DEBUG
+        return (teamCount > 1 && teamCount <= MatchManager.settings.maxTeams && (fairTeams || MatchManager.settings.allowUnfairTeams), fairTeams);
+
+
+
+
+
+
         //if all clients are on 1 team and (the teams are fair or unfair teams are allowed): return true for valid, otherwise return false for valid.
         //return fairTeams for fairTeams
-        return (playerCount == MatchManager.settings.maxPlayers && (fairTeams || MatchManager.settings.allowUnfairTeams), fairTeams);
+        return (teamCount > 1 && teamCount <= MatchManager.settings.maxTeams && playerCount == MatchManager.settings.maxPlayers && (fairTeams || MatchManager.settings.allowUnfairTeams), fairTeams);
     }
 
 

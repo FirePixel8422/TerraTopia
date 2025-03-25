@@ -9,7 +9,7 @@ using UnityEngine;
 public class City : TileObject
 {
     public int level;
-    public int borderSize = 1;
+    public int borderSize = 2;
     public float labSpeed;
 
     [SerializeField] private MeshRenderer cityRenderer;

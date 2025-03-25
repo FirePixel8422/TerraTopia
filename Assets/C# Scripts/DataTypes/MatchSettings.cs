@@ -82,6 +82,7 @@ public struct MatchSettings : INetworkSerializable
 
         serializer.SerializeValue(ref seed);
         serializer.SerializeValue(ref mapId);
+        serializer.SerializeValue(ref mapSize);
         serializer.SerializeValue(ref privateLobby);
     }
 }

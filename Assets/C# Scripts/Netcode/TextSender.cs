@@ -7,12 +7,22 @@ using UnityEngine.UI;
 
 public class TextSender : NetworkBehaviour
 {
+    public static TextSender Instance { get; private set; }
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
+
+
     public GameObject textBoxPrefab;
     public Transform chatContentHolder;
 
     public Scrollbar scrollBar;
     private TMP_InputField inputField;
-    public FixedString128Bytes localPlayerName;
+
+    private FixedString128Bytes localPlayerName;
 
     public bool showLocalNameAs_You;
     public bool active;
@@ -30,6 +40,7 @@ public class TextSender : NetworkBehaviour
         localPlayerName = new FixedString128Bytes(ClientManager.LocalUserName);
     }
 
+
     public void ToggleUI()
     {
         active = !active;
@@ -44,7 +55,8 @@ public class TextSender : NetworkBehaviour
         }
     }
 
-    public void TrySendText()
+
+    private void TrySendText()
     {
         if (string.IsNullOrEmpty(inputField.text))
         {
@@ -53,22 +65,45 @@ public class TextSender : NetworkBehaviour
 
         inputField.ActivateInputField();
 
-        SendText_ServerRPC(NetworkManager.LocalClientId, localPlayerName, inputField.text);
+        SendTextGlobal_ServerRPC(NetworkManager.Singleton.LocalClientId, localPlayerName, inputField.text);
 
         inputField.text = "";
     }
 
 
+
+
+
     [ServerRpc(RequireOwnership = false)]
-    public void SendText_ServerRPC(ulong clientId, FixedString128Bytes playerName, FixedString128Bytes text)
+    public void SendTextGlobal_ServerRPC(ulong fromClientId, FixedString128Bytes senderName, FixedString128Bytes text)
     {
-        SendText_ClientRPC(clientId, playerName, text);
+        SendTextGlobal_ClientRPC(fromClientId, senderName, text);
     }
+
     [ClientRpc(RequireOwnership = false)]
-    public void SendText_ClientRPC(ulong clientId, FixedString128Bytes playerName, FixedString128Bytes text)
+    private void SendTextGlobal_ClientRPC(ulong fromClientId, FixedString128Bytes senderName, FixedString128Bytes text)
     {
-        StartCoroutine(AddTextToChatBox(clientId, playerName, text));
+        StartCoroutine(AddTextToChatBox(fromClientId, senderName, text));
     }
+
+
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SendTextToClient_ServerRPC(ulong toClientId, FixedString128Bytes senderName, FixedString128Bytes text)
+    {
+        SendTextToClient_ClientRPC(toClientId, senderName, text);
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    private void SendTextToClient_ClientRPC(ulong toClientId, FixedString128Bytes senderName, FixedString128Bytes text)
+    {
+        //send to only "toClientId"
+        if (NetworkManager.LocalClientId != toClientId) return;
+
+        StartCoroutine(AddTextToChatBox(toClientId, senderName, text));
+    }
+
+
 
     private IEnumerator AddTextToChatBox(ulong clientId, FixedString128Bytes playerName, FixedString128Bytes text)
     {
