@@ -9,7 +9,6 @@ using UnityEngine;
 
 public struct TileGenerator 
 {
-
     public TileGenerator(NoiseData noiseData, int width, int length, int seed, Transform parent, GameObject cloudPrefab, out Dictionary<Vector2, TileBase> tilesToReturn, out Dictionary<Vector2, GameObject> cloudsToReturn)
     {
         tilesToReturn = new Dictionary<Vector2, TileBase>();

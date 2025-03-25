@@ -102,19 +102,19 @@ MonoBehaviour:
   ownedByPlayerTeamId: 0
   _perlinHeight: 0
   _possibleEnviromentalObjects:
-  - _possibleEnviromentalObjectId: 9
+  - _possibleEnviromentalObjectId: 8
     _possibleEnviromentalPosHolder: {fileID: 706713878150370773}
     weight: 20
     randomRotation: 0
-  - _possibleEnviromentalObjectId: 10
+  - _possibleEnviromentalObjectId: 9
     _possibleEnviromentalPosHolder: {fileID: 706713878150370773}
     weight: 40
     randomRotation: 0
-  - _possibleEnviromentalObjectId: 11
+  - _possibleEnviromentalObjectId: 10
     _possibleEnviromentalPosHolder: {fileID: 706713878150370773}
     weight: 60
     randomRotation: 0
-  _currentHeldEnviromentalObject: {fileID: 0}
+  _tileObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 706713878150370773}
   buildings:
   - {fileID: 11400000, guid: 98809c190f3257e47a3d2e9c3e4e8b9d, type: 2}

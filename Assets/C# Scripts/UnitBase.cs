@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-public class UnitBase : TileObject, IOnTurnChangable
+public class UnitBase : TileObject
 {
     private int ownerPlayerGameId;
     public int unitId;
@@ -345,12 +345,13 @@ public class UnitBase : TileObject, IOnTurnChangable
                 .SetEase(Ease.Linear)
                 .OnStart(() =>
                 {
-                    if (tile.TryGetComponent(out TileBase tileBase))
-                    {
-                        CurrentTile.AssignUnit_ClientRPC(this);
-                        CurrentTile = tileBase;
-                        CurrentTile.DeAssignUnit_ClientRPC(this);
-                    }
+                    path[path.Count].GetComponent<TileBase>().AssignUnit_ClientRPC(this);
+                    //if (tile.TryGetComponent(out TileBase tileBase))
+                    //{
+                    //    CurrentTile.AssignUnit_ClientRPC(this);
+                    //    CurrentTile = tileBase;
+                    //    CurrentTile.DeAssignUnit_ClientRPC(this);
+                    //}
 
                     Vector3 direction = (targetPosition - transform.position).normalized;
                     float targetYRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
