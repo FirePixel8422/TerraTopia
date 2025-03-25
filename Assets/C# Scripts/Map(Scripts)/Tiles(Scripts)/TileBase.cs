@@ -203,12 +203,6 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
         IsHoldingObject = true;
     }
 
-    public UnitBase SpawnAndAssignUnit_OnServer(int clientGameId, int unitId)
-    {
-        UnitBase spawnedUnit = UnitSpawnHandler.InstantiateUnit_OnServer(clientGameId, unitId);
-
-        return spawnedUnit;
-    }
 
     [ClientRpc(RequireOwnership = false)]
     public void AssignUnit_ClientRPC(UnitBase UB)
@@ -217,6 +211,18 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
         UB.CurrentTile = this;
     }
+
+    [ClientRpc(RequireOwnership = false)]
+    public void AssignUnit_ClientRPC(UnitBase UB, bool syncPos)
+    {
+        UB.gameObject.transform.position = transform.position;
+        CurrentHeldUnit = UB;
+
+        UB.CurrentTile = this;
+    }
+
+
+
 
     [ClientRpc(RequireOwnership = false)]
     public void DeAssignUnit_ClientRPC(UnitBase UB)

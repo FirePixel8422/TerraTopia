@@ -126,5 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileCanBeBuiltOn: 1
-  buildings:
-  - {fileID: 11400000, guid: b78e65fb5e5c8e04b9c8f113051d1156, type: 2}
+  buildings: []

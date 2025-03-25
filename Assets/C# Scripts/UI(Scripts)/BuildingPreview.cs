@@ -9,6 +9,7 @@ public class BuildingPreview : MonoBehaviour
     public Image previewImage;
     public int tileObjectId;
 
+    public bool isUnit;
     //The materials needed to buy the building
     public ObjectCosts buildingCosts;
 
@@ -17,18 +18,45 @@ public class BuildingPreview : MonoBehaviour
 #if !UNITY_EDITOR && !DEVELOPMENT_BUILD
         if (TurnManager.IsMyTurn == false) return;
 #endif
-
-        if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
+        if (isUnit)
         {
-            //if TryBuild returns false, the player cannot afford the building
-            if (ResourceManager.TrySpawnBuilding(buildingCosts, tileObjectId, tile.transform.position.ToRoundedVector2()) == false)
+            if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
             {
-                print("Player cannot afford this building");
+                //if TryBuild returns false, the player cannot afford the building
+                if (ResourceManager.TrySpawnUnit(buildingCosts, tileObjectId, tile.transform.position.ToRoundedVector2()))
+                {
+                    buildingHandler.HideBuildingPanel();
+                    print("Panel is hidden");   
+                }
+                else
+                {
+                    print("Player cannot afford this building");
+                }
+            }
+            else
+            {
+                print("CurrentBuildingTile does not contain a TileBase script");
             }
         }
         else
         {
-            print("CurrentBuildingTile does not contain a TileBase script");
+            if (PlayerInput.Instance.CurrentBuildingTile.TryGetComponent(out TileBase tile))
+            {
+                //if TryBuild returns false, the player cannot afford the building
+                if (ResourceManager.TrySpawnBuilding(buildingCosts, tileObjectId, tile.transform.position.ToRoundedVector2()))
+                {
+                    buildingHandler.HideBuildingPanel();
+                    print("Panel is hidden");
+                }
+                else
+                {
+                    print("Player cannot afford this building");
+                }
+            }
+            else
+            {
+                print("CurrentBuildingTile does not contain a TileBase script");
+            }
         }
     }
 }

@@ -219,9 +219,10 @@ public class ResourceManager : NetworkBehaviour
 
 
         GridManager.TryGetTileByPos(tileToPlaceOnPos.ToRoundedVector2(), out TileBase tileToPlaceOn);
+        UnitBase spawnedUnit = UnitSpawnHandler.InstantiateUnit_OnServer(clientGameId, unitId, tileToPlaceOnPos, Quaternion.identity);
+        spawnedUnit.transform.position = tileToPlaceOn.transform.position;
 
-        UnitBase spawnedUnit = tileToPlaceOn.SpawnAndAssignUnit_OnServer(clientGameId, unitId);
-        tileToPlaceOn.AssignUnit_ClientRPC(spawnedUnit);
+        tileToPlaceOn.AssignUnit_ClientRPC(spawnedUnit, true);
     }
 
 

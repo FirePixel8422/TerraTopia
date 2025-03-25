@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 270c811488753d746866cb5d511ffc97, type: 3}
-  m_Name: Warrior
+  m_Name: Barracks
   m_EditorClassIdentifier: 
-  buildingGOId: 0
-  buildingSprite: {fileID: 21300000, guid: f4fce3a3067a4422e96a039b37de993a, type: 3}
+  buildingGOId: 15
+  buildingSprite: {fileID: 21300000, guid: 664fbc0833ec7409cafa28692dbecede, type: 3}
   costs:
-    food: 50
-    stone: 0
-    wood: 0
+    food: 0
+    stone: 125
+    wood: 125
     gems: 0
-  isUnit: 1
+  isUnit: 0
