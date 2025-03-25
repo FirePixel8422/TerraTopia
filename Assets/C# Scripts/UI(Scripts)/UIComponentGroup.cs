@@ -53,7 +53,7 @@ public class UIComponentGroup : MonoBehaviour
         }
         if (inputField != null)
         {
-            inputField.onValueChanged.AddListener((string value) => OnValueChanged.Invoke(math.clamp(int.Parse(value), minValue, maxValue)));
+            inputField.onValueChanged.AddListener((string value) => OnValueChanged.Invoke(math.clamp(string.IsNullOrEmpty(value) ? 0 : int.Parse(value), minValue, maxValue)));
         }
 
         UpdateUI(startValue);

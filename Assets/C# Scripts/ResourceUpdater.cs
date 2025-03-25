@@ -8,9 +8,11 @@ public class RecourceUpdater : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI[] resourcesTextObjs;
 
-    private void Start()
+
+
+    private void Update()
     {
-        ResourceManager.OnResourcesUpdated += OnresourceUpdate;
+        OnresourceUpdate(ResourceManager.GetResourceData());
     }
 
 
@@ -27,10 +29,5 @@ public class RecourceUpdater : MonoBehaviour
         resourcesTextObjs[1].text = stone.ToString();
         resourcesTextObjs[2].text = wood.ToString();
         resourcesTextObjs[3].text = gems.ToString();
-    }
-
-    private void OnDestroy()
-    {
-        ResourceManager.OnResourcesUpdated -= OnresourceUpdate;
     }
 }

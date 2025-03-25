@@ -61,6 +61,12 @@ public class MatchManager : NetworkBehaviour
     /// </summary>
     public async override void OnNetworkSpawn()
     {
+        //on value changed event of matchsettings
+        matchSettingsNetworkVar.OnValueChanged += (MatchSettings oldValue, MatchSettings newValue) =>
+        {
+            settings = newValue;
+        };
+
         if (IsServer)
         {
             MatchSettings settingsCopy = settings;
@@ -71,15 +77,8 @@ public class MatchManager : NetworkBehaviour
 
             matchSettingsNetworkVar.Value = settingsCopy;
 
-
-            await SaveSettingsAsync(settings);
+            SaveSettingsAsync(settings);
         }
-
-        //on value changed event of matchsettings
-        matchSettingsNetworkVar.OnValueChanged += (MatchSettings oldValue, MatchSettings newValue) =>
-        {
-            settings = newValue;
-        };
     }
 
 

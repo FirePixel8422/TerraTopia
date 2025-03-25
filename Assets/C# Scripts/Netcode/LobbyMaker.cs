@@ -57,7 +57,7 @@ public class LobbyMaker : NetworkBehaviour
 
             CreateLobbyOptions options = new CreateLobbyOptions
             {
-                IsPrivate = false,
+                IsPrivate = MatchManager.settings.privateLobby,
                 IsLocked = false,
 
                 Data = new Dictionary<string, DataObject>()
@@ -208,6 +208,8 @@ public class LobbyMaker : NetworkBehaviour
 
     public async void JoinLobbyByIdAsync(string lobbyId)
     {
+        invisibleScreenCover.SetActive(true);
+
         try
         {
             Lobby lobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId);
@@ -235,9 +237,13 @@ public class LobbyMaker : NetworkBehaviour
                 _joinData.HostConnectionData);
 
             NetworkManager.StartClient();
+
+            SceneManager.LoadScene("Pre-Main Game 1");
         }
         catch (LobbyServiceException e)
         {
+            invisibleScreenCover.SetActive(false);
+
             print(e);
             throw;
         }

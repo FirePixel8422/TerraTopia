@@ -2765,6 +2765,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e4650518992b3404da9c7ea2030623f4, type: 2}
   - {fileID: 11400000, guid: e916d4a2375c8df438ed881cfc526fa8, type: 2}
   - {fileID: 11400000, guid: cfd096943ba02ea4db4a3014a442fb11, type: 2}
+  - {fileID: 11400000, guid: 4f6e85a81188593488605f08c1feb7d8, type: 2}
+  - {fileID: 11400000, guid: 0a3a0205c0d45f44ba5e2af70ffee758, type: 2}
   prefabsStrings: []
 --- !u!1 &1962471229
 GameObject:

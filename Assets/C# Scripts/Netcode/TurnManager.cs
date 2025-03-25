@@ -29,6 +29,8 @@ public class TurnManager : NetworkBehaviour
 
     public void OnAllClientsLoaded()
     {
+        transform.GetChild(0).gameObject.SetActive(true);
+
         if (IsServer)
         {
             SetRandomStartTeam_ServerRPC();

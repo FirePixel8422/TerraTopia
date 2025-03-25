@@ -14,7 +14,6 @@ public class ResourceManager : NetworkBehaviour
 
 
     private static NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>();
-    public static Action<PlayerResourcesDataArray> OnResourcesUpdated;
 
     /// <summary>
     /// Get PlayerResourcesData Copy (changes on copy wont sync back to ResourceManager and wont cause a networkSync)
@@ -41,12 +40,6 @@ public class ResourceManager : NetworkBehaviour
         {
             playerResourcesDataArray.Value = new PlayerResourcesDataArray(MatchManager.settings.maxPlayers);
         }
-
-        playerResourcesDataArray.OnValueChanged += (PlayerResourcesDataArray oldValue, PlayerResourcesDataArray newValue) =>
-        {
-            print("valuechange");
-            OnResourcesUpdated?.Invoke(newValue);
-        };
     }
 
 
