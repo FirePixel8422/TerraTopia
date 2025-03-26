@@ -117,7 +117,6 @@ MonoBehaviour:
   _tileObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 706713878150370773}
   buildings:
-  - {fileID: 11400000, guid: 98809c190f3257e47a3d2e9c3e4e8b9d, type: 2}
   - {fileID: 11400000, guid: 639abcdc0077c7444865c79bf7f4697f, type: 2}
   shakeStrength: 0.1
   canShake: 1

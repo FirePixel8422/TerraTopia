@@ -125,9 +125,14 @@ MonoBehaviour:
     _possibleEnviromentalPosHolder: {fileID: 8069227839190860650}
     weight: 65
     randomRotation: 1
+  - _possibleEnviromentalObjectId: 17
+    _possibleEnviromentalPosHolder: {fileID: 8069227839190860650}
+    weight: 67
+    randomRotation: 0
   _tileObject: {fileID: 0}
   _enviromentalObjectPosHolder: {fileID: 8069227839190860650}
-  buildings: []
+  buildings:
+  - {fileID: 11400000, guid: 639abcdc0077c7444865c79bf7f4697f, type: 2}
   shakeStrength: 0.1
   canShake: 1
 --- !u!65 &6198836607413958231
