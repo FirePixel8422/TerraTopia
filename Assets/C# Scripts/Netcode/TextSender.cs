@@ -27,6 +27,8 @@ public class TextSender : NetworkBehaviour
     public bool showLocalNameAs_You;
     public bool active;
 
+    public Color serverMessagesColor;
+
     public float toggleSpeed;
 
     public Vector3 enabledPos;
@@ -56,17 +58,23 @@ public class TextSender : NetworkBehaviour
     }
 
 
-    private void TrySendText()
+    public void TrySendText()
     {
         if (string.IsNullOrEmpty(inputField.text))
         {
             return;
         }
 
+        if (inputField.text.ToLower() == "/seed")
+        {
+            SendTextGlobal_ServerRPC(-1, "Server", "Map Seed =\n" + MatchManager.settings.seed.ToString());
+        }
+        else
+        {
+            SendTextGlobal_ServerRPC(ClientManager.LocalClientGameId, localPlayerName, inputField.text);
+        }
+
         inputField.ActivateInputField();
-
-        SendTextGlobal_ServerRPC(NetworkManager.Singleton.LocalClientId, localPlayerName, inputField.text);
-
         inputField.text = "";
     }
 
@@ -75,45 +83,49 @@ public class TextSender : NetworkBehaviour
 
 
     [ServerRpc(RequireOwnership = false)]
-    public void SendTextGlobal_ServerRPC(ulong fromClientId, FixedString128Bytes senderName, FixedString128Bytes text)
+    public void SendTextGlobal_ServerRPC(int clientGameId, FixedString128Bytes senderName, FixedString128Bytes text)
     {
-        SendTextGlobal_ClientRPC(fromClientId, senderName, text);
+        SendTextGlobal_ClientRPC(clientGameId, senderName, text);
     }
 
     [ClientRpc(RequireOwnership = false)]
-    private void SendTextGlobal_ClientRPC(ulong fromClientId, FixedString128Bytes senderName, FixedString128Bytes text)
+    private void SendTextGlobal_ClientRPC(int clientGameId, FixedString128Bytes senderName, FixedString128Bytes text)
     {
-        StartCoroutine(AddTextToChatBox(fromClientId, senderName, text));
+        StartCoroutine(AddTextToChatBox(clientGameId, senderName, text));
     }
 
 
 
     [ServerRpc(RequireOwnership = false)]
-    public void SendTextToClient_ServerRPC(ulong toClientId, FixedString128Bytes senderName, FixedString128Bytes text)
+    public void SendTextToClient_ServerRPC(int clientGameId, FixedString128Bytes senderName, FixedString128Bytes text)
     {
-        SendTextToClient_ClientRPC(toClientId, senderName, text);
+        SendTextToClient_ClientRPC(clientGameId, senderName, text);
     }
 
     [ClientRpc(RequireOwnership = false)]
-    private void SendTextToClient_ClientRPC(ulong toClientId, FixedString128Bytes senderName, FixedString128Bytes text)
+    private void SendTextToClient_ClientRPC(int clientGameId, FixedString128Bytes senderName, FixedString128Bytes text)
     {
         //send to only "toClientId"
-        if (NetworkManager.LocalClientId != toClientId) return;
+        if (ClientManager.LocalClientGameId != clientGameId) return;
 
-        StartCoroutine(AddTextToChatBox(toClientId, senderName, text));
+        StartCoroutine(AddTextToChatBox(clientGameId, senderName, text));
     }
 
 
 
-    private IEnumerator AddTextToChatBox(ulong clientId, FixedString128Bytes playerName, FixedString128Bytes text)
+    private IEnumerator AddTextToChatBox(int clientGameId, FixedString128Bytes playerName, FixedString128Bytes text)
     {
         GameObject obj = Instantiate(textBoxPrefab, chatContentHolder, false);
 
         TextMeshProUGUI textObj = obj.GetComponent<TextMeshProUGUI>();
 
-        if (NetworkManager.LocalClientId == clientId && showLocalNameAs_You)
+        if (clientGameId == ClientManager.LocalClientGameId && showLocalNameAs_You)
         {
             playerName = "You";
+        }
+        else if (clientGameId == -1)
+        {
+            obj.GetComponent<TextMeshProUGUI>().color = serverMessagesColor;
         }
 
         textObj.text = $"[{playerName}]: " + text.ToString();

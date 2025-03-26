@@ -208,6 +208,8 @@ public class LobbyMaker : NetworkBehaviour
 
     public async void JoinLobbyByIdAsync(string lobbyId)
     {
+        if (lobbyId.Length != 22) return;
+
         invisibleScreenCover.SetActive(true);
 
         try

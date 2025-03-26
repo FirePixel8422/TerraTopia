@@ -6,20 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Login Screen.unity
+    path: Assets/Scenes/Workers/Login Screen.unity
     guid: b5cabac31f8eadc45a2439d85655525e
   - enabled: 1
-    path: Assets/Scenes/Main Scene.unity
+    path: Assets/Scenes/Workers/Main Scene.unity
     guid: e2103e9ab130c2149a0c65f7bbb70d84
   - enabled: 1
-    path: Assets/Scenes/Setup Network.unity
-    guid: 72f3565fc5532a14baf29f2648686d1b
-  - enabled: 1
-    path: Assets/Scenes/Pre-Main Game 1.unity
+    path: Assets/Scenes/Workers/Pre-Main Game 1.unity
     guid: 1057d55fe7767d4428680ed5c1d3e1fe
-  - enabled: 1
-    path: Assets/Scenes/Pre-Main Game.unity
-    guid: fbeddbf809ea8c84d861819882923fff
   - enabled: 1
     path: Assets/Scenes/Workers/Nobe.unity
     guid: 7dfb27903c95acf4b904178159b3a82e

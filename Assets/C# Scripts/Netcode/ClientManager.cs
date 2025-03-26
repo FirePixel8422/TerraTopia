@@ -14,7 +14,7 @@ public class ClientManager : NetworkBehaviour
     }
 
 
-    private static NetworkVariable<PlayerIdDataArray> playerIdDataArray = new NetworkVariable<PlayerIdDataArray>();
+    private NetworkVariable<PlayerIdDataArray> playerIdDataArray = new NetworkVariable<PlayerIdDataArray>();
 
     /// <summary>
     /// Get PlayerIdDataArray Copy (changes on copy wont sync back to clientManager and wont cause a networkSync)
@@ -22,7 +22,7 @@ public class ClientManager : NetworkBehaviour
     /// <returns>Copy Of PlayerIdDataArray</returns>
     public static PlayerIdDataArray GetPlayerIdDataArray()
     {
-        return playerIdDataArray.Value;
+        return Instance.playerIdDataArray.Value;
     }
 
     /// <summary>
@@ -30,20 +30,20 @@ public class ClientManager : NetworkBehaviour
     /// </summary>
     public static void UpdatePlayerIdDataArray_OnServer(PlayerIdDataArray newValue)
     {
-        playerIdDataArray.Value = newValue;
-        playerIdDataArray.SetDirty(true);
+        Instance.playerIdDataArray.Value = newValue;
+        Instance.playerIdDataArray.SetDirty(true);
     }
 
 
 
     [Tooltip("Turn GameId into NetworkId")]
-    public static ulong GetClientNetworkId(int gameId) => playerIdDataArray.Value.GetPlayerNetworkId(gameId);
+    public static ulong GetClientNetworkId(int gameId) => Instance.playerIdDataArray.Value.GetPlayerNetworkId(gameId);
 
     [Tooltip("Turn NetworkId into GameId")]
-    public static int GetClientGameId(ulong networkId) => playerIdDataArray.Value.GetPlayerGameId(networkId);
+    public static int GetClientGameId(ulong networkId) => Instance.playerIdDataArray.Value.GetPlayerGameId(networkId);
 
     [Tooltip("Turn GameId into TeamId")]
-    public static int GetClientTeamId(int gameId) => playerIdDataArray.Value.GetPlayerTeamId(gameId);
+    public static int GetClientTeamId(int gameId) => Instance.playerIdDataArray.Value.GetPlayerTeamId(gameId);
 
 
 
@@ -103,10 +103,10 @@ public class ClientManager : NetworkBehaviour
 
 
     [Tooltip("Amount of Players in server that have been setup by ClientManager (game/team ID System")]
-    public static int PlayerCount => playerIdDataArray.Value.PlayerCount;
+    public static int PlayerCount => Instance.playerIdDataArray.Value.PlayerCount;
 
     [Tooltip("Amount of Players in server that have been setup is 1 higher then the highestPlayerId")]
-    public static ulong UnAsignedPlayerId => (ulong)playerIdDataArray.Value.PlayerCount;
+    public static ulong UnAsignedPlayerId => (ulong)Instance.playerIdDataArray.Value.PlayerCount;
 
 
     [Tooltip("Local Client userName, value is set after ClientDisplayManager's OnNetworkSpawn")]

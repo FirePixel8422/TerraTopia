@@ -34,12 +34,16 @@ public class GridManager : NetworkBehaviour
     {
         Instance = this;
 
-        NetworkManager.SceneManager.OnLoadEventCompleted += (_, _, _, _) => OnAllClientScenesLoaded();
+        if (NetworkManager.IsServer)
+        {
+            NetworkManager.SceneManager.OnLoadEventCompleted += (_, _, _, _) => OnAllClientScenesLoaded_OnServer();
+        }
     }
 
-    private void OnAllClientScenesLoaded()
+    
+    private void OnAllClientScenesLoaded_OnServer()
     {
-        NetworkManager.SceneManager.OnLoadEventCompleted -= (_, _, _, _) => OnAllClientScenesLoaded();
+        NetworkManager.SceneManager.OnLoadEventCompleted -= (_, _, _, _) => OnAllClientScenesLoaded_OnServer();
 
         GenerateGrid();
 
@@ -52,7 +56,7 @@ public class GridManager : NetworkBehaviour
         {
             SpawnMapAssets_OnServer();
 
-            NetworkObject.InstantiateAndSpawn(tileObjectsData.tileObjects[4], NetworkManager, 0, true, false, false, new Vector3(0, 100,0));
+            NetworkObject.InstantiateAndSpawn(tileObjectsData.tileObjects[4], NetworkManager, 0, true, false, false, new Vector3(0, 100, 0));
 
 
             FindObjectOfType<TurnManager>().OnAllClientsLoaded();
@@ -72,7 +76,7 @@ public class GridManager : NetworkBehaviour
         //3 Finally the enviromental objects which CAN be placed specifically around the castles
 
         //Generates the tiles, without any non-grid logic
-        new TileGenerator(_noiseData[MatchManager.settings.mapId], _width, _length, _seed, transform, cloudPrefab, out _tiles, out _clouds);
+        new TileGenerator(_noiseData[MatchManager.settings.mapId], MatchManager.settings.mapSize, MatchManager.settings.mapSize, _seed, transform, cloudPrefab, out _tiles, out _clouds);
     }
 
     [ContextMenu("GenerateGrid_Debug")]

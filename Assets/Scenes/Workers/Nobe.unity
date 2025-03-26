@@ -245,6 +245,26 @@ PrefabInstance:
       propertyPath: showLocalNameAs_You
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1754516780207881133, guid: 2e2d08f4ad008ca4a80be76dc72592c3,
+        type: 3}
+      propertyPath: serverMessagesColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754516780207881133, guid: 2e2d08f4ad008ca4a80be76dc72592c3,
+        type: 3}
+      propertyPath: serverMessagesColor.b
+      value: 0.35294116
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754516780207881133, guid: 2e2d08f4ad008ca4a80be76dc72592c3,
+        type: 3}
+      propertyPath: serverMessagesColor.g
+      value: 0.976789
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754516780207881133, guid: 2e2d08f4ad008ca4a80be76dc72592c3,
+        type: 3}
+      propertyPath: serverMessagesColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1893443312522622827, guid: 2e2d08f4ad008ca4a80be76dc72592c3,
         type: 3}
       propertyPath: m_AnchorMax.x

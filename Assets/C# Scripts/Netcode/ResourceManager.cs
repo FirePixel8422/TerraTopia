@@ -13,7 +13,7 @@ public class ResourceManager : NetworkBehaviour
     }
 
 
-    private static NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>();
+    private NetworkVariable<PlayerResourcesDataArray> playerResourcesDataArray = new NetworkVariable<PlayerResourcesDataArray>();
 
     /// <summary>
     /// Get PlayerResourcesData Copy (changes on copy wont sync back to ResourceManager and wont cause a networkSync)
@@ -21,7 +21,7 @@ public class ResourceManager : NetworkBehaviour
     /// <returns>Copy Of PlayerResourcesData</returns>3
     public static PlayerResourcesDataArray GetResourceData()
     {
-        return playerResourcesDataArray.Value;
+        return Instance.playerResourcesDataArray.Value;
     }
 
     /// <summary>
@@ -29,8 +29,8 @@ public class ResourceManager : NetworkBehaviour
     /// </summary>
     public static void UpdateResourceData_OnServer(PlayerResourcesDataArray newValue)
     {
-        playerResourcesDataArray.Value = newValue;
-        playerResourcesDataArray.SetDirty(true);
+        Instance.playerResourcesDataArray.Value = newValue;
+        Instance.playerResourcesDataArray.SetDirty(true);
     }
 
 
@@ -51,12 +51,12 @@ public class ResourceManager : NetworkBehaviour
     public static void ModifyFood_OnServer(int clientGameId, int addedFood)
     {
         //copy resourceArray
-        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+        PlayerResourcesDataArray resourceArrayCopy = Instance.playerResourcesDataArray.Value;
 
         resourceArrayCopy.food[clientGameId] += addedFood;
 
         //update copy back to original resourceArray
-        playerResourcesDataArray.Value = resourceArrayCopy;
+        Instance.playerResourcesDataArray.Value = resourceArrayCopy;
     }
 
     /// <summary>
@@ -65,12 +65,12 @@ public class ResourceManager : NetworkBehaviour
     public static void ModifyWood_OnServer(int clientGameId, int addedWood)
     {
         //copy resourceArray
-        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+        PlayerResourcesDataArray resourceArrayCopy = Instance.playerResourcesDataArray.Value;
 
         resourceArrayCopy.wood[clientGameId] += addedWood;
 
         //update copy back to original resourceArray
-        playerResourcesDataArray.Value = resourceArrayCopy;
+        Instance.playerResourcesDataArray.Value = resourceArrayCopy;
     }
 
     /// <summary>
@@ -79,12 +79,12 @@ public class ResourceManager : NetworkBehaviour
     public static void ModifyStone_OnServer(int clientGameId, int addedStone)
     {
         //copy resourceArray
-        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+        PlayerResourcesDataArray resourceArrayCopy = Instance.playerResourcesDataArray.Value;
 
         resourceArrayCopy.stone[clientGameId] += addedStone;
 
         //update copy back to original resourceArray
-        playerResourcesDataArray.Value = resourceArrayCopy;
+        Instance.playerResourcesDataArray.Value = resourceArrayCopy;
     }
 
     /// <summary>
@@ -93,12 +93,12 @@ public class ResourceManager : NetworkBehaviour
     public static void ModifyGems_OnServer(int clientGameId, int addedGems)
     {
         //copy resourceArray
-        PlayerResourcesDataArray resourceArrayCopy = playerResourcesDataArray.Value;
+        PlayerResourcesDataArray resourceArrayCopy = Instance.playerResourcesDataArray.Value;
 
         resourceArrayCopy.gems[clientGameId] += addedGems;
 
         //update copy back to original resourceArray
-        playerResourcesDataArray.Value = resourceArrayCopy;
+        Instance.playerResourcesDataArray.Value = resourceArrayCopy;
     }
 
     #endregion
@@ -155,11 +155,13 @@ public class ResourceManager : NetworkBehaviour
     {
         int localGameId = ClientManager.LocalClientGameId;
 
+        PlayerResourcesDataArray dataArray = Instance.playerResourcesDataArray.Value;
+
         //if there are not enough resources to build this building, return false
-        if (buildingCosts.food > playerResourcesDataArray.Value.food[localGameId]) return false;
-        if (buildingCosts.wood > playerResourcesDataArray.Value.wood[localGameId]) return false;
-        if (buildingCosts.food > playerResourcesDataArray.Value.stone[localGameId]) return false;
-        if (buildingCosts.gems > playerResourcesDataArray.Value.gems[localGameId]) return false;
+        if (buildingCosts.food > dataArray.food[localGameId]) return false;
+        if (buildingCosts.wood > dataArray.wood[localGameId]) return false;
+        if (buildingCosts.food > dataArray.stone[localGameId]) return false;
+        if (buildingCosts.gems > dataArray.gems[localGameId]) return false;
 
         return true;
     }

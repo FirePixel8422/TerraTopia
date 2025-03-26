@@ -12,10 +12,6 @@ public class MatchManager : NetworkBehaviour
     }
 
 
-
-    //networkVar responsible for syncing the MatchData
-    private static NetworkVariable<MatchSettings> matchSettingsNetworkVar = new NetworkVariable<MatchSettings>();
-
     [Tooltip("Retrieve MatchData")]
     public static MatchSettings settings;
 
@@ -61,25 +57,35 @@ public class MatchManager : NetworkBehaviour
     /// </summary>
     public async override void OnNetworkSpawn()
     {
-        //on value changed event of matchsettings
-        matchSettingsNetworkVar.OnValueChanged += (MatchSettings oldValue, MatchSettings newValue) =>
-        {
-            settings = newValue;
-        };
-
         if (IsServer)
         {
-            MatchSettings settingsCopy = settings;
+            MatchSettings unRandomSeededSettingsCopy = settings;
+
             if (settings.seed == 0)
             {
-                settingsCopy.seed = Random.Range(int.MinValue, int.MaxValue);
+                settings.seed = Random.Range(int.MinValue, int.MaxValue);
             }
 
-            matchSettingsNetworkVar.Value = settingsCopy;
-
-            SaveSettingsAsync(settings);
+            await SaveSettingsAsync(unRandomSeededSettingsCopy);
+        }
+        else
+        {
+            SyncMatchSettings_ServerRPC();
         }
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SyncMatchSettings_ServerRPC()
+    {
+        SyncMatchSettings_ClientRPC(settings);
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    private void SyncMatchSettings_ClientRPC(MatchSettings _settings)
+    {
+        settings = _settings;
+    }
+
 
 
     private async Task<MatchSettings> LoadSettingsFromFileAsync()
@@ -103,4 +109,19 @@ public class MatchManager : NetworkBehaviour
     {
         await FileManager.SaveInfo(data, "SaveData/CreateLobbySettings.fpx", false);
     }
+
+
+
+
+
+#if UNITY_EDITOR
+
+    [SerializeField] private MatchSettings DEBUG_matchSettings;
+
+    private void Update()
+    {
+        DEBUG_matchSettings = settings;
+    }
+
+#endif
 }

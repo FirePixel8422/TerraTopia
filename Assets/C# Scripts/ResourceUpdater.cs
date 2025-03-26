@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
+
 
 public class RecourceUpdater : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI[] resourcesTextObjs;
 
-
+    private bool callUpdate = true;
 
     private void Update()
     {
-        OnresourceUpdate(ResourceManager.GetResourceData());
+        if (callUpdate)
+        {
+            OnresourceUpdate(ResourceManager.GetResourceData());
+        }
     }
 
 
@@ -29,5 +30,10 @@ public class RecourceUpdater : MonoBehaviour
         resourcesTextObjs[1].text = stone.ToString();
         resourcesTextObjs[2].text = wood.ToString();
         resourcesTextObjs[3].text = gems.ToString();
+    }
+
+    private void OnDestroy()
+    {
+        callUpdate = false;
     }
 }
