@@ -82,5 +82,41 @@ MonoBehaviour:
   cityUpgrades:
   - gainedGems: 0
     gainedFood: 0
-    gainedBorderSize: 5
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
+    gainedLabSpeed: 0
+  - gainedGems: 0
+    gainedFood: 0
+    gainedBorderSize: 1
     gainedLabSpeed: 0

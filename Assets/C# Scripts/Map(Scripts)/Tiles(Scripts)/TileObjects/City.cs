@@ -78,8 +78,6 @@ public class City : TileObject
 
     private void CalculateBorderTilePositions()
     {
-        BorderTilePositions.Clear();
-
         for (int xOffset = -borderSize; xOffset <= borderSize; xOffset++)
         {
             for (int zOffset = -borderSize; zOffset <= borderSize; zOffset++)
@@ -117,5 +115,15 @@ public class City : TileObject
 
         BorderMeshCalculator.CreateBorderMesh(borderMeshFilter.mesh, borderTilePositions, transform.position);
         borderMaterial.color = borderColor;
+    }
+
+
+
+    private void Update()
+    {
+        if (IsOwner && Input.GetKeyDown(KeyCode.N))
+        {
+            UpgradeCity_ServerRPC();
+        }
     }
 }
