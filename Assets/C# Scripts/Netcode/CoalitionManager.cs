@@ -115,16 +115,6 @@ public class CoalitionManager : NetworkBehaviour
         return (playerCount > 0, fairTeams);
 #endif
 
-        return (playerCount > 0, fairTeams);
-
-
-        //DEBUG
-        return (teamCount > 1 && teamCount <= MatchManager.settings.maxTeams && (fairTeams || MatchManager.settings.allowUnfairTeams), fairTeams);
-
-
-
-
-
 
         //if all clients are on 1 team and (the teams are fair or unfair teams are allowed): return true for valid, otherwise return false for valid.
         //return fairTeams for fairTeams
@@ -133,11 +123,11 @@ public class CoalitionManager : NetworkBehaviour
 
 
     /// <summary>
-    /// Is there still at least 1 open spot free in this team?
+    /// Is this team not out of bounds and is there still at least 1 open spot free in this team?
     /// </summary>
     public static bool IsTeamFull(int teamId)
     {
-        return teamCounts[teamId] == MatchManager.settings.maxPlayersPerTeam;
+        return teamId >= MatchManager.settings.maxPlayers || teamCounts[teamId] == MatchManager.settings.maxPlayersPerTeam;
     }
 
     #endregion
@@ -237,7 +227,7 @@ public class CoalitionManager : NetworkBehaviour
     {
         //reset any buzy countDownTimer
         StopAllCoroutines();
-        countDownTimerAnim.SetTrigger("Stop");
+        countDownTimerAnim.SetBool("Play", false);
     }
 
     private IEnumerator StartGameDelay(float alreadyElapsedTime, bool areTeamsFair)
@@ -262,7 +252,7 @@ public class CoalitionManager : NetworkBehaviour
         }
 
         countDownTimerText.text = timeLeft.ToString();
-        countDownTimerAnim.SetTrigger("Start");
+        countDownTimerAnim.SetBool("Play", true);
 
         while (true)
         {
@@ -274,8 +264,6 @@ public class CoalitionManager : NetworkBehaviour
 
             if (timeLeft <= 0)
             {
-                countDownTimerAnim.SetTrigger("Complete");
-
                 //if this client is the server, call TryStartGame
                 if (IsServer)
                 {

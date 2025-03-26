@@ -81,4 +81,9 @@ public class TurnManager : NetworkBehaviour
     {
         teamOnTurnId.Value = UnityEngine.Random.Range(0, ClientManager.TeamCount);
     }
+
+    public void DEBUG_GiveLocalPlayerTurn()
+    {
+        IsMyTurn = true;
+    }
 }

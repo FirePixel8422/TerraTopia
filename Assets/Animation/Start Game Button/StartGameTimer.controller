@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Start
+    m_ConditionEvent: Play
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 109792955473114483}
@@ -33,8 +33,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Stop
+  - m_ConditionMode: 2
+    m_ConditionEvent: Play
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2536956095517682872}
@@ -59,14 +59,8 @@ AnimatorController:
   m_Name: StartGameTimer
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Start
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
-  - m_Name: Stop
-    m_Type: 9
+  - m_Name: Play
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0

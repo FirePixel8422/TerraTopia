@@ -3095,7 +3095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minValue: 0
-  maxValue: 5
+  maxValue: 3
   toggleDefaultValue: 0
 --- !u!1 &429081361
 GameObject:
@@ -6424,6 +6424,15 @@ MonoBehaviour:
     maxPlayersPerTeam: 2
     allowUnfairTeams: 0
     seed: 8422
+    mapId: 0
+    mapSize: 0
+    privateLobby: 0
+  DEBUG_matchSettings:
+    maxPlayers: 0
+    maxTeams: 0
+    maxPlayersPerTeam: 0
+    allowUnfairTeams: 0
+    seed: 0
     mapId: 0
     mapSize: 0
     privateLobby: 0

@@ -34,16 +34,14 @@ public class GridManager : NetworkBehaviour
     {
         Instance = this;
 
-        if (NetworkManager.IsServer)
-        {
-            NetworkManager.SceneManager.OnLoadEventCompleted += (_, _, _, _) => OnAllClientScenesLoaded_OnServer();
-        }
+
+        NetworkManager.SceneManager.OnLoadEventCompleted += (_, _, _, _) => OnAllClientScenesLoaded();
     }
 
     
-    private void OnAllClientScenesLoaded_OnServer()
+    private void OnAllClientScenesLoaded()
     {
-        NetworkManager.SceneManager.OnLoadEventCompleted -= (_, _, _, _) => OnAllClientScenesLoaded_OnServer();
+        NetworkManager.SceneManager.OnLoadEventCompleted -= (_, _, _, _) => OnAllClientScenesLoaded();
 
         GenerateGrid();
 
@@ -57,10 +55,9 @@ public class GridManager : NetworkBehaviour
             SpawnMapAssets_OnServer();
 
             NetworkObject.InstantiateAndSpawn(tileObjectsData.tileObjects[4], NetworkManager, 0, true, false, false, new Vector3(0, 100, 0));
-
-
-            FindObjectOfType<TurnManager>().OnAllClientsLoaded();
         }
+
+        FindObjectOfType<TurnManager>().OnAllClientsLoaded();
     }
 
 
@@ -186,7 +183,7 @@ public class GridManager : NetworkBehaviour
 
 
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+//#if UNITY_EDITOR || DEVELOPMENT_BUILD
 
     private bool cloudsToggled;
 
@@ -202,5 +199,5 @@ public class GridManager : NetworkBehaviour
             }
         }
     }
-#endif
+//#endif
 }
