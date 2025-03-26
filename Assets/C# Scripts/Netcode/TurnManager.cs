@@ -85,6 +85,6 @@ public class TurnManager : NetworkBehaviour
     public void DEBUG_GiveLocalPlayerTurn()
     {
         IsMyTurn = true;
-        OnMyTurnStarted.Invoke();
+        OnMyTurnStarted?.Invoke();
     }
 }
