@@ -43,7 +43,7 @@ public class UnitNetworkStateMachine : NetworkBehaviour
     #region Change/Transition Animation + Server Sync Functions
 
     /// <returns>true if the animation has changed, false otherwise</returns>
-    private bool TryTransitionAnimation(string animationString, float transitionDuration = 1, float speed = 1, int layer = 0)
+    private bool TryTransitionAnimation(string animationString, float transitionDuration = 0.25f, float speed = 1, int layer = 0)
     {
         //if the new animation is the same as current, return false
         if (currentAnimation == animationString) return false;
@@ -63,13 +63,13 @@ public class UnitNetworkStateMachine : NetworkBehaviour
     /// Sent Animation Data trough server, back to all clients.
     /// </summary>
     [ServerRpc(RequireOwnership = false)]
-    private void SyncAnimation_ServerRPC(string animationString, float transitionDuration = 1, float speed = 1, int layer = 0)
+    private void SyncAnimation_ServerRPC(string animationString, float transitionDuration, float speed = 1, int layer = 0)
     {
         SyncAnimation_ClientRPC(animationString, transitionDuration, speed, layer);
     }
 
     [ClientRpc(RequireOwnership = false)]
-    private void SyncAnimation_ClientRPC(string animationString, float transitionDuration = 1, float speed = 1, int layer = 0)
+    private void SyncAnimation_ClientRPC(string animationString, float transitionDuration, float speed = 1, int layer = 0)
     {
         //dont execute RPC for ownerClient of this unit (since that executes locally)
         if (OwnerClientId == NetworkManager.LocalClientId) return;

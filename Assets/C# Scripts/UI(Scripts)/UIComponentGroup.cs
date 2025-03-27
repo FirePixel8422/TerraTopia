@@ -18,6 +18,9 @@ public class UIComponentGroup : MonoBehaviour
     [Header("Default value of the Toggle part of this group (if it exists)")]
     [SerializeField] private bool toggleDefaultValue;
 
+    [Header("Should InputFields Display nothing when value is 0? (if it exists)")]
+    [SerializeField] private bool inputFieldDisplayAirWhenZero;
+
 
     private Slider slider;
     private Toggle toggle;
@@ -53,7 +56,12 @@ public class UIComponentGroup : MonoBehaviour
         }
         if (inputField != null)
         {
-            inputField.onValueChanged.AddListener((string value) => OnValueChanged.Invoke(math.clamp(string.IsNullOrEmpty(value) ? 0 : int.Parse(value), minValue, maxValue)));
+            inputField.onValueChanged.AddListener((string value) =>
+            {
+                if (value == "-") return;
+
+                OnValueChanged.Invoke(MathematicsLogic.ClampToInt(string.IsNullOrEmpty(value) ? 0 : long.Parse(value), minValue, maxValue));
+            });
         }
 
         UpdateUI(startValue);
@@ -75,7 +83,7 @@ public class UIComponentGroup : MonoBehaviour
         }
         if (inputField != null)
         {
-            inputField.text = value.ToString();
+            inputField.text = value == 0 && inputFieldDisplayAirWhenZero ? "" : value.ToString();
         }
     }
 }

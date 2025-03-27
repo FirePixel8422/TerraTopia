@@ -2,6 +2,7 @@
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public static class ExtensionMethods
 {
@@ -252,19 +253,18 @@ public static class MathematicsLogic
         return math.abs(difference.x) + math.abs(difference.y) + math.abs(difference.z);
     }
 
-    /// <summary>
-    /// Turn float3 into 2d vector
-    /// </summary>
-    /// <returns>The Vector as 2d Vector2 (sets y to 0)</returns>
-    public static Vector2 ToVector2(this float3 value)
-    {
-        return new Vector2(value.x, value.z);
-    }
-
     public static int DistanceFrom(this int3 value, int3 toSubtract)
     {
         int3 difference = value - toSubtract;
         return math.abs(difference.x) + math.abs(difference.y) + math.abs(difference.z);
+    }
+
+    public static int ClampToInt(long value, int min, int max)
+    {
+        if (value > max) return max;
+        if (value < min) return min;
+
+        return (int)value;
     }
 }
 

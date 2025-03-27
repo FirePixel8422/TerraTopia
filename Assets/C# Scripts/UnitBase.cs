@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+
+[RequireComponent(typeof(UnitNetworkStateMachine))]
 public class UnitBase : TileObject
 {
     private int ownerPlayerGameId;
@@ -11,6 +13,8 @@ public class UnitBase : TileObject
 
     public Renderer colorRenderer;
     public Transform headTransform;
+
+    private UnitNetworkStateMachine animationStateMachine;
 
     [Header("Unit Stats")]
     [Header("Health based variables")]
@@ -46,6 +50,11 @@ public class UnitBase : TileObject
     {
         TurnManager.OnMyTurnStarted += OnTurnChange;
     }
+    private void Start()
+    {
+        animationStateMachine = GetComponent<UnitNetworkStateMachine>();
+    }
+
     #region Interfaces
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamage_ServerRPC(int damageToTake)
@@ -53,8 +62,14 @@ public class UnitBase : TileObject
         _health -= damageToTake;
         if (_health <= 0)
         {
+            animationStateMachine.GetHurt();
+
             CurrentTile.DeAssignUnit_ClientRPC(this);
             NetworkObject.Despawn(true);
+        }
+        else
+        {
+            animationStateMachine.Die();
         }
     }
 
@@ -312,6 +327,8 @@ public class UnitBase : TileObject
 
     protected virtual IEnumerator MoveThroughTiles(List<GameObject> path)
     {
+        animationStateMachine.Run();
+
         if (path.Count == 1)
         {
             Debug.Log("Clicked on the unit's starting tile, nothing happens");
@@ -374,6 +391,8 @@ public class UnitBase : TileObject
             transform.position = finalPosition;
             Debug.Log($"Unit reached the final tile at position {finalPosition}");
         }
+
+        animationStateMachine.Idle();
     }
     #endregion
 

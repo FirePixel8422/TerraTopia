@@ -12,6 +12,7 @@ public class City : TileObject
     public float labSpeed;
 
     [SerializeField] private MeshRenderer cityRenderer;
+
     [SerializeField] private MeshFilter borderMeshFilter;
     private Material borderMaterial;
 
@@ -20,14 +21,14 @@ public class City : TileObject
     [SerializeField] private int ownerClientGameId;
     [SerializeField] private int ownerClientTeamId;
 
+
+
     public override void OnNetworkSpawn()
     {
         ownerClientGameId = ClientManager.GetClientGameId(OwnerClientId);
         ownerClientTeamId = ClientManager.GetClientTeamId(ownerClientGameId);
 
         SetupCityMeshData(ownerClientGameId);
-
-        CalculateBorderTilePositions();
 
         if (IsServer)
         {
@@ -48,8 +49,8 @@ public class City : TileObject
         borderMeshFilter.transform.parent = null;
     }
 
+
     [ServerRpc(RequireOwnership = false)]
-    [ContextMenu("upgrade")]
     [BurstCompile]
     public void UpgradeCity_ServerRPC()
     {
@@ -58,25 +59,34 @@ public class City : TileObject
         ResourceManager.ModifyGems_OnServer(ownerClientGameId, upgradeData.gainedGems);
         ResourceManager.ModifyFood_OnServer(ownerClientGameId, upgradeData.gainedFood);
 
+
         if (upgradeData.gainedBorderSize != 0)
         {
             borderSize += upgradeData.gainedBorderSize;
             labSpeed += upgradeData.gainedLabSpeed;
 
-            CalculateBorderTilePositions();
             RecalculateBorderMesh_OnServer();
         }
 
         level += 1;
     }
 
+
+    /// <summary>
+    /// Use Calculated BorderTilePositions to create/update border mesh, and update mesh to all clients too.
+    /// </summary>
     [BurstCompile]
     private void RecalculateBorderMesh_OnServer()
     {
-        ExpandCityBorder_ClientRPC(BorderTilePositions.ToArray(), PlayerColorHandler.GetPlayerColor_OnServer(ownerClientGameId));
+        ExpandCityBorder_ClientRPC(PlayerColorHandler.GetPlayerColor_OnServer(ownerClientGameId));
     }
 
-    private void CalculateBorderTilePositions()
+
+    /// <summary>
+    /// Calculate BorderTilePositions by checking each tile in the city's borderSize range and if it's not owned by any player, add it to the city's borderTilePositions.
+    /// </summary>
+    [BurstCompile]
+    private void ReCalculateBorderTilePositions()
     {
         for (int xOffset = -borderSize; xOffset <= borderSize; xOffset++)
         {
@@ -98,11 +108,13 @@ public class City : TileObject
 
     [ClientRpc(RequireOwnership = false)]
     [BurstCompile]
-    private void ExpandCityBorder_ClientRPC(Vector3[] borderTilePositions, Vector4 borderColor)
+    private void ExpandCityBorder_ClientRPC(Vector4 borderColor)
     {
+        ReCalculateBorderTilePositions();
+
         if (NetworkManager.LocalClientId == OwnerClientId)
         {
-            foreach (Vector3 position in borderTilePositions)
+            foreach (Vector3 position in BorderTilePositions)
             {
                 Vector2 tilePos = position.ToVector2();
                 if (GridManager.DoesCloudExist(tilePos))
@@ -113,12 +125,69 @@ public class City : TileObject
             }
         }
 
-        BorderMeshCalculator.CreateBorderMesh(borderMeshFilter.mesh, borderTilePositions, transform.position);
+        BorderMeshCalculator.CreateBorderMesh(borderMeshFilter.mesh, BorderTilePositions.ToArray(), transform.position);
         borderMaterial.color = borderColor;
     }
 
 
 
+
+#if UNITY_EDITOR
+
+    [SerializeField] private bool DEBUG_borderMesh;
+
+    //[SerializeField]
+    private Vector3[] vertices;
+    //[SerializeField]
+    private int[] triangles;
+
+
+    [BurstCompile]
+    private void OnDrawGizmos()
+    {
+        if (DEBUG_borderMesh == false) return;
+
+
+        for (int i = 0; i < BorderTilePositions.Count; i++)
+        {
+            Gizmos.DrawWireCube(BorderTilePositions[i], Vector3.one);
+        }
+
+        if (Application.isPlaying == false)
+        {
+            return;
+        }
+
+
+        if (vertices == null || vertices.Length == 0)
+        {
+            vertices = borderMeshFilter.mesh.vertices;
+            triangles = borderMeshFilter.mesh.triangles;
+        }
+        else
+        {
+            borderMeshFilter.mesh.vertices = vertices;
+            borderMeshFilter.mesh.triangles = triangles;
+
+            Gizmos.color = Color.black;
+
+            Vector3 bPos = borderMeshFilter.transform.position;
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Gizmos.DrawCube(bPos + vertices[i], Vector3.one * .075f);
+            }
+            for (int i = 0; i < triangles.Length; i += 3)
+            {
+                Gizmos.DrawLine(bPos + vertices[triangles[i + 0]], bPos + vertices[triangles[i + 1]]);
+                Gizmos.DrawLine(bPos + vertices[triangles[i + 1]], bPos + vertices[triangles[i + 2]]);
+                Gizmos.DrawLine(bPos + vertices[triangles[i + 2]], bPos + vertices[triangles[i + 0]]);
+            }
+        }
+    }
+
+
+    [BurstCompile]
     private void Update()
     {
         if (IsOwner && Input.GetKeyDown(KeyCode.N))
@@ -126,4 +195,5 @@ public class City : TileObject
             UpgradeCity_ServerRPC();
         }
     }
+#endif
 }
