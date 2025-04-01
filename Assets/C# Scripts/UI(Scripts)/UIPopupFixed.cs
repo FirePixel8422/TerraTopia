@@ -8,20 +8,20 @@ using UnityEngine.EventSystems;
 public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("The UIPopup object that will be displayed")]
-    [SerializeField] private GameObject popupObj;
+    [SerializeField] protected GameObject popupObj;
 
 
     [Header("Fade UIPopup in and out instead of toggling it")]
-    [SerializeField] private bool useFading = true;
+    [SerializeField] protected bool useFading = true;
 
     [Header("The time it takes for the UIPopup to fade in and out")]
-    [SerializeField] private float fadeTime = .15f;
+    [SerializeField] protected float fadeTime = .15f;
 
-    private CanvasGroup canvasGroup;
+    protected CanvasGroup canvasGroup;
 
 
 
-    private void Start()
+    protected virtual void Start()
     {
         popupObj.SetActive(false);
 
@@ -62,7 +62,7 @@ public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 
 
-    private IEnumerator FadeInUI()
+    protected virtual IEnumerator FadeInUI()
     {
         popupObj.SetActive(true);
 
@@ -78,7 +78,7 @@ public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         canvasGroup.alpha = 1;
     }
 
-    private IEnumerator FadeOutUI()
+    protected virtual IEnumerator FadeOutUI()
     {
         float elapsed = fadeTime;
         while (elapsed > 0)
