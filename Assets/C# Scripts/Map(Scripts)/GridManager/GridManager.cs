@@ -54,7 +54,7 @@ public class GridManager : NetworkBehaviour
         {
             SpawnMapAssets_OnServer();
 
-            NetworkObject.InstantiateAndSpawn(tileObjectsData.tileObjects[4], NetworkManager, 0, true, false, false, new Vector3(0, 100, 0));
+            //NetworkObject.InstantiateAndSpawn(tileObjectsData.tileObjects[4], NetworkManager, 0, true, false, false, new Vector3(0, 100, 0));
         }
 
         FindObjectOfType<TurnManager>().OnAllClientsLoaded();
