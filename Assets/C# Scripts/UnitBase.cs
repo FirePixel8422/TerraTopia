@@ -164,53 +164,39 @@ public class UnitBase : TileObject
         {
             for (int z = -_movementRange; z <= _movementRange; z++)
             {
-                int xDistance = Mathf.Abs(x);
-                int zDistance = Mathf.Abs(z);
+                Vector3 targetPos = currentTilePos + new Vector3(x, 0f, z);
 
-                if (xDistance + zDistance <= _movementRange)
+                // Skip the starting tile
+                if (targetPos.ToVector2() == startTilePos.ToVector2()) { continue; }
+
+                if (GridManager.TryGetTileByPos(targetPos.ToVector2(), out TileBase tb))
                 {
-                    Vector3 targetPos = currentTilePos + new Vector3(x, 0f, z);
-
-                    //Prevent searching the starting tile
-                    if (targetPos.ToVector2() == startTilePos.ToVector2()) { continue; }
-
-                    if (GridManager.TryGetTileByPos(targetPos.ToVector2(), out TileBase tb))
+                    // Skip tiles with  friendly units
+                    if (tb.CurrentHeldUnit != null && tb.CurrentHeldUnit.ownerPlayerGameId == ownerPlayerGameId)
                     {
-                        //Break incase of an unit already inhabiting the "selected" tile
-                        if (tb.CurrentHeldUnit != null)
+                        continue;
+                    }
+
+                    // Check if a valid path exists before placing a marker
+                    List<GameObject> path = FindPathToTile(tb.gameObject);
+                    if (path == null || path.Count == 0) { continue; }
+
+                    // Attack markers (if tile is occupied by an enemy and within attack range)
+                    if (tb.CurrentHeldUnit != null && Vector3.Distance(targetPos, currentTilePos) <= _attackRange)
+                    {
+                        GameObject attackMarker = Instantiate(_attackMarkerPrefab, targetPos, Quaternion.identity);
+                        _tileMarkers.Add(attackMarker);
+                        continue;
+                    }
+
+                    // Movement markers (only if the tile is in a valid path)
+                    if (tb.tileLayer.HasFlag(_allowedTileLayers) && path.Count > 0)
+                    {
+                        float heightDifference = Mathf.Abs(transform.position.y - tb.transform.position.y);
+                        if (heightDifference <= _stepHeight)
                         {
-                            //Checks whether or not the unit has any alternative actions left(in this case being attack moves)
-                            if (AltTurnActionsLeft <= 0) { continue; }
-
-                            //Checks if the unit has the same owner as this one, if so it will continue the loop. 
-                            if (tb.CurrentHeldUnit.ownerPlayerGameId == ownerPlayerGameId) { continue; }
-
-                            //Checks if the unit is within attack range
-                            if (Vector3.Distance(targetPos, currentTilePos) <= _attackRange)
-                            {
-                                targetPos.y = tb.transform.position.y;
-                                GameObject marker = Instantiate(_attackMarkerPrefab, targetPos, Quaternion.identity);
-                                _tileMarkers.Add(marker);
-                            }
-                            continue;
-
-                        }
-
-                        if (TurnActionsLeft <= 0) { print("No actions left"); continue; }
-
-                        //Skips incase of the newly "selected" tile being the starting tile of the unit
-                        if (targetPos == currentTilePos) { continue; }
-
-                        //Checks if the Tile has the correct tags allowing the unit to walk on it
-                        if (tb.tileLayer.HasFlag(_allowedTileLayers))
-                        {
-                            float heightDifference = Mathf.Abs(transform.position.y - tb.transform.position.y);
-                            if (heightDifference <= _stepHeight)
-                            {
-                                targetPos.y = tb.transform.position.y;
-                                GameObject marker = Instantiate(_markerPrefab, targetPos, Quaternion.identity);
-                                _tileMarkers.Add(marker);
-                            }
+                            GameObject moveMarker = Instantiate(_markerPrefab, targetPos, Quaternion.identity);
+                            _tileMarkers.Add(moveMarker);
                         }
                     }
                 }
