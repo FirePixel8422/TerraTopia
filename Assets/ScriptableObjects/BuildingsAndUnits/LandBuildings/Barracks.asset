@@ -16,7 +16,7 @@ MonoBehaviour:
   buildingSprite: {fileID: 21300000, guid: 664fbc0833ec7409cafa28692dbecede, type: 3}
   costs:
     food: 0
-    stone: 125
-    wood: 125
+    stone: 20
+    wood: 20
     gems: 0
   isUnit: 0
