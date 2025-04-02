@@ -171,6 +171,8 @@ public class UnitBase : TileObject
 
                 if (GridManager.TryGetTileByPos(targetPos.ToVector2(), out TileBase tb))
                 {
+                    if(tb.gameObject.activeSelf == false) { continue; }
+
                     // Skip tiles with  friendly units
                     if (tb.CurrentHeldUnit != null && tb.CurrentHeldUnit.ownerPlayerGameId == ownerPlayerGameId)
                     {
@@ -180,7 +182,7 @@ public class UnitBase : TileObject
                     // Check if a valid path exists before placing a marker
                     List<GameObject> path = FindPathToTile(tb.gameObject);
                     if (path == null || path.Count == 0) { continue; }
-
+                    
                     // Attack markers (if tile is occupied by an enemy and within attack range)
                     if (tb.CurrentHeldUnit != null && Vector3.Distance(targetPos, currentTilePos) <= _attackRange)
                     {
