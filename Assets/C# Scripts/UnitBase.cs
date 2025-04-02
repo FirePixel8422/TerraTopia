@@ -428,6 +428,8 @@ public class UnitBase : TileObject
         if (IsOwner)
         {
             SyncPosition_ServerRPC(transform.position, transform.rotation.eulerAngles.y);
+            AltTurnActionsLeft = 10;
+            TurnActionsLeft = 10;
         }
     }
 
