@@ -30,7 +30,6 @@ public class TribeSelecter : NetworkBehaviour
     {
         if (IsServer)
         {
-            UnitSpawnHandler.Initialize_OnServer();
             PlayerColorHandler.Initialize_OnServer();
 
             Cityhandler.Initialize_OnServer();
@@ -41,6 +40,7 @@ public class TribeSelecter : NetworkBehaviour
             Cityhandler.Initialize_OnClients();
         }
 
+        UnitSpawnHandler.Initialize();
         Cityhandler.AddCityMaterials(cityColorMaterials);
     }
 
@@ -61,10 +61,16 @@ public class TribeSelecter : NetworkBehaviour
     {
         print("Tribe: " + tribeId + " Selected");
 
-        UnitSpawnHandler.AddTribe_OnServer(tribeData[tribeId].unitSpawnData, playerGameId);
-
         Cityhandler.AddCityData_OnServer(tribeData[tribeId].cityUpgrades, playerGameId);
 
         PlayerColorHandler.AddPlayerColors_OnServer(playerColors[playerGameId], playerGameId);
+
+        SelectTribe_ClientRPC(tribeId, playerGameId);
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    private void SelectTribe_ClientRPC(int tribeId, int playerGameId)
+    {
+        UnitSpawnHandler.AddTribe(tribeData[tribeId].unitSpawnData, playerGameId);
     }
 }

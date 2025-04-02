@@ -64,7 +64,7 @@ public class UnitBase : TileObject
         {
             animationStateMachine.GetHurt();
 
-            CurrentTile.DeAssignUnit_ClientRPC(this);
+            DeAssignUnitToTile_ClientRPC();
             NetworkObject.Despawn(true);
         }
         else
@@ -72,6 +72,21 @@ public class UnitBase : TileObject
             animationStateMachine.Die();
         }
     }
+
+    [ClientRpc(RequireOwnership = false)]
+    public void AssignUnitToTile_ClientRPC()
+    {
+        CurrentTile.AssignUnit(NetworkObjectId);
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    public void DeAssignUnitToTile_ClientRPC()
+    {
+        CurrentTile.DeAssignUnit();
+    }
+
+
+
 
     public override void OnClick(int playerId)
     {
@@ -240,7 +255,7 @@ public class UnitBase : TileObject
 
         Vector3[] directions = new Vector3[] {
         Vector3.right, Vector3.left, Vector3.forward, Vector3.back
-    };
+        };
 
         // Debug: Log initial positions
         Debug.Log($"Starting pathfinding from {startPos} to {targetPos}");
@@ -352,9 +367,9 @@ public class UnitBase : TileObject
                 {
                     if (tile.TryGetComponent(out TileBase tileBase))
                     {
-                        CurrentTile.AssignUnit_ClientRPC(this);
+                        AssignUnitToTile_ClientRPC();
                         CurrentTile = tileBase;
-                        CurrentTile.DeAssignUnit_ClientRPC(this);
+                        DeAssignUnitToTile_ClientRPC();
                     }
 
                     Vector3 direction = (targetPosition - transform.position).normalized;
@@ -401,9 +416,35 @@ public class UnitBase : TileObject
     [ClientRpc(RequireOwnership = false)]
     private void OnSpawn_ClientRPC(int ownerPlayerGameId)
     {
-        colorRenderer.material = UnitSpawnHandler.GetTeamColorMaterial_OnServer(ownerPlayerGameId, unitId);
+        colorRenderer.material = UnitSpawnHandler.GetTeamColorMaterial(ownerPlayerGameId, unitId);
 
         UnitSpawnHandler.SpawnUnitHead(headTransform, ownerPlayerGameId, unitId);
+    }
+
+
+
+    private void Update()
+    {
+        if (IsOwner)
+        {
+            SyncPosition_ServerRPC(transform.position, transform.rotation.eulerAngles.y);
+        }
+    }
+
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SyncPosition_ServerRPC(Vector3 pos, float rot)
+    {
+        SyncPosition_ClientRPC(pos, rot);
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    private void SyncPosition_ClientRPC(Vector3 pos, float rot)
+    {
+        if (IsOwner) return;
+
+        transform.position = pos;
+        transform.rotation = Quaternion.Euler(0, rot, 0);
     }
 }
 

@@ -204,18 +204,18 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
     }
 
 
-    [ClientRpc(RequireOwnership = false)]
-    public void AssignUnit_ClientRPC(UnitBase UB)
+    public void AssignUnit(ulong UBNetworkObjectId)
     {
+        UnitBase UB = NetworkManager.Singleton.SpawnManager.SpawnedObjects[UBNetworkObjectId].GetComponent<UnitBase>();
         CurrentHeldUnit = UB;
 
         UB.CurrentTile = this;
     }
 
-    [ClientRpc(RequireOwnership = false)]
-    public void AssignUnit_ClientRPC(UnitBase UB, bool syncPos)
+    public void AssignUnit(ulong UBNetworkObjectId, bool syncPos)
     {
-        UB.gameObject.transform.position = transform.position;
+        UnitBase UB = NetworkManager.Singleton.SpawnManager.SpawnedObjects[UBNetworkObjectId].GetComponent<UnitBase>();
+        UB.transform.position = transform.position;
         CurrentHeldUnit = UB;
 
         UB.CurrentTile = this;
@@ -224,8 +224,7 @@ public class TileBase : MonoBehaviour, IOnClickable, IHoverable, IBuildable
 
 
 
-    [ClientRpc(RequireOwnership = false)]
-    public void DeAssignUnit_ClientRPC(UnitBase UB)
+    public void DeAssignUnit()
     {
         CurrentHeldUnit = null;
     }

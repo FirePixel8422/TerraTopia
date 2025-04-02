@@ -1,14 +1,16 @@
 ﻿using System.Collections;
+using Unity.Burst;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 
 
+[BurstCompile]
 public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("The UIPopup object that will be displayed")]
-    [SerializeField] protected GameObject popupObj;
+    [SerializeField] protected RectTransform popupObj;
 
 
     [Header("Fade UIPopup in and out instead of toggling it")]
@@ -21,17 +23,23 @@ public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 
 
+    [BurstCompile]
     protected virtual void Start()
     {
-        popupObj.SetActive(false);
+        popupObj.gameObject.SetActive(false);
 
         canvasGroup = popupObj.GetComponent<CanvasGroup>();
 
-        if (useFading && canvasGroup == null)
+        //if no canvasGroup is found, add it
+        if (canvasGroup == null)
         {
             canvasGroup = popupObj.transform.AddComponent<CanvasGroup>();
         }
     }
+
+
+
+    #region Mouse Hover Callbacks
 
     public void OnPointerEnter(PointerEventData _)
     {
@@ -43,7 +51,7 @@ public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         else
         {
             canvasGroup.alpha = 1;
-            popupObj.SetActive(true);
+            HardToggleUI(true);
         }
     }
 
@@ -56,15 +64,27 @@ public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
         else
         {
-            popupObj.SetActive(false);
+            HardToggleUI(false);
         }
     }
 
+    #endregion
 
 
+
+
+    protected virtual void HardToggleUI(bool newState)
+    {
+        popupObj.gameObject.SetActive(newState);
+    }
+
+
+    #region Fade In/Out Popup Instead of hard toggling them
+
+    [BurstCompile]
     protected virtual IEnumerator FadeInUI()
     {
-        popupObj.SetActive(true);
+        popupObj.gameObject.SetActive(true);
 
         float elapsed = 0;
         while (elapsed < fadeTime)
@@ -78,6 +98,7 @@ public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         canvasGroup.alpha = 1;
     }
 
+    [BurstCompile]
     protected virtual IEnumerator FadeOutUI()
     {
         float elapsed = fadeTime;
@@ -90,6 +111,8 @@ public class UIPopupFixed : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
 
         canvasGroup.alpha = 0;
-        popupObj.SetActive(false);
+        popupObj.gameObject.SetActive(false);
     }
+
+    #endregion
 }

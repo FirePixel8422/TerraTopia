@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 323006675
+  GlobalObjectIdHash: 2231069611
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -154,8 +154,8 @@ MonoBehaviour:
   _markerPrefab: {fileID: 8579309374006704232, guid: 55d2216c3ae173b47bff26b000df3709,
     type: 3}
   _stepHeight: 0.5
-  _attackDamage: 0
-  _attackRange: 0
+  _attackDamage: 2
+  _attackRange: 2
   _attackMarkerPrefab: {fileID: 8579309374006704232, guid: dff189d657ca0cf4e842e70f7cce95c9,
     type: 3}
   _unitsKilled: 0

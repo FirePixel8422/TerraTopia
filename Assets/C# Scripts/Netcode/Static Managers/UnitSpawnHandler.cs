@@ -20,7 +20,7 @@ public static class UnitSpawnHandler
     /// <summary>
     /// Only call this from the server!!! _______ Initialized through TribeSelecter.cs
     /// </summary>
-    public static void Initialize_OnServer()
+    public static void Initialize()
     {
         //setup list by adding space for maxPlayers
         unitCosmeticsList = new UnitSpawnData[MatchManager.settings.maxPlayers][];
@@ -30,7 +30,7 @@ public static class UnitSpawnHandler
     /// <summary>
     /// Only call this from the server!!! _______ Add copy of cosmetics from units only if a player has selected them (to spare ref data and to easily acces them by playerGameId)
     /// </summary>
-    public static void AddTribe_OnServer(UnitSpawnData[] unitCosmetics, int playerGameId)
+    public static void AddTribe(UnitSpawnData[] unitCosmetics, int playerGameId)
     {
         unitCosmeticsList[playerGameId] = unitCosmetics;
     }
@@ -70,7 +70,7 @@ public static class UnitSpawnHandler
     /// Get Unit Material from playerGameId and unitId
     /// </summary>
     /// <returns>The Units body Material</returns>
-    public static Material GetTeamColorMaterial_OnServer(int playerGameId, int unitId)
+    public static Material GetTeamColorMaterial(int playerGameId, int unitId)
     {
         return unitCosmeticsList[playerGameId][unitId].colorMaterials[playerGameId];
     }

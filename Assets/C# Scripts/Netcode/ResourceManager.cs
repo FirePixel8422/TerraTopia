@@ -220,11 +220,17 @@ public class ResourceManager : NetworkBehaviour
 
         #endregion
 
-
-        GridManager.TryGetTileByPos(tileToPlaceOnPos.ToRoundedVector2(), out TileBase tileToPlaceOn);
         UnitBase spawnedUnit = UnitSpawnHandler.SpawnUnit_OnServer(clientGameId, unitId, tileToPlaceOnPos, Quaternion.identity);
 
-        tileToPlaceOn.AssignUnit_ClientRPC(spawnedUnit, true);
+        SpawnUnit_ClientRPC(spawnedUnit.NetworkObjectId, tileToPlaceOnPos);
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    private void SpawnUnit_ClientRPC(ulong unitNetworkObjectId, Vector2 tileToPlaceOnPos)
+    {
+        GridManager.TryGetTileByPos(tileToPlaceOnPos.ToRoundedVector2(), out TileBase tileToPlaceOn);
+
+        tileToPlaceOn.AssignUnit(unitNetworkObjectId, true);
     }
 
 

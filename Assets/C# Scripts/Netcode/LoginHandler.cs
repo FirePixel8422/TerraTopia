@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Services.Authentication;
@@ -25,6 +26,8 @@ public class LoginHandler : MonoBehaviour
     [SerializeField] private TMP_InputField passwordField;
 
     [SerializeField] private TextMeshProUGUI errorTextField;
+    [SerializeField] private float errorFadeSpeed;
+    private bool errorVisible;
 
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -139,7 +142,39 @@ public class LoginHandler : MonoBehaviour
     //reset errorField when username or password is being edited
     public void InputFieldSelectionStarted()
     {
+        if (errorVisible)
+        {
+            StartCoroutine(FadeOutErrorCode());
+        }
+        errorVisible = false;
+    }
+
+    private void DisplayError()
+    {
+        StopAllCoroutines();
+
+        errorTextField.color = new Color(errorTextField.color.r, errorTextField.color.g, errorTextField.color.b, 1);
+        errorVisible = true;
+    }
+
+    private IEnumerator FadeOutErrorCode()
+    {
+        //save color
+        Color cColor = errorTextField.color;
+
+        while (cColor.a > 0)
+        {
+            yield return null;
+            //fade out by decreasing alpha
+            cColor.a -= errorFadeSpeed * Time.deltaTime;
+
+            //update textColor
+            errorTextField.color = cColor;
+        }
+
+        //clear text and set alpha back to 1
         errorTextField.text = "";
+        errorTextField.color = new Color(cColor.r, cColor.g, cColor.b, 1);
     }
 
 
@@ -207,11 +242,13 @@ public class LoginHandler : MonoBehaviour
             if (exString.StartsWith("Unity.Services.Core.RequestFailedException: Invalid username or password"))
             {
                 errorTextField.text = _wrongLoginInfoError;
+                DisplayError();
             }
             //Username and/or Password are not in the correct format (one of the fields are empty)
             else if (exString.StartsWith("Unity.Services.Authentication.AuthenticationException: Username and/or Password are not in the correct format"))
             {
                 errorTextField.text = _emptyFieldError;
+                DisplayError();
             }
 
             invisibleScreenCover.SetActive(false);
@@ -261,11 +298,13 @@ public class LoginHandler : MonoBehaviour
             if (exString.StartsWith("Unity.Services.Authentication.AuthenticationException: username already exists"))
             {
                 errorTextField.text = _usernameTakenError;
+                DisplayError();
             }
             //Username and/or Password are not in the correct format (one of the fields are empty
             else if (exString.StartsWith("Unity.Services.Authentication.AuthenticationException: Username and/or Password are not in the correct format"))
             {
                 errorTextField.text = _emptyFieldError;
+                DisplayError();
             }
 
             invisibleScreenCover.SetActive(false);
@@ -286,6 +325,7 @@ public class LoginHandler : MonoBehaviour
             if (exString.StartsWith("Unity.Services.Core.RequestFailedException: Username does not match requirements"))
             {
                 errorTextField.text = _invalidUsernameError;
+                DisplayError();
 
                 print("printed");
             }
@@ -293,6 +333,7 @@ public class LoginHandler : MonoBehaviour
             else if (exString.StartsWith("Unity.Services.Core.RequestFailedException: Password does not match requirements"))
             {
                 errorTextField.text = _invalidPasswordError;
+                DisplayError();
             }
 
             invisibleScreenCover.SetActive(false);

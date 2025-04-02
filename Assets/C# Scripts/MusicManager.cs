@@ -17,14 +17,15 @@ public class MusicManager : MonoBehaviour
 
     [SerializeField] private SerializableKeyValueList<string, MusicPlayListDataSO> playlists;
 
-    [SerializeField] private MusicPlayListDataSO selectedPlayList;
-    [SerializeField] private int selectedTrackId;
+    private MusicPlayListDataSO selectedPlayList;
+    private int selectedTrackId;
 
 
 
     private void Start()
     {
         source = GetComponent<AudioSource>();
+        source.playOnAwake = false;
 
         //get first playlist.
         playlists.TryGetValue(playlists.GetKeyById(0), out selectedPlayList);

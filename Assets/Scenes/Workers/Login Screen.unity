@@ -1190,6 +1190,7 @@ MonoBehaviour:
   usernameField: {fileID: 854856186}
   passwordField: {fileID: 1482754957}
   errorTextField: {fileID: 1217195729}
+  errorFadeSpeed: 1.5
   devAutoLogin: 1
   autoLogOut: 1
   printLoginErrors: 1
