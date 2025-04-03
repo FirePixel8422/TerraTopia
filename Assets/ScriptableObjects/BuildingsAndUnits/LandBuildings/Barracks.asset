@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Barracks
   m_EditorClassIdentifier: 
   buildingGOId: 15
-  buildingSprite: {fileID: 21300000, guid: 664fbc0833ec7409cafa28692dbecede, type: 3}
+  buildingSprite: {fileID: 21300000, guid: a7ce37dc9ed1c4053b73333d365ba12f, type: 3}
   costs:
     food: 0
     stone: 20

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FarmHouse
   m_EditorClassIdentifier: 
   buildingGOId: 16
-  buildingSprite: {fileID: 21300000, guid: 1166bbcd4b9a5481da67502abf1d8b8c, type: 3}
+  buildingSprite: {fileID: 21300000, guid: 936f78b249bd645d9bbd64e1a142c751, type: 3}
   costs:
     food: 0
     stone: 0
