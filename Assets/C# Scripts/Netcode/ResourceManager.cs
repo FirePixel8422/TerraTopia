@@ -119,7 +119,7 @@ public class ResourceManager : NetworkBehaviour
     {
 #if !Unity_Editor && !DEVELOPMENT_BUILD
         //return false if client is not up to date with the latest server data OR cant afford the building
-        if (localClientHasUpdatedResources == false || CanAffordObject(buildingCosts) == false) return false;
+        if (localClientHasUpdatedResources == false && CanAffordObject(buildingCosts) == false) return false;
 #endif
 
         //if the client is allowed to build AND can afford the building, build it and set "localClientHasUpdatedResources" to false until the server processes the resource payment update
@@ -135,7 +135,7 @@ public class ResourceManager : NetworkBehaviour
     {
 #if !Unity_Editor && !DEVELOPMENT_BUILD
         //return false if client is not up to date with the latest server data OR cant afford the building
-        if (localClientHasUpdatedResources == false || CanAffordObject(buildingCosts) == false) return false;
+        if (localClientHasUpdatedResources == false && CanAffordObject(buildingCosts) == false) return false;
 #endif
 
         //if the client is allowed to build AND can afford the building, build it and set "localClientHasUpdatedResources" to false until the server processes the resource payment update

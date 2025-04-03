@@ -900,7 +900,7 @@ PrefabInstance:
     - target: {fileID: 4350320940623511301, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -845.077
       objectReference: {fileID: 0}
     - target: {fileID: 4350320940623511301, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}
@@ -1001,7 +1001,7 @@ PrefabInstance:
     - target: {fileID: 4717314780856934204, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5137690611392870935, guid: 21da8939707beda40b84d11e86a56b83,
         type: 3}
@@ -1711,7 +1711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5036022756516792190}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: ResourceTexts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
